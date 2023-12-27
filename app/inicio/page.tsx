@@ -7,8 +7,6 @@ import Header from "./components/Header.component";
 
 export type TVigilant = {
     name: string,
-    entryTime: string,
-    departureTime: string,
     arrived: string,
     hour: string,
     agency: string
