@@ -1,6 +1,6 @@
 import Button from "./Button.component"
 import { getLocalStorageData } from "./functions"
-import { getUserCheckpoints } from "./requests"
+/**import { getUserCheckpoints } from "./requests" */
 
 export default async function Content() {
     const localStorageData = getLocalStorageData()
@@ -10,12 +10,13 @@ export default async function Content() {
     const year = date.getFullYear()
     const currentDay = `${day}/${month}/${year}`
     const userId = 1
-    const data = await getUserCheckpoints(userId)
-    console.log("DATA", data)
+  /**  const data = await getUserCheckpoints(userId) */
+
 
     return (
         <div>
-            {data.map((checkpoint: any) => {
+       {/**
+        *      {data.map((checkpoint: any) => {
                 if (checkpoint.date === currentDay) {
                     return (
                         <div key={checkpoint.id}>
@@ -32,6 +33,8 @@ export default async function Content() {
                         </div>)
                 }
             })}
+        * 
+        */}
         </div>
     )
 }
