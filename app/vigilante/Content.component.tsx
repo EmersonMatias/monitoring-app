@@ -15,7 +15,7 @@ export default async function Content() {
 
     return (
         <div>
-            {data.map((checkpoint) => {
+            {data.map((checkpoint: any) => {
                 if (checkpoint.date === currentDay) {
                     return (
                         <div key={checkpoint.id}>
