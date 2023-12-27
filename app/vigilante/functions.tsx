@@ -1,4 +1,6 @@
-export function getLocalStorageData() {
+/**
+ * 
+ * export function getLocalStorageData() {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token")
       const entryTime = localStorage.getItem("entryTime")
@@ -12,3 +14,4 @@ export function getLocalStorageData() {
     }
     return null; // Tratamento para casos em que não está no contexto do navegador
   }
+ */
