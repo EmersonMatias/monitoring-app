@@ -9,6 +9,8 @@ export type TVigilant = {
     name: string,
     entryTime: string,
     departureTime: string,
+    arrived: string,
+    hour: string
 }
 
 /*
@@ -18,7 +20,39 @@ chegou: false/true
 */
 
 export default async function Inicio() {
-    const data = await getData()
+    const data = [
+        {
+            "name": "Emerson Rodrigo dos Santo",
+            "hour": "14:20",
+            "agency": "Agência Bancária",
+            "arrived": true
+
+        },
+        {
+            "name": "Adriana Jovenato",
+            "hour": "11:20",
+            "agency": "Agência Correios",
+            "arrived": false
+        },
+        {
+            "name": "Marta Maria",
+            "hour": "15:20",
+            "agency": "Agência Correios",
+            "arrived": true
+        },
+        {
+            "name": "Marcos Maria",
+            "hour": "18:20",
+            "agency": "Agência Correios",
+            "arrived": false
+        },
+        {
+            "name": "Pedro Fontes",
+            "hour": "23:30",
+            "agency": "Agência Internacional",
+            "arrived": false
+        }
+    ] 
     const date = new Date()
     const currentHour = date.getHours().toString()
     const currentMinutes = date.getMinutes().toString()
@@ -29,8 +63,8 @@ export default async function Inicio() {
     const vigilantWaiting: TVigilant[] = []
 
     data.map((vigilant: TVigilant) => {
-        const vigilantHour = vigilant.entryTime.substring(0, 2)
-        const vigilantMinute = vigilant.entryTime.substring(3, 5)
+        const vigilantHour = vigilant.hour.substring(0, 2)
+        const vigilantMinute = vigilant.hour.substring(3, 5)
         console.log(vigilantHour, vigilantMinute)
          
 
