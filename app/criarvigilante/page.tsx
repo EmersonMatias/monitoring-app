@@ -15,6 +15,7 @@ export default function CriarVigilante() {
                         id="name"
                         placeholder="Digite o nome completo"
                         className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                        required
                     />
 
                     <label htmlFor="date" className="text-white text-xl mb-2 font-bold">Data de Nascimento:</label>
@@ -23,6 +24,7 @@ export default function CriarVigilante() {
                         id="date"
                         placeholder="Digite a data de nascimento"
                         className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                        required
                     />
 
                     <label htmlFor="rg" className="text-white text-xl mb-2 font-bold">RG:</label>
@@ -31,6 +33,10 @@ export default function CriarVigilante() {
                         id="rg"
                         placeholder="Digite o RG - Apenas números sem pontos ou espaço "
                         className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                        required
+                        minLength={9}
+                        maxLength={9}
+
                     />
 
                     <label htmlFor="cpf" className="text-white text-xl mb-2 font-bold">CPF:</label>
@@ -39,6 +45,34 @@ export default function CriarVigilante() {
                         id="cpf"
                         placeholder="Digite o CPF - Apenas números sem pontos ou espaço "
                         className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                        required
+                        minLength={11}
+                        maxLength={11}
+
+                    />
+
+                    <label htmlFor="agencia" className="text-white text-xl mb-2 font-bold">Agência:</label>
+                    <input
+                        type="text"
+                        id="agencia"
+                        className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                        required
+                    />
+
+                    <label htmlFor="horariodeentrada" className="text-white text-xl mb-2 font-bold">Horário de Entrada:</label>
+                    <input
+                        type="time"
+                        id="horariodeentrada"
+                        className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                        required
+                    />
+
+                    <label htmlFor="rg" className="text-white text-xl mb-2 font-bold">Horário de Saída:</label>
+                    <input
+                        type="time"
+                        id="horariodesaida"
+                        className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                        required
                     />
 
                     <label htmlFor="usuario" className="text-white text-xl mb-2 font-bold">Usuário:</label>
@@ -47,6 +81,7 @@ export default function CriarVigilante() {
                         id="usuario"
                         placeholder="Digite o usuário "
                         className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                        required
                     />
 
                     <label htmlFor="senha" className="text-white text-xl mb-2 font-bold">Senha:</label>
@@ -55,20 +90,7 @@ export default function CriarVigilante() {
                         id="senha"
                         placeholder="Digite a senha "
                         className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
-                    />
-
-                    <label htmlFor="horariodeentrada" className="text-white text-xl mb-2 font-bold">Horário de Entrada:</label>
-                    <input
-                        type="time"
-                        id="horariodeentrada"
-                        className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
-                    />
-
-                    <label htmlFor="rg" className="text-white text-xl mb-2 font-bold">Horário de Saída:</label>
-                    <input
-                        type="time"
-                        id="horariodesaida"
-                        className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                        required
                     />
 
                     <button className="bg-blue-600 py-6 mx-20 text-2xl font-bold rounded-md">Criar Usuário</button>

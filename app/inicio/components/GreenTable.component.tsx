@@ -2,7 +2,7 @@ import { TVigilant } from "../page"
 
 export default function GreenTable({ vigilantArrived }: TGreenTable) {
     return (
-        <div className="max-w-[600px] overflow-x-auto   mt-6 flex flex-col items-center">
+        <div className="max-w-[600px] overflow-x-auto mt-6 flex flex-col items-center bg-[#4a4845] p-5 ">
 
             <div className="bg-[#6FAF79] text-xl max-w-[200px] p-2 mb-4 font-bold text-center mx-20 rounded-lg">
                 STATUS DE CHEGADA OK
@@ -21,7 +21,7 @@ export default function GreenTable({ vigilantArrived }: TGreenTable) {
                 <tbody>
 
                     {vigilantArrived.map((vigilant: TVigilant) => (
-                        <tr key={vigilant.name} className="rounded-2xl bg-slate-600 border-t-[16px] border-[#1D1D1D] text-center">
+                        <tr key={vigilant.name} className="rounded-2xl bg-slate-600 border-t-[16px] border-[#4a4845] text-center">
                             <td className="  px-4 py-2 max-w-[200px] ">{vigilant.name}</td>
                             <td className="px-4 py-2 ">{vigilant.hour}</td>
                             <td className="px-4 py-2 ">{vigilant.agency}</td>

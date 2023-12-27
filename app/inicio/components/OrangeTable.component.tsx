@@ -2,7 +2,7 @@ import { TVigilant } from "../page"
 
 export default function OrangeTable({ vigilantWaiting }: TOrangeTable) {
     return (
-        <div className="max-w-[600px] overflow-x-auto  mt-6  flex flex-col items-center">
+        <div className="max-w-[600px] overflow-x-auto  mt-6  flex flex-col items-center bg-[#4a4845] p-5">
             <div className="bg-[#FFB649] text-xl p-2 font-bold text-center max-w-[300px] mb-4 mx-20 rounded-lg">
                 STATUS DE CHEGADA AGUARDANDO
             </div>
@@ -20,7 +20,7 @@ export default function OrangeTable({ vigilantWaiting }: TOrangeTable) {
                 <tbody>
 
                     {vigilantWaiting.map((vigilant: TVigilant) => (
-                        <tr key={vigilant.name} className="rounded-2xl bg-slate-600 border-t-[16px] border-[#1D1D1D] text-center">
+                        <tr key={vigilant.name} className="rounded-2xl bg-slate-600 border-t-[16px] border-[#4a4845] text-center">
                             <td className="  px-4 py-2 max-w-[200px] ">{vigilant.name}</td>
                             <td className="px-4 py-2 ">{vigilant.hour}</td>
                             <td className="px-4 py-2 ">{vigilant.agency}</td>
