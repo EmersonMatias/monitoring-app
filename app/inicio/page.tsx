@@ -1,4 +1,3 @@
-import { getData } from "./requests";
 import OrangeTable from "./components/OrangeTable.component";
 import RedTable from "./components/RedTable.component";
 import GreenTable from "./components/GreenTable.component";
@@ -7,7 +6,7 @@ import Header from "./components/Header.component";
 
 export type TVigilant = {
     name: string,
-    arrived: string,
+    arrived: boolean,
     hour: string,
     agency: string
 }
@@ -19,7 +18,7 @@ chegou: false/true
 */
 
 export default async function Inicio() {
-    const data = [
+    const data:TVigilant[] = [
         {
             "name": "Emerson Rodrigo dos Santo",
             "hour": "14:20",
