@@ -10,7 +10,8 @@ export type TVigilant = {
     entryTime: string,
     departureTime: string,
     arrived: string,
-    hour: string
+    hour: string,
+    agency: string
 }
 
 /*
