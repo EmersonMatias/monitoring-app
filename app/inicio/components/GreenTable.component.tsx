@@ -1,6 +1,11 @@
-import { TVigilant } from "../page"
+import axios, { AxiosResponse } from "axios"
+import { TCheckpoints } from "../page"
 
-export default function GreenTable({ vigilantArrived }: TGreenTable) {
+export default async function GreenTable() {
+    const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
+    const todaysCheckpoint = checkpoints.data.filter((checkpoints) => checkpoints.date === "28/12/2023")
+    const checkpointsOK = todaysCheckpoint.filter((checkpoints) => checkpoints.arrived === true )
+
     return (
         <div className="max-w-[600px] overflow-x-auto mt-6 flex flex-col items-center bg-[#4a4845] p-5 ">
 
@@ -12,7 +17,8 @@ export default function GreenTable({ vigilantArrived }: TGreenTable) {
                 <thead>
                     <tr>
                         <th className=" px-4 py-2">Nome do Vigilante</th>
-                        <th className=" px-4 py-2">Horário Chegada</th>
+                        <th className=" px-4 py-2">Horário de Entrada</th>
+                        <th className=" px-4 py-2">Horário do Checkpoint</th>
                         <th className=" px-4 py-2">Agência</th>
                         <th className=" px-4 py-2">Status Atual</th>
 
@@ -20,11 +26,12 @@ export default function GreenTable({ vigilantArrived }: TGreenTable) {
                 </thead>
                 <tbody>
 
-                    {vigilantArrived.map((vigilant: TVigilant) => (
-                        <tr key={vigilant.name} className="rounded-2xl bg-slate-600 border-t-[16px] border-[#4a4845] text-center">
-                            <td className="  px-4 py-2 max-w-[200px] ">{vigilant.name}</td>
-                            <td className="px-4 py-2 ">{vigilant.hour}</td>
-                            <td className="px-4 py-2 ">{vigilant.agency}</td>
+                    {checkpointsOK.map((vigilant: TCheckpoints) => (
+                        <tr key={vigilant.user.name} className="rounded-2xl bg-slate-600 border-t-[16px] border-[#4a4845] text-center">
+                            <td className="  px-4 py-2 max-w-[200px] ">{vigilant.user.name}</td>
+                            <td className="px-4 py-2 ">{vigilant.user.entryTime}</td>
+                            <td className="px-4 py-2 ">{vigilant.arrivalTime}</td>
+                            <td className="px-4 py-2 ">{vigilant.user.agency}</td>
                             <td className="px-4 py-2  justify-center items-center ">
                                 <div className="bg-[#76a561] py-2 px-4 rounded-lg font-bold">OK</div>
                             </td>
@@ -32,11 +39,10 @@ export default function GreenTable({ vigilantArrived }: TGreenTable) {
                     ))}
                 </tbody>
             </table>
-
         </div>
     )
 }
 
 type TGreenTable = {
-    vigilantArrived: TVigilant[]
+    vigilantArrived: TCheckpoints[]
 }
