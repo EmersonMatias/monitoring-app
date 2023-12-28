@@ -53,7 +53,8 @@ export default function Estatisticas() {
     return checkpoint.user.agency
   })
 
-  const agenciesList = [...new Set(agencies)]
+  const agenciesList = agencies.filter((value, index, self) => self.indexOf(value) === index)
+console.log(agenciesList)
 
   console.log(alert)
 
