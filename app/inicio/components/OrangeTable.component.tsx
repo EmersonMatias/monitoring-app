@@ -17,14 +17,13 @@ const initialData:TCheckpoints[] = [
     }
 ]
 
-export default function OrangeTable({search}: {search: string}) {
+export default function OrangeTable({search, checkpoints}: {search: string, checkpoints: TCheckpoints[]}) {
     const router = useRouter()
-    const [checkpoints, setCheckpoints] = useState<TCheckpoints[]>(initialData)
     const date = new Date()
     const hour = date.getHours()
     const minutes = date.getMinutes()
-    const todaysCheckpoint = checkpoints.filter((checkpoints) => checkpoints.date === "28/12/2023")
-    const checkpointsWaiting = todaysCheckpoint.filter((checkpoints) =>
+    const todaysCheckpoint = checkpoints?.filter((checkpoints) => checkpoints.date === "28/12/2023")
+    const checkpointsWaiting = todaysCheckpoint?.filter((checkpoints) =>
         checkpoints.arrived === false &&
         (Number(checkpoints.user.entryTime.substring(0, 2)) > hour ||
         (Number(checkpoints.user.entryTime.substring(0, 2)) == hour && Number(checkpoints.user.entryTime.substring(3, 5)) >= minutes))
@@ -32,22 +31,6 @@ export default function OrangeTable({search}: {search: string}) {
     const checkpointsFilter = checkpointsWaiting?.filter((checkpoints) => checkpoints.user.agency.toLowerCase().includes(`${search}`))
     const checkpointView = search.length === 0 ? checkpointsWaiting : checkpointsFilter
 
-
-    useEffect(() => {
-        const getCheckpoints = async () => {
-            const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
-            return setCheckpoints(checkpoints.data)
-        }
-        const intervalId = setInterval(() => {
-           getCheckpoints()
-           router.refresh()
-            
-        }, 5000)
-        return () => clearInterval(intervalId);
-
-    }, [])
-   
-   
     return (
         <div className="max-w-[600px] overflow-x-auto  mt-6  flex flex-col items-center bg-[#4a4845] p-5">
             <div className="bg-[#FFB649] text-xl p-2 font-bold text-center max-w-[300px] mb-4 mx-20 rounded-lg">
@@ -67,7 +50,7 @@ export default function OrangeTable({search}: {search: string}) {
                 </thead>
 
                 <tbody>
-                    {checkpointView.map((vigilant: TCheckpoints) => (
+                    {checkpointView?.map((vigilant: TCheckpoints) => (
                         <tr key={vigilant.user.name} className="rounded-2xl bg-slate-600 border-t-[16px] border-[#4a4845] text-center">
                             <td className="  px-4 py-2 max-w-[200px] ">{vigilant.user.name}</td>
                             <td className="px-4 py-2 ">{vigilant.user.entryTime}</td>

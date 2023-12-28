@@ -3,7 +3,8 @@ import OrangeTable from "./components/OrangeTable.component";
 import RedTable from "./components/RedTable.component";
 import GreenTable from "./components/GreenTable.component";
 import Header from "./components/Header.component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
 
 export type TCheckpoints = {
     arrived: boolean,
@@ -16,8 +17,36 @@ export type TCheckpoints = {
     }
 }
 
+const initialData:TCheckpoints[] = [
+    {
+        arrived: false,
+        arrivalTime: "",
+        date: "",
+        user: {
+            name: "",
+            agency: "",
+            entryTime: ""
+        }
+    }
+]
+
 export default function Inicio() {
+    const [checkpoints, setCheckpoints] = useState<TCheckpoints[]>(initialData)
     const [search, setSearch] = useState("")
+
+    useEffect(() => {
+        const getCheckpoints = async () => {
+            const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
+            return setCheckpoints(checkpoints.data)
+        }
+        
+        const intervalId = setInterval(() => {
+           getCheckpoints()
+      
+        }, 5000)
+        return () => clearInterval(intervalId);
+
+    }, [])
 
 
     return (
@@ -35,13 +64,13 @@ export default function Inicio() {
 
             <div className="px-20 py-3 mt-6 flex justify-between items-center font-bold">
                 <h2 className="text-4xl">Status Agências</h2>
-                <p className="text-xl">Filtrar</p>
+                {/*<p className="text-xl">Filtrar</p> */}
             </div>
 
             <section className="px-20 flex gap-10">
-                <GreenTable search={search} />
-                <OrangeTable search={search} />
-                <RedTable search={search} />
+                <GreenTable search={search} checkpoints={checkpoints}/>
+                <OrangeTable search={search} checkpoints={checkpoints}/>
+                <RedTable search={search} checkpoints={checkpoints}/>
             </section>
         </main>
     )

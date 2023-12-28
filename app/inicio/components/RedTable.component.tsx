@@ -1,23 +1,7 @@
 'use client'
-import axios, { AxiosResponse } from "axios"
 import { TCheckpoints } from "../page"
-import { useEffect, useState } from "react"
 
-const initialData:TCheckpoints[] = [
-    {
-        arrived: false,
-        arrivalTime: "",
-        date: "",
-        user: {
-            name: "",
-            agency: "",
-            entryTime: ""
-        }
-    }
-]
-
-export default function RedTable({search}: {search: string}) {
-    const [checkpoints, setCheckpoints] = useState<TCheckpoints[]>(initialData)
+export default function RedTable({search, checkpoints}: {search: string, checkpoints: TCheckpoints[]}) {
     const date = new Date()
     const hour = date.getHours()
     const minutes = date.getMinutes()
@@ -29,20 +13,6 @@ export default function RedTable({search}: {search: string}) {
     )
     const checkpointsFilter = checkpointsAlert?.filter((checkpoints) => checkpoints.user.agency.toLowerCase().includes(`${search}`))
     const checkpointView = search.length === 0 ? checkpointsAlert : checkpointsFilter
-
-    useEffect(() => {
-        const getCheckpoints = async () => {
-            const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
-            return setCheckpoints(checkpoints.data)
-        }
-        const intervalId = setInterval(() => {
-           getCheckpoints()
-      
-        }, 5000)
-        return () => clearInterval(intervalId);
-
-    }, [])
-  
 
     return (
      
