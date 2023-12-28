@@ -9,7 +9,7 @@ export type TUserCheckpoints = {
 }
 
 export async function getUserCheckpoints(userId: string | undefined) {
-    const res: AxiosResponse<TUserCheckpoints[]> = await axios.get(`http://localhost:4000/checkpoints/${userId}`)
+    const res: AxiosResponse<TUserCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints/${userId}`)
 
     return res
 }
