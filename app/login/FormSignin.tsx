@@ -1,33 +1,63 @@
 'use client'
-
-import { FormEvent, useState } from "react"
-/**import { Signin } from "./loginFunction" */
+import { FormEvent, useEffect, useState } from "react"
+import { Signin } from "./loginFunction"
 import { useRouter } from "next/navigation"
+import Cookies from "js-cookie"
 
-export default function FormSignin() {
+type TFormSignin = {
+    token: string | undefined,
+    accountType: string | undefined
+}
 
+export default function FormSignin({ token , accountType}: TFormSignin) {
     const router = useRouter()
     const [signinData, setSigninData] = useState({
         login: "",
         password: ""
     })
 
+    useEffect(() => {
+        if (token !== undefined && accountType === "user") {
+            router.push("vigilante")
+        }else if (token !== undefined && accountType === "admin"){
+            router.push("inicio")
+        }
+    }, [token, router, accountType])
+
+
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
 
-     /**
-      *    const sucess = await Signin(signinData)
-        if (sucess.status === 200) {
-            localStorage.setItem("entryTime", sucess.data.entryTime)
-            localStorage.setItem("name", sucess.data.name)
-            localStorage.setItem("token", sucess.data.token)
-            router.push("/vigilante")
+        try {
+            const sucess = await Signin(signinData)
+            console.log(sucess.data)
+
+            if (sucess.status === 200) {
+
+                if (sucess.data.accountType === "user") {
+                    Cookies.set("name", sucess.data.name)
+                    Cookies.set("token", sucess.data.token)
+                    Cookies.set("entryTime", sucess.data.entryTime)
+                    Cookies.set("userId", sucess.data.userId)
+                    Cookies.set("accountType", sucess.data.accountType)
+
+                    router.push("vigilante")
+                }else{
+                    Cookies.set("name", sucess.data.name)
+                    Cookies.set("token", sucess.data.token)
+                    Cookies.set("accountType", sucess.data.accountType)
+
+                    router.push("inicio")
+                }
+
+
+            }
+        } catch (error) {
+            console.log(error)
+            alert("Ocorreu um erro")
         }
-      */
 
     }
-
-    console.log(signinData)
 
     return (
         <form className="flex flex-col" onSubmit={(e) => handleSubmit(e)}>

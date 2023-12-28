@@ -1,9 +1,19 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
-/**
- 
-export async function Signin(signinData){
-    const response =  await axios.post("http://localhost:4000/signin", signinData)
+type TSigninData = {
+    login: string,
+    password: string
+}
+
+type TSigninResponse = {
+    name: string,
+    userId: string,
+    entryTime: string,
+    token: string,
+    accountType: "admin" | "user"
+}
+
+export async function Signin(signinData: TSigninData){
+    const response:AxiosResponse<TSigninResponse> =  await axios.post(`${process.env.BACKEND_URL}/signin`, signinData)
     return response
 }
- */
