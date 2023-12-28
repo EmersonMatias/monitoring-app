@@ -47,7 +47,7 @@ export default function Header() {
                 <Image src={AlertIcon} alt="Icone de Estatística" />
 
                 <Image src={SidebarIcon} alt="Icone de Estatística" />
-                <button onClick={() => {handleExit(router)}}>Sair</button>
+                <button className=" bg-red-500 p-2 font-bold rounded" onClick={() => {handleExit(router)}}>Sair</button>
             </div>
         </header>
     )

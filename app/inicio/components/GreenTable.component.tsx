@@ -1,10 +1,43 @@
+'use client'
 import axios, { AxiosResponse } from "axios"
 import { TCheckpoints } from "../page"
+import { useEffect, useState } from "react"
 
-export default async function GreenTable() {
-    const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
-    const todaysCheckpoint = checkpoints.data.filter((checkpoints) => checkpoints.date === "28/12/2023")
-    const checkpointsOK = todaysCheckpoint.filter((checkpoints) => checkpoints.arrived === true )
+const initialData:TCheckpoints[] = [
+    {
+        arrived: false,
+        arrivalTime: "",
+        date: "",
+        user: {
+            name: "",
+            agency: "",
+            entryTime: ""
+        }
+    }
+]
+  
+export default function GreenTable({search}: {search: string}) {
+    const [checkpoints, setCheckpoints] = useState<TCheckpoints[]>(initialData)
+    const todaysCheckpoint = checkpoints?.filter((checkpoints) => checkpoints.date === "28/12/2023")
+    const checkpointsOK = todaysCheckpoint?.filter((checkpoints) => checkpoints.arrived === true)
+    const checkpointsFilter = checkpointsOK?.filter((checkpoints) => checkpoints.user.agency.toLowerCase().includes(`${search}`))
+    const checkpointView = search.length === 0 ? checkpointsOK : checkpointsFilter
+    
+    console.log(search.trim().length)
+    console.log(checkpointsFilter)
+
+    useEffect(() => {
+        const getCheckpoints = async () => {
+            const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
+            return setCheckpoints(checkpoints.data)
+        }
+        const intervalId = setInterval(() => {
+           getCheckpoints()
+      
+        }, 5000)
+        return () => clearInterval(intervalId);
+
+    }, [])
 
     return (
         <div className="max-w-[600px] overflow-x-auto mt-6 flex flex-col items-center bg-[#4a4845] p-5 ">
@@ -26,7 +59,7 @@ export default async function GreenTable() {
                 </thead>
                 <tbody>
 
-                    {checkpointsOK.map((vigilant: TCheckpoints) => (
+                    {checkpointView?.map((vigilant: TCheckpoints) => (
                         <tr key={vigilant.user.name} className="rounded-2xl bg-slate-600 border-t-[16px] border-[#4a4845] text-center">
                             <td className="  px-4 py-2 max-w-[200px] ">{vigilant.user.name}</td>
                             <td className="px-4 py-2 ">{vigilant.user.entryTime}</td>
