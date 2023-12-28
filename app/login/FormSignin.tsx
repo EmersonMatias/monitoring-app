@@ -1,33 +1,50 @@
 'use client'
-
-import { FormEvent, useState } from "react"
-/**import { Signin } from "./loginFunction" */
+import { FormEvent, useEffect, useState } from "react"
+import { Signin } from "./loginFunction"
 import { useRouter } from "next/navigation"
+import Cookies from "js-cookie"
 
-export default function FormSignin() {
+type TFormSignin = {
+    token: string
+}
 
+export default function FormSignin({ token }: TFormSignin) {
     const router = useRouter()
     const [signinData, setSigninData] = useState({
         login: "",
         password: ""
     })
 
+    useEffect(() => {
+        if (token !== undefined) {
+            router.replace("vigilante")
+        }
+    }, [])
+
+
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
 
-     /**
-      *    const sucess = await Signin(signinData)
-        if (sucess.status === 200) {
-            localStorage.setItem("entryTime", sucess.data.entryTime)
-            localStorage.setItem("name", sucess.data.name)
-            localStorage.setItem("token", sucess.data.token)
-            router.push("/vigilante")
+        try {
+            const sucess = await Signin(signinData)
+
+            if (sucess.status === 200) {
+                Cookies.set("name", sucess.data.name)
+                Cookies.set("token", sucess.data.token)
+                Cookies.set("entryTime", sucess.data.entryTime)
+
+                router.push("vigilante")
+            }
+        } catch (error) {
+            console.log(error)
+            alert("Ocorreu um erro")
         }
-      */
+
+
 
     }
 
-    console.log(signinData)
+
 
     return (
         <form className="flex flex-col" onSubmit={(e) => handleSubmit(e)}>

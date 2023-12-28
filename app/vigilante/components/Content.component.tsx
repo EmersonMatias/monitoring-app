@@ -1,22 +1,32 @@
 import Button from "./Button.component"
-/**import { getLocalStorageData } from "./functions" */
-/**import { getUserCheckpoints } from "./requests" */
+import { TUserCheckpoints, getUserCheckpoints } from "../requests"
+import axios, { AxiosResponse } from "axios"
+
+async function createCheckpoints(userCheckpoints: AxiosResponse<TUserCheckpoints[], any>, currentDay: string) {
+    const todaysCheckpontExist = userCheckpoints.data.find((checkpoint) => checkpoint.date === currentDay)
+
+    if (todaysCheckpontExist === undefined) {
+        const sucess = (await axios.post(`${process.env.BACKEND_URL}/createcheckpoints`)).status
+
+        return sucess
+    }
+
+}
 
 export default async function Content() {
-    /**    const localStorageData = getLocalStorageData() */
     const date = new Date()
     const day = date.getDate()
     const month = date.getMonth() + 1
     const year = date.getFullYear()
     const currentDay = `${day}/${month}/${year}`
     const userId = 1
-    /**  const data = await getUserCheckpoints(userId) */
-
+    const userCheckpoints = await getUserCheckpoints(userId)
+  
+    const checkpointsCreated = await createCheckpoints(userCheckpoints, currentDay)
 
     return (
         <div>
-            {/**
-        *      {data.map((checkpoint: any) => {
+            {userCheckpoints.data.map((checkpoint: any) => {
                 if (checkpoint.date === currentDay) {
                     return (
                         <div key={checkpoint.id}>
@@ -33,8 +43,7 @@ export default async function Content() {
                         </div>)
                 }
             })}
-        * 
-        */}
+
         </div>
     )
 }

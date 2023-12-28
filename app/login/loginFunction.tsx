@@ -1,9 +1,11 @@
 import axios from "axios";
 
-/**
- 
-export async function Signin(signinData){
-    const response =  await axios.post("http://localhost:4000/signin", signinData)
+type TSigninData = {
+    login: string,
+    password: string
+}
+
+export async function Signin(signinData: TSigninData){
+    const response =  await axios.post(`${process.env.BACKEND_URL}/signin`, signinData)
     return response
 }
- */
