@@ -22,9 +22,9 @@ export default async function Content() {
     const year = date.getFullYear()
     const currentDay = `${day}/${month}/${year}`
     const userCheckpoints = await getUserCheckpoints(userData.userId)
-  
+    console.log("AAAA"+userData.userId)
     const checkpointsCreated = await createCheckpoints(userCheckpoints, currentDay)
-
+ 
     console.log("userCheckpoints",userCheckpoints.data)
 
     return (

@@ -8,8 +8,6 @@ import styles from "./styles.module.css"
 export default function Vigilante() {
     const userData = logged()
 
- 
-
     return (
         <div className={`${styles.container} bg-blue-950 px-10`}>
             <VigilantHeader />

@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
 
 type TFormSignin = {
-    token: string | undefined
+    token: string | undefined,
+    accountType: string | undefined
 }
 
-export default function FormSignin({ token }: TFormSignin) {
+export default function FormSignin({ token , accountType}: TFormSignin) {
     const router = useRouter()
     const [signinData, setSigninData] = useState({
         login: "",
@@ -16,10 +17,12 @@ export default function FormSignin({ token }: TFormSignin) {
     })
 
     useEffect(() => {
-        if (token !== undefined) {
+        if (token !== undefined && accountType === "user") {
             router.push("vigilante")
+        }else if (token !== undefined && accountType === "admin"){
+            router.push("inicio")
         }
-    }, [token, router])
+    }, [token, router, accountType])
 
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -27,14 +30,27 @@ export default function FormSignin({ token }: TFormSignin) {
 
         try {
             const sucess = await Signin(signinData)
+            console.log(sucess.data)
 
             if (sucess.status === 200) {
-                Cookies.set("name", sucess.data.name)
-                Cookies.set("token", sucess.data.token)
-                Cookies.set("entryTime", sucess.data.entryTime)
-                Cookies.set("userId", sucess.data.userId)
 
-                router.push("vigilante")
+                if (sucess.data.accountType === "user") {
+                    Cookies.set("name", sucess.data.name)
+                    Cookies.set("token", sucess.data.token)
+                    Cookies.set("entryTime", sucess.data.entryTime)
+                    Cookies.set("userId", sucess.data.userId)
+                    Cookies.set("accountType", sucess.data.accountType)
+
+                    router.push("vigilante")
+                }else{
+                    Cookies.set("name", sucess.data.name)
+                    Cookies.set("token", sucess.data.token)
+                    Cookies.set("accountType", sucess.data.accountType)
+
+                    router.push("inicio")
+                }
+
+
             }
         } catch (error) {
             console.log(error)

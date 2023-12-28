@@ -11,7 +11,7 @@ export default function Login() {
 
         <main className={`${styles.bgimage} flex justify-center items-center`}>
             <div className=" bg-black bg-opacity-50 p-10 rounded-lg">
-                <FormSignin token={userData.token}/>
+                <FormSignin token={userData.token} accountType={userData.accountType}/>
             </div>
         </main>
     )

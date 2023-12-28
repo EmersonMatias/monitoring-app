@@ -8,8 +8,12 @@ import ShieldIcon from "@/public/ShieldIcon.svg"
 import AlertIcon from "@/public/AlertIcon.svg"
 import Logo from "@/public/Logo.png"
 import Link from "next/link";
+import { handleExit } from "@/app/vigilante/components/VigilantHeader.component";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
+    const router = useRouter()
+
     return (
         <header className="h-20 bg-[#f0a830] flex items-center justify-center w-[100%]">
 
@@ -43,6 +47,7 @@ export default function Header() {
                 <Image src={AlertIcon} alt="Icone de Estatística" />
 
                 <Image src={SidebarIcon} alt="Icone de Estatística" />
+                <button onClick={() => {handleExit(router)}}>Sair</button>
             </div>
         </header>
     )

@@ -7,9 +7,10 @@ export function logged() {
     const token = cookies().get("token")?.value
     const entryTime = cookies().get("entryTime")?.value
     const userId = cookies().get("userId")?.value
+    const accountType = cookies().get("accountType")?.value
 
     const userData = {
-        name, token, entryTime,userId
+        name, token, entryTime,userId,accountType
     }
 
 
