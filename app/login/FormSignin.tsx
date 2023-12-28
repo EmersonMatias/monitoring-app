@@ -32,6 +32,7 @@ export default function FormSignin({ token }: TFormSignin) {
                 Cookies.set("name", sucess.data.name)
                 Cookies.set("token", sucess.data.token)
                 Cookies.set("entryTime", sucess.data.entryTime)
+                Cookies.set("userId", sucess.data.userId)
 
                 router.push("vigilante")
             }

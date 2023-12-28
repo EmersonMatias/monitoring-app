@@ -11,6 +11,7 @@ export default function Update({ token }: { token: string | undefined }) {
 
     useEffect(() => {
         if (token === undefined) {
+        
             router.push("login")
         }
     }, [token, router])

@@ -9,8 +9,8 @@ export default function VigilantHeader() {
         Cookies.remove("name"),
         Cookies.remove("token"),
         Cookies.remove("entryTime")
-        router.refresh()
         router.push("login")
+        router.refresh()
     }
     
     return (

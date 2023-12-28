@@ -1,6 +1,7 @@
 import Button from "./Button.component"
 import { TUserCheckpoints, getUserCheckpoints } from "../requests"
 import axios, { AxiosResponse } from "axios"
+import { logged } from "@/app/functions"
 
 async function createCheckpoints(userCheckpoints: AxiosResponse<TUserCheckpoints[], any>, currentDay: string) {
     const todaysCheckpontExist = userCheckpoints.data.find((checkpoint) => checkpoint.date === currentDay)
@@ -14,17 +15,17 @@ async function createCheckpoints(userCheckpoints: AxiosResponse<TUserCheckpoints
 }
 
 export default async function Content() {
+    const userData = logged()
     const date = new Date()
     const day = date.getDate()
     const month = date.getMonth() + 1
     const year = date.getFullYear()
     const currentDay = `${day}/${month}/${year}`
-    const userId = 1
-    const userCheckpoints = await getUserCheckpoints(userId)
+    const userCheckpoints = await getUserCheckpoints(userData.userId)
   
     const checkpointsCreated = await createCheckpoints(userCheckpoints, currentDay)
 
-    console.log(userCheckpoints)
+    console.log("userCheckpoints",userCheckpoints.data)
 
     return (
         <div>
