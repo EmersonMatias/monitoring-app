@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
 
 type TFormSignin = {
-    token: string
+    token: string | undefined
 }
 
 export default function FormSignin({ token }: TFormSignin) {
@@ -17,9 +17,9 @@ export default function FormSignin({ token }: TFormSignin) {
 
     useEffect(() => {
         if (token !== undefined) {
-            router.replace("vigilante")
+            router.push("vigilante")
         }
-    }, [])
+    }, [token, router])
 
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -40,11 +40,7 @@ export default function FormSignin({ token }: TFormSignin) {
             alert("Ocorreu um erro")
         }
 
-
-
     }
-
-
 
     return (
         <form className="flex flex-col" onSubmit={(e) => handleSubmit(e)}>

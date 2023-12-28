@@ -24,9 +24,11 @@ export default async function Content() {
   
     const checkpointsCreated = await createCheckpoints(userCheckpoints, currentDay)
 
+    console.log(userCheckpoints)
+
     return (
         <div>
-            {userCheckpoints.data.map((checkpoint: any) => {
+            {userCheckpoints.data.map((checkpoint) => {
                 if (checkpoint.date === currentDay) {
                     return (
                         <div key={checkpoint.id}>
