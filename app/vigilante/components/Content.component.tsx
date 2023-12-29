@@ -1,7 +1,7 @@
 import Button from "./Button.component"
 import { TUserCheckpoints, getUserCheckpoints } from "../requests"
 import axios, { AxiosResponse } from "axios"
-import { logged } from "@/app/functions"
+import { logged } from "@/app/utils/functions"
 
 async function createCheckpoints(userCheckpoints: AxiosResponse<TUserCheckpoints[], any>, currentDay: string) {
     const todaysCheckpontExist = userCheckpoints.data.find((checkpoint) => checkpoint.date === currentDay)

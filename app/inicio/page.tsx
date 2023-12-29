@@ -39,6 +39,8 @@ export default function Inicio() {
             const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
             return setCheckpoints(checkpoints.data)
         }
+
+        getCheckpoints()
         
         const intervalId = setInterval(() => {
            getCheckpoints()
@@ -50,11 +52,11 @@ export default function Inicio() {
 
 
     return (
-        <main>
+        <main className="pb-20">
             <Header />
 
             <input
-                className="mt-20 ml-20 w-[600px] h-10 bg-stone-400 rounded-lg placeholder-stone-50 font-bold  p-4 "
+                className="mt-20 ml-20 w-[600px] h-10 bg-[#fdd28846] rounded-lg placeholder-[#0b0b0b] font-bold  p-4 "
                 type="text"
                 placeholder="Buscar"
                 color="#FFFFFF"

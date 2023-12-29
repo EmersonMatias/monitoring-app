@@ -4,6 +4,7 @@ import Header from '../inicio/components/Header.component';
 import { useEffect, useState } from 'react';
 import { TCheckpoints } from '../inicio/page';
 import axios, { AxiosResponse } from 'axios';
+import { currentTime, todaysDate } from '../utils/constants';
 
 const initialData: TCheckpoints[] = [
   {
@@ -20,19 +21,20 @@ const initialData: TCheckpoints[] = [
 
 export default function Estatisticas() {
   const [checkpoints, setCheckpoints] = useState<TCheckpoints[]>(initialData)
-  const date = new Date()
-  const hour = date.getHours()
-  const minutes = date.getMinutes()
+  const { day, month, year } = todaysDate()
+  const { hour, minutes } = currentTime()
   const palette = ['red', 'orange', 'green'];
-  const pieParams = { width: 900, height: 300, margin: { right: 5 } };
+  const pieParams = { width: 700, height: 300 };
   let chegou = 0;
   let atrasado = 0;
   let aguardando = 0;
   let alert: TCheckpoints[] = []
 
+
+
   checkpoints.map((checkpoint) => {
 
-    if (checkpoint.date === "28/12/2023") {
+    if (checkpoint.date === `${day}/${month}/${year}`) {
       if (checkpoint.arrived === true) {
         chegou = chegou + 1
       } else if (checkpoint.arrived === false &&
@@ -54,7 +56,6 @@ export default function Estatisticas() {
   })
 
   const agenciesList = agencies.filter((value, index, self) => self.indexOf(value) === index)
-console.log(agenciesList)
 
   console.log(alert)
 
@@ -69,42 +70,55 @@ console.log(agenciesList)
 
 
   return (
-    <div >
+    <div className='pb-20' >
       <Header />
+      <main className='flex px-20 gap-10'>
 
-      <div className='flex flex-col items-center mt-10 '>
-        <h2 className='text-3xl text-center mb-10'>Estatísticas</h2>
-        <PieChart
-          colors={palette}
-          series={[{ data: [{ value: atrasado, label: "ATRASADO" }, { value: aguardando, label: "AGUARDANDO CHEGADA" }, { value: chegou, label: "CHEGOU" }], arcLabel: "value", color: "#FFFFFF", }]}
-          {...pieParams}
+        <div className='mt-10 bg-[#FFFFFF] w-fit h-fit p-5 border-[2px] rounded-2xl '>
+          <h2 className='text-4xl text-center mb-10 font-bold text-[#0B0B0B]'>Estatísticas do Dia</h2>
+          <PieChart
+            colors={palette}
+            series={[{ data: [{ value: atrasado, label: "ATRASADO" }, { value: aguardando, label: "AGUARDANDO CHEGADA" }, { value: chegou, label: "CHEGOU" }], arcLabel: "value", color: "#FFFFFF", }]}
+            {...pieParams}
+          />
+        </div>
 
-        />
-      </div>
+        <div className='mt-10 bg-white w-full p-5 border-[2px] rounded-2xl' >
+          <h2 className='text-3xl text-center mb-10 font-bold'>Status Alerta</h2>
+          <section className='flex gap-5 flex-col'>
 
-      <div className='mt-10' >
-        <h2 className='text-3xl text-center mb-10'>Status Alerta</h2>
-        <section className='flex gap-5 px-20'>
-
-          {agenciesList?.map((agency) => (
-            <div className=' p-4 bg-[#4a4845] rounded-md' key={agency}>
-              <h3 className='text-center'>{agency}</h3>
-              {alert.map((alert) => (
-                agency === alert.user.agency && 
-                <div className='text-center mt-4' key={alert.user.name}>
-                  <span>{alert.user.name} </span> <span className='text-red-500 font-bold'> ATRASADO</span>
+            {
+              /* {agenciesList?.map((agency) => (
+                <div className=' p-4 bg-[#ECECEC] rounded-md' key={agency}>
+                  <h3 className='text-center font-semibold text-lg'>{agency}</h3>
+                  {alert.map((alert) => (
+                    agency === alert.user.agency &&
+                    <div className='text-center mt-4' key={alert.user.name}>
+                      <span>{alert.user.name} </span> <span className='text-red-500 font-bold'> ATRASADO</span>
+                    </div>
+                  ))}
+  
                 </div>
               ))}
+             */
+            }
+            {
+              alert.map((conteudo) => (
+                <div className='text-center mt-4 p-4 bg-[#ECECEC] rounded-md' key={conteudo.user.name}>
+                  <p className='font-bold'>{conteudo.user.agency}</p>
+                  <span>{conteudo.user.name} </span> <span className='text-red-500 font-bold'> ATRASADO</span>
+                </div>
+              ))
+            }
 
-            </div>
-          ))}
 
 
 
+          </section>
 
-        </section>
+        </div>
+      </main>
 
-      </div>
 
     </div>
 

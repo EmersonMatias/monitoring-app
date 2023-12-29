@@ -1,4 +1,4 @@
-import { logged } from "../functions"
+import { logged } from "../utils/functions"
 import FormSignin from "./FormSignin"
 import styles from "./styles.module.css"
 

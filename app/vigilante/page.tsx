@@ -1,4 +1,4 @@
-import { logged } from "../functions"
+import { logged } from "../utils/functions"
 import SOSButton from "./SOSButton.component"
 import Content from "./components/Content.component"
 import Update from "./components/Update.component"
