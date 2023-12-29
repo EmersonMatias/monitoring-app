@@ -9,13 +9,13 @@ export default function Vigilante() {
     const userData = logged()
 
     return (
-        <div className={`${styles.container} bg-blue-950 px-10`}>
+        <div className={`${styles.container} px-5`}>
             <VigilantHeader />
 
-            <p className="text-2xl font-semibold mt-5">Vigilante: {userData.name}</p>
+            <p className="text-xl font-semibold mt-5">Vigilante: {userData.name}</p>
 
             <Content />
-            <SOSButton />
+            <SOSButton userId={Number(userData.userId)}/>
 
             <Update token={userData.token}/>
         </div>

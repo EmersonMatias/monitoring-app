@@ -4,15 +4,59 @@ import Logo from "@/public/Logo.png"
 import Link from "next/link";
 import { handleExit } from "@/app/vigilante/components/VigilantHeader.component";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+
+type TMessage = {
+    id: number,
+    date: string,
+    hour: string,
+    message: string,
+    response: string,
+    viewed: boolean,
+    user: {
+        name: string,
+        agency: string
+    }
+}
+
 
 export default function Header() {
     const router = useRouter()
+    const [messages, setMessages] = useState<TMessage[]>()
+    const unviewedMessages = messages?.filter((message) => message.viewed === false).length
+
+    console.log(messages)
+    useEffect(() => {
+        const getMessages = async () => {
+            try {
+                const messagesData: AxiosResponse<TMessage[]> = await axios.get(`${process.env.BACKEND_URL}/mensagens`)
+                console.log(messagesData)
+                if (messagesData.status === 200) {
+                    setMessages(messagesData.data)
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getMessages()
+
+        const intervalId = setInterval(() => {
+            getMessages()
+
+        }, 5000)
+        return () => clearInterval(intervalId);
+
+    }, [])
+
 
     return (
         <header className="h-20 bg-[#f0a830] flex items-center justify-center w-[100%]">
 
             <div className="absolute left-20">
-                <Image src={Logo} style={{ width: "auto", height: "48px" }} alt="Icone de Estatística" />
+                <Image src={Logo} style={{ width: "auto", height: "48px" }} alt="Logo" />
             </div>
 
             <div className="flex gap-20">
@@ -43,13 +87,22 @@ export default function Header() {
             </div>
 
             <div className="absolute right-20 flex gap-8">
-                <svg className="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M4.214 3.227a.75.75 0 00-1.156-.956 8.97 8.97 0 00-1.856 3.826.75.75 0 001.466.316 7.47 7.47 0 011.546-3.186zM16.942 2.271a.75.75 0 00-1.157.956 7.47 7.47 0 011.547 3.186.75.75 0 001.466-.316 8.971 8.971 0 00-1.856-3.826z"></path><path fillRule="evenodd" d="M10 2a6 6 0 00-6 6c0 1.887-.454 3.665-1.257 5.234a.75.75 0 00.515 1.076 32.94 32.94 0 003.256.508 3.5 3.5 0 006.972 0 32.933 32.933 0 003.256-.508.75.75 0 00.515-1.076A11.448 11.448 0 0116 8a6 6 0 00-6-6zm0 14.5a2 2 0 01-1.95-1.557 33.54 33.54 0 003.9 0A2 2 0 0110 16.5z" clipRule="evenodd"></path>
-                </svg>
+
+                <Link href="mensagens">
+                    <div className={`text-white rounded-full w-[30px] h-[30px] flex justify-center items-center font-bold bg-red-500 absolute left-[-10px] top-[-10px] bg-opacity-80 ${unviewedMessages === 0 && "hidden"}`}>
+                        {unviewedMessages}
+                    </div>
+
+                    <svg className="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M4.214 3.227a.75.75 0 00-1.156-.956 8.97 8.97 0 00-1.856 3.826.75.75 0 001.466.316 7.47 7.47 0 011.546-3.186zM16.942 2.271a.75.75 0 00-1.157.956 7.47 7.47 0 011.547 3.186.75.75 0 001.466-.316 8.971 8.971 0 00-1.856-3.826z"></path><path fillRule="evenodd" d="M10 2a6 6 0 00-6 6c0 1.887-.454 3.665-1.257 5.234a.75.75 0 00.515 1.076 32.94 32.94 0 003.256.508 3.5 3.5 0 006.972 0 32.933 32.933 0 003.256-.508.75.75 0 00.515-1.076A11.448 11.448 0 0116 8a6 6 0 00-6-6zm0 14.5a2 2 0 01-1.95-1.557 33.54 33.54 0 003.9 0A2 2 0 0110 16.5z" clipRule="evenodd"></path>
+                    </svg>
+
+                </Link>
 
 
                 <button className=" bg-[#FC6F6F] p-2 font-bold rounded" onClick={() => { handleExit(router) }}>Sair</button>
             </div>
+
         </header>
     )
 }

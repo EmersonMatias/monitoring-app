@@ -32,7 +32,7 @@ export default function RedTable({ search, checkpoints }: { search: string, chec
                 </thead>
                 <tbody>
                     {checkpointView.map((vigilant: TCheckpoints) => (
-                        <tr key={vigilant.user.name} className="rounded-2xl text-center">
+                        <tr key={vigilant.user.name} className={`rounded-2xl text-center ${vigilant.user.agency === "admin" && "hidden"}`}>
                             <td className="  px-4 py-2 max-w-[200px] ">{vigilant.user.name}</td>
                             <td className="px-4 py-2 ">{vigilant.user.entryTime}</td>
                             <td className="px-4 py-2 ">{vigilant.user.agency}</td>

@@ -10,7 +10,8 @@ type TSigninResponse = {
     userId: string,
     entryTime: string,
     token: string,
-    accountType: "admin" | "user"
+    accountType: "admin" | "user",
+    agency: string
 }
 
 export async function Signin(signinData: TSigninData){

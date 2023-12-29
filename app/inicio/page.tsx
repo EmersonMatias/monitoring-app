@@ -17,6 +17,7 @@ export type TCheckpoints = {
     }
 }
 
+
 const initialData:TCheckpoints[] = [
     {
         arrived: false,
@@ -34,13 +35,17 @@ export default function Inicio() {
     const [checkpoints, setCheckpoints] = useState<TCheckpoints[]>(initialData)
     const [search, setSearch] = useState("")
 
+
     useEffect(() => {
         const getCheckpoints = async () => {
             const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
             return setCheckpoints(checkpoints.data)
         }
 
+   
+
         getCheckpoints()
+ 
         
         const intervalId = setInterval(() => {
            getCheckpoints()

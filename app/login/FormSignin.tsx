@@ -40,6 +40,7 @@ export default function FormSignin({ token , accountType}: TFormSignin) {
                     Cookies.set("entryTime", sucess.data.entryTime)
                     Cookies.set("userId", sucess.data.userId)
                     Cookies.set("accountType", sucess.data.accountType)
+                    Cookies.set("agency", sucess.data.agency )
 
                     router.push("vigilante")
                 }else{
@@ -67,7 +68,7 @@ export default function FormSignin({ token , accountType}: TFormSignin) {
                 type="text"
                 id="login"
                 placeholder="Digite o seu login"
-                className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                className="pl-4 py-2 bg-blue-950 rounded-xl mb-6 text-white"
                 required
                 minLength={5}
                 onChange={(event) => { setSigninData({ ...signinData, login: event.target.value }) }}
@@ -78,7 +79,7 @@ export default function FormSignin({ token , accountType}: TFormSignin) {
                 type="password"
                 id="password"
                 placeholder="Digite a sua senha"
-                className="pl-4 py-2 bg-blue-950 rounded-xl mb-6"
+                className="pl-4 py-2 bg-blue-950 rounded-xl mb-6 text-white"
                 required
                 minLength={8}
                 onChange={(event) => { setSigninData({ ...signinData, password: event.target.value }) }}
