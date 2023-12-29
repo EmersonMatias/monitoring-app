@@ -99,7 +99,7 @@ export default function FormCriarVigilante() {
     if(errorMessage){
         setTimeout(() => {
             console.log("Pus")
-            setSucessMessage(false)
+            setErrorMessage(false)
         }, 5000)
     }
 
