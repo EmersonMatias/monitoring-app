@@ -16,12 +16,10 @@ export function handleExit(router: AppRouterInstance){
 export default function VigilantHeader() {
     const router = useRouter()
 
-   
-    
     return (
         <div className="flex justify-center">
             <h1 className="text-4xl font-bold text-center py-4">Checkpoint</h1>
-            <button className="absolute top-5 right-5 bg-red-500 p-2 font-bold rounded" onClick={() => handleExit(router)}>Sair</button>
+            <button className="absolute top-5 right-5 bg-red-500 p-2 font-bold rounded text-white" onClick={() => handleExit(router)}>Sair</button>
         </div>
     )
 }

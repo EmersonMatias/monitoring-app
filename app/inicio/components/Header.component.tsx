@@ -26,12 +26,11 @@ export default function Header() {
     const [messages, setMessages] = useState<TMessage[]>()
     const unviewedMessages = messages?.filter((message) => message.viewed === false).length
 
-    console.log(messages)
     useEffect(() => {
         const getMessages = async () => {
             try {
                 const messagesData: AxiosResponse<TMessage[]> = await axios.get(`${process.env.BACKEND_URL}/mensagens`)
-                console.log(messagesData)
+
                 if (messagesData.status === 200) {
                     setMessages(messagesData.data)
                 }

@@ -34,7 +34,7 @@ export default function Estatisticas() {
 
   checkpoints.map((checkpoint) => {
 
-    if (checkpoint.date === `${day}/${month}/${year}`) {
+    if (checkpoint.date === `${day}/${month}/${year}` && checkpoint.user.agency !== "admin") {
       if (checkpoint.arrived === true) {
         chegou = chegou + 1
       } else if (checkpoint.arrived === false &&
@@ -68,7 +68,7 @@ export default function Estatisticas() {
     getCheckpoints()
   }, [])
 
-
+ 
   return (
     <div className='pb-20' >
       <Header />

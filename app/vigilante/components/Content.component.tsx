@@ -22,7 +22,6 @@ export default async function Content() {
     const year = date.getFullYear()
     const currentDay = `${day}/${month}/${year}`
     const userCheckpoints = await getUserCheckpoints(userData.userId)
-    console.log("AAAA"+userData.userId)
     const checkpointsCreated = await createCheckpoints(userCheckpoints, currentDay)
  
     console.log("userCheckpoints",userCheckpoints.data)
@@ -32,16 +31,16 @@ export default async function Content() {
             {userCheckpoints.data.map((checkpoint) => {
                 if (checkpoint.date === currentDay) {
                     return (
-                        <div key={checkpoint.id}>
-                            <div><span className="font-bold">Dia:</span> {checkpoint.date}</div>
-                            <div><span className="font-bold">Horário de Chegada:</span> {checkpoint.arrivalTime === "null" ? "Checkpoint não cadastrado" : checkpoint.arrivalTime} </div>
+                        <div key={checkpoint.id} className="flex flex-col gap-3">
+                            <p><span className="font-bold">Dia:</span> {checkpoint.date}</p>
+                            <p><span className="font-bold">Horário de Chegada:</span> {checkpoint.arrivalTime === "null" ? "Checkpoint não cadastrado" : checkpoint.arrivalTime} </p>
 
-                            <div>
+                            <p className=" flex">
                                 <span className="font-bold">Checkpoint Status: </span>
                                 {checkpoint.arrived ?
-                                    <span className="bg-green-500">Checkpoint realizado com sucesso!</span> :
-                                    <span className="bg-red-500">Aguardando checkpoint.</span>}
-                            </div>
+                                    <span className="bg-green-500 p-2 rounded-md text-white font-bold">Checkpoint realizado com sucesso</span> :
+                                    <span className="bg-red-500 p-2 rounded-md text-white font-bold text-center">Aguardando checkpoint</span>}
+                            </p>
                             <Button checkpoint={checkpoint} />
                         </div>)
                 }

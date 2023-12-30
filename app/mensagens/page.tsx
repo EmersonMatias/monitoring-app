@@ -35,6 +35,13 @@ export default function Mensagens() {
 
         getMessages()
 
+        const intervalId = setInterval(async () => {
+            await getMessages()
+  
+          }, 5000)
+          return () => clearInterval(intervalId);
+  
+
     }, [])
 
     return (
@@ -46,13 +53,13 @@ export default function Mensagens() {
 
                     {messages?.map((message) => (
                         <div key={message.id} className="text-left flex flex-col gap-2 pl-10 mt-4 p-4 bg-[#ECECEC] rounded-md">
-                            <p><span className="font-bold">Vigilante:</span> {message.user.name}</p>
+                            <p><span className="font-bold">Vigilante:</span> {message?.user?.name}</p>
 
-                            <p><span className="font-bold">Agência:</span> {message.user.agency}</p>
+                            <p><span className="font-bold">Agência:</span> {message?.user?.agency}</p>
 
-                            <p><span className="font-bold">Dia:</span> {message.date}</p>
+                            <p><span className="font-bold">Dia:</span> {message?.date}</p>
 
-                            <p><span className="font-bold">Horário:</span> {message.hour}</p>
+                            <p><span className="font-bold">Horário:</span> {message?.hour}</p>
 
                             <p><span className="font-bold">Mensagem:</span> {message?.message}</p>
 

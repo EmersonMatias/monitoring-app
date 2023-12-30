@@ -4,12 +4,13 @@ import { TCheckpoints } from "../page"
 
 export default function RedTable({ search, checkpoints }: { search: string, checkpoints: TCheckpoints[] }) {
     const { day, month, year } = todaysDate()
-    const { hour, minutes } = currentTime()
+    const { hour, minutes, seconds } = currentTime()
     const todaysCheckpoint = checkpoints?.filter((checkpoints) => checkpoints.date === `${day}/${month}/${year}`)
+    console.log(seconds)
     const checkpointsAlert = todaysCheckpoint?.filter((checkpoints) =>
         checkpoints.arrived === false &&
         (Number(checkpoints.user.entryTime.substring(0, 2)) < hour ||
-            (Number(checkpoints.user.entryTime.substring(0, 2)) == hour && Number(checkpoints.user.entryTime.substring(3, 5)) <= minutes))
+            (Number(checkpoints.user.entryTime.substring(0, 2)) == hour && Number(checkpoints.user.entryTime.substring(3, 5)) < minutes))
     )
     const checkpointsFilter = checkpointsAlert?.filter((checkpoints) => checkpoints.user.agency.toLowerCase().includes(`${search}`))
     const checkpointView = search.length === 0 ? checkpointsAlert : checkpointsFilter

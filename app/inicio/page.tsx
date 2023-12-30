@@ -35,6 +35,7 @@ export default function Inicio() {
     const [checkpoints, setCheckpoints] = useState<TCheckpoints[]>(initialData)
     const [search, setSearch] = useState("")
 
+    console.log(checkpoints)
 
     useEffect(() => {
         const getCheckpoints = async () => {
@@ -42,14 +43,11 @@ export default function Inicio() {
             return setCheckpoints(checkpoints.data)
         }
 
-   
-
         getCheckpoints()
  
-        
-        const intervalId = setInterval(() => {
-           getCheckpoints()
-      
+        const intervalId = setInterval(async () => {
+          await  getCheckpoints()
+
         }, 5000)
         return () => clearInterval(intervalId);
 
