@@ -5,6 +5,9 @@ import GreenTable from "./components/GreenTable.component";
 import Header from "./components/Header.component";
 import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
+import Cookies from "js-cookie"
+import { useRouter } from "next/navigation"
+
 
 export type TCheckpoints = {
     arrived: boolean,
@@ -16,8 +19,8 @@ export type TCheckpoints = {
         entryTime: string
     }
 }
-
-
+   
+  
 const initialData:TCheckpoints[] = [
     {
         arrived: false,
@@ -34,13 +37,19 @@ const initialData:TCheckpoints[] = [
 export default function Inicio() {
     const [checkpoints, setCheckpoints] = useState<TCheckpoints[]>(initialData)
     const [search, setSearch] = useState("")
+    const router = useRouter()
+    const token = Cookies.get("token")
 
-    console.log(checkpoints)
+    console.log(token)
 
     useEffect(() => {
         const getCheckpoints = async () => {
             const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
             return setCheckpoints(checkpoints.data)
+        }
+
+        if(token === undefined){
+            return router.push("/")
         }
 
         getCheckpoints()

@@ -7,8 +7,10 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 async function handleButton(checkpoint: TUserCheckpoints, router: AppRouterInstance) {
     const checkpointId = checkpoint.id
     const sucess = await axios.put(`${process.env.BACKEND_URL}/checkpoint`, { checkpointId })
+    console.log(sucess)
 
     if (sucess.status === 200) {
+        location.reload()
         router.refresh()
     }
 }

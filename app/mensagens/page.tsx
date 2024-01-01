@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import Header from "../inicio/components/Header.component";
 import axios, { AxiosResponse } from "axios";
 import FormMessage from "./FormMessage.component";
-
+import Cookies from "js-cookie"
+import { useRouter } from "next/navigation";
 
 type TMessage = {
     id: number,
@@ -20,7 +21,8 @@ type TMessage = {
 
 export default function Mensagens() {
     const [messages, setMessages] = useState<TMessage[]>()
-    console.log(messages)
+    const token = Cookies.get("token")
+    const router = useRouter()
 
     useEffect(() => {
         const getMessages = async () => {
@@ -31,6 +33,10 @@ export default function Mensagens() {
             } catch (error) {
                 console.log(error)
             }
+        }
+
+        if(token === undefined){
+            return router.push("/")
         }
 
         getMessages()

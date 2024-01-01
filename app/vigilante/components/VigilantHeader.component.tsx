@@ -9,7 +9,7 @@ export function handleExit(router: AppRouterInstance){
     Cookies.remove("entryTime")
     Cookies.remove("accountType")
     Cookies.remove("userId")
-    router.push("login")
+    router.push("/")
     router.refresh()
 }
 

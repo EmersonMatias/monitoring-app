@@ -1,9 +1,10 @@
 'use client'
-import { Dispatch, FormEvent, SetStateAction, useState } from "react"
+import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react"
 import styles from "../styles.module.css"
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import Cookies from "js-cookie";
 
 type TInitialData = {
     name: string;
@@ -88,20 +89,27 @@ export default function FormCriarVigilante() {
     const styleInput = "pl-4 py-2 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50"
     const [createVigilantData, setCreateVigilantData] = useState<TInitialData>(initialData)
     const router = useRouter()
+    const token = Cookies.get("token")
 
     if(sucessMessage){
         setTimeout(() => {
-            console.log("Pus")
+
             setSucessMessage(false)
         }, 5000)
     }
 
     if(errorMessage){
         setTimeout(() => {
-            console.log("Pus")
+
             setErrorMessage(false)
         }, 5000)
     }
+
+    useEffect(() => {
+        if(token === undefined){
+            return router.push("/")
+        }
+    }, [])
 
     return (
         <div className={`w-[600px] h-[700px] text-[#0b0b0b] bg-white mt-10 p-12 overflow-y-scroll ${styles.scrollable}`}>

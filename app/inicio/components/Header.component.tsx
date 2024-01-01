@@ -20,7 +20,6 @@ type TMessage = {
     }
 }
 
-
 export default function Header() {
     const router = useRouter()
     const [messages, setMessages] = useState<TMessage[]>()

@@ -5,7 +5,6 @@ import styles from "./styles.module.css"
     
 export default function Login() {
     const userData = logged()
-    console.log(userData.token)
 
     return (
 

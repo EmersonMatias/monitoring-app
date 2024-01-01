@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react';
 import { TCheckpoints } from '../inicio/page';
 import axios, { AxiosResponse } from 'axios';
 import { currentTime, todaysDate } from '../utils/constants';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { Router } from 'next/router';
 
 const initialData: TCheckpoints[] = [
   {
@@ -29,7 +32,9 @@ export default function Estatisticas() {
   let atrasado = 0;
   let aguardando = 0;
   let alert: TCheckpoints[] = []
-
+  const router = useRouter()
+  const token = Cookies.get("token")
+  console.log(token)
 
 
   checkpoints.map((checkpoint) => {
@@ -57,7 +62,6 @@ export default function Estatisticas() {
 
   const agenciesList = agencies?.filter((value, index, self) => self.indexOf(value) === index)
 
-  console.log(alert)
 
   useEffect(() => {
     const getCheckpoints = async () => {
@@ -65,7 +69,13 @@ export default function Estatisticas() {
       return setCheckpoints(checkpoints.data)
     }
 
+    if(token === undefined){
+      return router.push("/")
+    }
+
     getCheckpoints()
+
+
   }, [])
 
  
