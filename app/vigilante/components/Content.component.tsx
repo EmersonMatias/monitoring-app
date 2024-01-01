@@ -12,6 +12,10 @@ async function createCheckpoints(userCheckpoints: TUserCheckpoints[], currentDay
     if (todaysCheckpontExist === undefined) {
         const sucess = (await axios.post(`${process.env.BACKEND_URL}/createcheckpoints`)).status
 
+        if(sucess === 200){
+            location.reload()
+        }
+
         return sucess
     }
 
