@@ -28,13 +28,13 @@ export default function Mensagens() {
         const getMessages = async () => {
             try {
                 const messagesData: AxiosResponse<TMessage[]> = await axios.get(`${process.env.BACKEND_URL}/mensagens`)
-
+                console.log(messagesData.data)
                 return setMessages(messagesData.data)
             } catch (error) {
                 console.log(error)
             }
         }
-
+ 
         if(token === undefined){
             return router.push("/")
         }
@@ -44,11 +44,11 @@ export default function Mensagens() {
         const intervalId = setInterval(async () => {
             await getMessages()
   
-          }, 5000)
+          }, 3000)
           return () => clearInterval(intervalId);
   
 
-    }, [])
+    }, [router, token])
 
     return (
         <>

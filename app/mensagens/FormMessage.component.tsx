@@ -2,7 +2,7 @@
 import axios from "axios"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import { useRouter } from "next/navigation"
-import { FormEvent, useState } from "react"
+import { Dispatch, FormEvent, SetStateAction, useState } from "react"
 
 type TResponseData = {
     response: string,
@@ -10,8 +10,9 @@ type TResponseData = {
 }
 
 async function handleSubmit(event: FormEvent<HTMLFormElement>,responseData:TResponseData, router: AppRouterInstance){
+    event.preventDefault()
     const sucess = await axios.put(`${process.env.BACKEND_URL}/visualizarmensagem`, responseData)
-
+    console.log(sucess)
     if(sucess.status === 200){
         router.refresh()
     }

@@ -1,5 +1,5 @@
 'use client'
-import { FormEvent, useEffect, useState } from "react"
+import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react"
 import { Signin } from "./loginFunction"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
@@ -15,6 +15,8 @@ export default function FormSignin({ token , accountType}: TFormSignin) {
         login: "",
         password: ""
     })
+    const [loading, setLoading] = useState(false)
+    
 
     useEffect(() => {
         if (token !== undefined && accountType === "user") {
@@ -25,8 +27,9 @@ export default function FormSignin({ token , accountType}: TFormSignin) {
     }, [token, router, accountType])
 
 
-    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: FormEvent<HTMLFormElement>, setLoading: Dispatch<SetStateAction<boolean>> ) {
         event.preventDefault()
+        setLoading(true)
 
         try {
             const sucess = await Signin(signinData)
@@ -41,27 +44,28 @@ export default function FormSignin({ token , accountType}: TFormSignin) {
                     Cookies.set("userId", sucess.data.userId)
                     Cookies.set("accountType", sucess.data.accountType)
                     Cookies.set("agency", sucess.data.agency )
-
                     router.push("vigilante")
+                    setLoading(false)
                 }else{
                     Cookies.set("name", sucess.data.name)
                     Cookies.set("token", sucess.data.token)
                     Cookies.set("accountType", sucess.data.accountType)
-
                     router.push("inicio")
+                    setLoading(false)
                 }
 
 
             }
         } catch (error) {
             console.log(error)
+            setLoading(false)
             alert("Ocorreu um erro")
         }
 
     }
 
     return (
-        <form className="flex flex-col" onSubmit={(e) => handleSubmit(e)}>
+        <form className="flex flex-col" onSubmit={(e) => handleSubmit(e, setLoading)}>
 
             <label htmlFor="login" className="text-white text-xl mb-2 font-bold">Login</label>
             <input
@@ -85,7 +89,7 @@ export default function FormSignin({ token , accountType}: TFormSignin) {
                 onChange={(event) => { setSigninData({ ...signinData, password: event.target.value }) }}
             />
 
-            <button className="bg-blue-600 py-6  text-2xl font-bold rounded-md">Entrar</button>
+            <button className="bg-blue-600 py-6  text-2xl font-bold rounded-md disabled:opacity-50" disabled={loading}>{loading ? "Entrando..." : "Entrar"}</button>
 
         </form>
 
