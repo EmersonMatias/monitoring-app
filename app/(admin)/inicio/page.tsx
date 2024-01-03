@@ -40,8 +40,6 @@ export default function Inicio() {
     const router = useRouter()
     const token = Cookies.get("token")
 
-    console.log(token)
-
     useEffect(() => {
         const getCheckpoints = async () => {
             const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
@@ -60,13 +58,11 @@ export default function Inicio() {
         }, 5000)
         return () => clearInterval(intervalId);
 
-    }, [])
+    }, [router, token])
 
 
     return (
         <main className="pb-20">
-            <Header />
-
             <input
                 className="mt-20 ml-20 w-[600px] h-10 bg-[#fdd28846] rounded-lg placeholder-[#0b0b0b] font-bold  p-4 "
                 type="text"

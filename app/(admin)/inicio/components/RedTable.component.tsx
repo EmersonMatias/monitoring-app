@@ -6,7 +6,7 @@ export default function RedTable({ search, checkpoints }: { search: string, chec
     const { day, month, year } = todaysDate()
     const { hour, minutes, seconds } = currentTime()
     const todaysCheckpoint = checkpoints?.filter((checkpoints) => checkpoints.date === `${day}/${month}/${year}`)
-    console.log(seconds)
+   
     const checkpointsAlert = todaysCheckpoint?.filter((checkpoints) =>
         checkpoints.arrived === false &&
         (Number(checkpoints.user.entryTime.substring(0, 2)) < hour ||

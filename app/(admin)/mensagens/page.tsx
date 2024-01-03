@@ -52,7 +52,6 @@ export default function Mensagens() {
 
     return (
         <>
-            <Header />
             <main className="flex mt-10 justify-center  ">
                 <div className="bg-white w-1/2 border-[2px] rounded-2xl p-5">
                     <h2 className='text-4xl text-center mb-10 font-bold text-[#0B0B0B]'>Mensagens</h2>

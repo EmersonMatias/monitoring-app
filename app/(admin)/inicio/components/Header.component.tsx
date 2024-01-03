@@ -4,7 +4,7 @@ import Logo from "@/public/Logo.png"
 import Link from "next/link";
 import { handleExit } from "@/app/vigilante/components/VigilantHeader.component";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 
 type TMessage = {
@@ -21,17 +21,26 @@ type TMessage = {
 }
 
 export default function Header() {
+    const isBrowser = typeof window !== "undefined";
     const router = useRouter()
     const [messages, setMessages] = useState<TMessage[]>()
+    const AlertAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/alertAudio.mp3"): null)
     const unviewedMessages = messages?.filter((message) => message.viewed === false).length
-
+    console.log(messages)
+    
     useEffect(() => {
+ 
         const getMessages = async () => {
             try {
                 const messagesData: AxiosResponse<TMessage[]> = await axios.get(`${process.env.BACKEND_URL}/mensagens`)
 
                 if (messagesData.status === 200) {
-                    setMessages(messagesData.data)
+                    if (JSON.stringify(messages) !== JSON.stringify(messagesData.data)) {
+                        if (messages !== undefined  && messages?.length < messagesData?.data.length) {
+                            AlertAudio.current?.play()
+                        }
+                        setMessages(messagesData.data)
+                    }
                 }
 
             } catch (error) {
@@ -47,7 +56,7 @@ export default function Header() {
         }, 5000)
         return () => clearInterval(intervalId);
 
-    }, [])
+    }, [messages])
 
 
     return (
@@ -56,6 +65,7 @@ export default function Header() {
             <div className="absolute left-20">
                 <Image src={Logo} style={{ width: "auto", height: "48px" }} alt="Logo" />
             </div>
+        
 
             <div className="flex gap-20">
 

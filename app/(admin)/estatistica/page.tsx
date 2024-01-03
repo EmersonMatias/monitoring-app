@@ -4,10 +4,9 @@ import Header from '../inicio/components/Header.component';
 import { useEffect, useState } from 'react';
 import { TCheckpoints } from '../inicio/page';
 import axios, { AxiosResponse } from 'axios';
-import { currentTime, todaysDate } from '../utils/constants';
+import { currentTime, todaysDate } from '../../utils/constants';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { Router } from 'next/router';
 
 const initialData: TCheckpoints[] = [
   {
@@ -34,8 +33,6 @@ export default function Estatisticas() {
   let alert: TCheckpoints[] = []
   const router = useRouter()
   const token = Cookies.get("token")
-  console.log(token)
-
 
   checkpoints.map((checkpoint) => {
 
@@ -62,7 +59,6 @@ export default function Estatisticas() {
 
   const agenciesList = agencies?.filter((value, index, self) => self.indexOf(value) === index)
 
-
   useEffect(() => {
     const getCheckpoints = async () => {
       const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
@@ -75,13 +71,12 @@ export default function Estatisticas() {
 
     getCheckpoints()
 
-
-  }, [])
+  }, [token, router])
 
  
   return (
     <div className='pb-20' >
-      <Header />
+
       <main className='flex px-20 gap-10'>
 
         <div className='mt-10 bg-[#FFFFFF] w-fit h-fit p-5 border-[2px] rounded-2xl '>
