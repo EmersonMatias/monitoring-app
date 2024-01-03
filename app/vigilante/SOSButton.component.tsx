@@ -11,6 +11,15 @@ type TData = {
 
 async function handleForm(event: FormEvent<HTMLFormElement>, data: TData, router: AppRouterInstance, setData: Dispatch<SetStateAction<TData>>, setSucessMessage: Dispatch<SetStateAction<boolean>>, setLoading: Dispatch<SetStateAction<boolean>>) {
     event.preventDefault()
+    const emptyMessage = data.message.trimEnd().trim().trimStart().length
+    if(emptyMessage === 0){
+        const confirmSendMessage = confirm("Você tem certeza que deseja enviar o comando de emergência sem nenhuma mensagem?")
+
+        if(!confirmSendMessage){
+            return
+        }
+    }
+
     setLoading(true)
     const sucess = await axios.post(`${process.env.BACKEND_URL}/criarmensagem`, data)
     console.log(sucess.status)
@@ -50,7 +59,7 @@ export default function SOSButton({ userId }: { userId: number | undefined }) {
                     value={data.message}
                 />
                 <button className={`py-4  px-16  rounded-lg bg-red-500 font-bold text-white disabled:opacity-50 ${sucessMessage && "hidden"}`} disabled={loading}>EMERGÊNCIA</button>
-                <button className={`py-4  px-16  rounded-lg bg-green-500 font-bold text-white ${!sucessMessage && "hidden"}`}>Mensagem enviada</button>
+                <button className={`py-4  px-16  rounded-lg bg-green-500 font-bold text-white ${!sucessMessage && "hidden"}`} >Mensagem enviada</button>
             </form>
         </div>
 
