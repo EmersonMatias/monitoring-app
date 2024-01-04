@@ -114,7 +114,7 @@ export default function FormCriarVigilante() {
     return (
         <div className={`w-[600px] h-[700px] text-[#0b0b0b] bg-white mt-10 p-12 overflow-y-scroll ${styles.scrollable}`}>
             <form className="flex flex-col" onSubmit={(event) => { handleSubmite(event, createVigilantData, router, setCreateVigilantData, setLoading, setSucessMessage, setErrorMessage) }}>
-                <label htmlFor="name" className="text-xl mb-2 font-bold">Nome Completo:</label>
+                <label htmlFor="name" className="text-base mb-2 font-bold">Nome Completo:</label>
                 <input
                     type="text"
                     disabled={loading}
@@ -126,7 +126,7 @@ export default function FormCriarVigilante() {
                     onChange={(event) => (setCreateVigilantData({ ...createVigilantData, name: event.target.value }))}
                 />
 
-                <label htmlFor="date" className=" text-xl mb-2 font-bold">Data de Nascimento:</label>
+                <label htmlFor="date" className=" text-base mb-2 font-bold">Data de Nascimento:</label>
                 <input
                     type="date"
                     disabled={loading}
@@ -138,7 +138,7 @@ export default function FormCriarVigilante() {
                     onChange={(event) => (setCreateVigilantData({ ...createVigilantData, dateofbirth: event.target.value }))}
                 />
 
-                <label htmlFor="rg" className="text-xl mb-2 font-bold">RG:</label>
+                <label htmlFor="rg" className="text-base mb-2 font-bold">RG:</label>
                 <input
                     type="text"
                     disabled={loading}
@@ -152,7 +152,7 @@ export default function FormCriarVigilante() {
                     onChange={(event) => (setCreateVigilantData({ ...createVigilantData, rg: event.target.value }))}
                 />
 
-                <label htmlFor="cpf" className="text-xl mb-2 font-bold">CPF:</label>
+                <label htmlFor="cpf" className="text-base mb-2 font-bold">CPF:</label>
                 <input
                     type="text"
                     disabled={loading}
@@ -167,7 +167,7 @@ export default function FormCriarVigilante() {
 
                 />
 
-                <label htmlFor="agencia" className="text-xl mb-2 font-bold">Agência:</label>
+                <label htmlFor="agencia" className="text-base mb-2 font-bold">Agência:</label>
                 <input
                     type="text"
                     disabled={loading}
@@ -178,7 +178,7 @@ export default function FormCriarVigilante() {
                     onChange={(event) => (setCreateVigilantData({ ...createVigilantData, agency: event.target.value }))}
                 />
 
-                <label htmlFor="horariodeentrada" className="text-xl mb-2 font-bold">Horário de Entrada:</label>
+                <label htmlFor="horariodeentrada" className="text-base mb-2 font-bold">Horário de Entrada:</label>
                 <input
                     type="time"
                     disabled={loading}
@@ -189,7 +189,7 @@ export default function FormCriarVigilante() {
                     onChange={(event) => (setCreateVigilantData({ ...createVigilantData, entryTime: event.target.value }))}
                 />
 
-                <label htmlFor="rg" className="text-xl mb-2 font-bold">Horário de Saída:</label>
+                <label htmlFor="rg" className="text-base mb-2 font-bold">Horário de Saída:</label>
                 <input
                     type="time"
                     disabled={loading}
@@ -200,7 +200,7 @@ export default function FormCriarVigilante() {
                     onChange={(event) => (setCreateVigilantData({ ...createVigilantData, departureTime: event.target.value }))}
                 />
 
-                <label htmlFor="login" className="text-xl mb-2 font-bold">Login:</label>
+                <label htmlFor="login" className="text-base mb-2 font-bold">Login:</label>
                 <input
                     type="text"
                     id="login"
@@ -212,7 +212,7 @@ export default function FormCriarVigilante() {
                     onChange={(event) => (setCreateVigilantData({ ...createVigilantData, login: event.target.value }))}
                 />
 
-                <label htmlFor="senha" className="text-xl mb-2 font-bold">Senha:</label>
+                <label htmlFor="senha" className="text-base mb-2 font-bold">Senha:</label>
                 <input
                     type="password"
                     id="senha"
@@ -224,7 +224,7 @@ export default function FormCriarVigilante() {
                     disabled={loading}
                 />
 
-                <button className="bg-[#f0a830] py-6 mx-20 text-2xl font-bold rounded-md disabled:opacity-50" disabled={loading}>{loading ? "Criando usuário..." : "Criar Usuário"}</button>
+                <button className="bg-[#f0a830] py-3 mx-[150px] text-xl font-bold rounded-md disabled:opacity-50" disabled={loading}>{loading ? "Criando usuário..." : "Criar Usuário"}</button>
             </form>
 
             <div className={`fixed font-bold text-2xl bottom-10 right-10 bg-green-500 bg-opacity-70 p-8 rounded-lg ${sucessMessage ? "" : "hidden" }`} >

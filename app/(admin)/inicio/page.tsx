@@ -73,7 +73,7 @@ export default function Inicio() {
             />
 
             <div className="px-20 py-3 mt-6 flex justify-between items-center font-bold">
-                <h2 className="text-4xl">Status Agências</h2>
+                <h2 className="text-3xl">Status Agências</h2>
                 {/*<p className="text-xl">Filtrar</p> */}
             </div>
 
