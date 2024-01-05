@@ -79,7 +79,7 @@ export default function Estatisticas() {
 
       <main className='flex px-20 gap-10'>
 
-        <div className='mt-10 bg-[#FFFFFF] w-fit h-fit p-5 border-[2px] rounded-2xl '>
+        <div className='mt-10 bg-[#FFFFFF] w-fit h-fit p-5 border-[2px] rounded-2xl'>
           <h2 className='text-3xl text-center mb-10 font-bold text-[#0B0B0B]'>Estatísticas do Dia</h2>
           <PieChart
             colors={palette}

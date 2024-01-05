@@ -64,7 +64,7 @@ export default function Inicio() {
     return (
         <main className="pb-20">
             <input
-                className="mt-20 ml-20 w-[600px] h-10 bg-[#fdd28846] rounded-lg placeholder-[#0b0b0b] font-bold  p-4 "
+                className="mt-20 ml-20 w-[600px] h-10 bg-white rounded-lg font-bold  p-4 "
                 type="text"
                 placeholder="Buscar"
                 color="#FFFFFF"

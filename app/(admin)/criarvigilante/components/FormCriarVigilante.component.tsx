@@ -117,6 +117,7 @@ export default function FormCriarVigilante() {
                 <label htmlFor="name" className="text-base mb-2 font-bold">Nome Completo:</label>
                 <input
                     type="text"
+                    minLength={5}
                     disabled={loading}
                     id="name"
                     placeholder="Digite o nome completo"
@@ -131,6 +132,8 @@ export default function FormCriarVigilante() {
                     type="date"
                     disabled={loading}
                     id="date"
+                    minLength={10}
+                    maxLength={10}
                     placeholder="Digite a data de nascimento"
                     className={styleInput}
                     required
@@ -185,6 +188,8 @@ export default function FormCriarVigilante() {
                     id="horariodeentrada"
                     className={styleInput}
                     required
+                    minLength={5}
+                    maxLength={5}
                     value={createVigilantData.entryTime}
                     onChange={(event) => (setCreateVigilantData({ ...createVigilantData, entryTime: event.target.value }))}
                 />
@@ -217,6 +222,7 @@ export default function FormCriarVigilante() {
                     type="password"
                     id="senha"
                     placeholder="Digite a senha "
+                    minLength={8}
                     className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50"
                     required
                     value={createVigilantData.password}
@@ -224,7 +230,7 @@ export default function FormCriarVigilante() {
                     disabled={loading}
                 />
 
-                <button className="bg-[#f0a830] py-3 mx-[150px] text-xl font-bold rounded-md disabled:opacity-50" disabled={loading}>{loading ? "Criando usuário..." : "Criar Usuário"}</button>
+                <button className="bg-[#f0a830] py-3 mx-[150px] text-xl font-semibold rounded-md text-white disabled:opacity-50 " disabled={loading}>{loading ? "Criando usuário..." : "Criar Usuário"}</button>
             </form>
 
             <div className={`fixed font-bold text-2xl bottom-10 right-10 bg-green-500 bg-opacity-70 p-8 rounded-lg ${sucessMessage ? "" : "hidden" }`} >
