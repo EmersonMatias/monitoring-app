@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env:{
-        BACKEND_URL: "http://monitoring-server.onrender.com"
+        BACKEND_URL: "https://monitoring-server.onrender.com"
     }
 }
 
