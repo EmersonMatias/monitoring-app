@@ -1,5 +1,5 @@
 .bgimage{
-    background-image: url("../../public//Background2.png");
+    background-image: url("../public/Background2.png");
     background-size: cover;
     background-position: center;
     width: 100%;

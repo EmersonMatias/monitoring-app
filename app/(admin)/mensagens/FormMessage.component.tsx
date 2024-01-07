@@ -2,7 +2,7 @@
 import axios from "axios"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import { useRouter } from "next/navigation"
-import { Dispatch, FormEvent, SetStateAction, useState } from "react"
+import { FormEvent, useState } from "react"
 
 type TResponseData = {
     response: string,

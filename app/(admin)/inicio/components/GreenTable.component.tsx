@@ -1,6 +1,5 @@
 'use client'
 import { todaysDate } from "@/app/utils/constants"
-import { TCheckpoints } from "../page"
 
 export default function GreenTable({search, checkpoints}: {search: string, checkpoints: TCheckpoints[]}) {
     const {day,month,year} = todaysDate()

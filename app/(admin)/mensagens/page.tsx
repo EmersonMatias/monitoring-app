@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from "react";
-import Header from "../inicio/components/Header.component";
 import axios, { AxiosResponse } from "axios";
 import FormMessage from "./FormMessage.component";
 import Cookies from "js-cookie"

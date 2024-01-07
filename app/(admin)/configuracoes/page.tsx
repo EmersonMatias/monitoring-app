@@ -1,36 +1,23 @@
 'use client'
-import axios, { AxiosResponse } from "axios"
-import { useEffect, useState } from "react"
-
-type TVigilant = {
-    id: number,
-    name: string,
-    entryTime: string,
-    departureTime: string,
-    agency: string
-}
+import { useDeleteVigilant, useGetAllVigilants } from "@/hooks/hooks-vigilants"
 
 export default function Configuraçoes() {
-    const [vigilants, setVigilants] = useState<TVigilant[]>()
-    console.log(vigilants)
+    const { data: vigilants } = useGetAllVigilants()
+    const { mutate: deleteVigilant } = useDeleteVigilant()
 
-    useEffect(() => {
-        const getVigilants = async () => {
-            const vigilantsList: AxiosResponse<TVigilant[]> = await axios.get(`${process.env.BACKEND_URL}/vigilants`)
+    async function handleDeleteVigilant(id: number) {
+        const confirmDelete = confirm("Você tem certeza que deseja excluir esse vigilante?")
 
-            if (vigilantsList.status) {
-                setVigilants(vigilantsList.data)
-            }
+        if (confirmDelete) {
+            deleteVigilant(id)
         }
-
-        getVigilants()
-    }, [])
+    }
 
     return (
-        <main className="flex flex-col items-center">
-            <div className="px-20 py-3 mt-6 flex justify-between items-center font-bold">
-                <h2 className="text-3xl">Vigilantes</h2>
-                {/*<p className="text-xl">Filtrar</p> */}
+        <main className="flex flex-col items-center py-20">
+
+            <div className="px-20 flex justify-between items-center font-bold">
+                <h2 className="text-3xl">Configurações dos Vigilantes</h2>
             </div>
 
             <table className="w-1/2 table-auto mt-10">
@@ -66,16 +53,3 @@ export default function Configuraçoes() {
 
 
 
-async function handleDeleteVigilant(id: number){
-    const confirmDelete = confirm("Você tem certeza que deseja excluir esse vigilante?")
-    
-    if(confirmDelete){
-        const sucess = await axios.delete(`${process.env.BACKEND_URL}/vigilants/${id}`)
-        console.log(sucess)
-        if(sucess.status === 200){
-            alert("Usuário deletado com sucesso!")
-            window.location.reload()
-        }
-    }
-    
-}

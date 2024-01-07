@@ -1,4 +1,3 @@
-import Header from "../inicio/components/Header.component";
 import FormCriarVigilante from "./components/FormCriarVigilante.component";
 
 export default function CriarVigilante() {

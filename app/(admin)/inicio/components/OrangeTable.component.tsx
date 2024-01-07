@@ -1,5 +1,4 @@
 'use client'
-import { TCheckpoints } from "../page"
 import { useRouter } from "next/navigation"
 import { currentTime, todaysDate } from "@/app/utils/constants"
 

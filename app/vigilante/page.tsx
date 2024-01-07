@@ -6,7 +6,7 @@ import styles from "./styles.module.css"
 
 export default function Vigilante() {
     const {userId, name} = logged()
-
+  
     return (
         <div className={`${styles.container} px-5 mb-20`}>
             <VigilantHeader />

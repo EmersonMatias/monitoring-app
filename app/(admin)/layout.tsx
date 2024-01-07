@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation"
+import { logged } from "../utils/functions"
 import Header from "./inicio/components/Header.component"
 
 export default function Layout({
@@ -5,10 +7,16 @@ export default function Layout({
 }: {
   children: React.ReactNode
 }) {
+  const { accountType, token } = logged()
+ 
+  if(token === undefined){
+    return redirect("/")
+  } 
+
   return (
     <>
-      <Header/>
-      {children}
+      <Header />
+      {accountType === "admin" ? children : null}
     </>
   )
 }

@@ -2,25 +2,11 @@
 import OrangeTable from "./components/OrangeTable.component";
 import RedTable from "./components/RedTable.component";
 import GreenTable from "./components/GreenTable.component";
-import Header from "./components/Header.component";
 import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
 
-
-export type TCheckpoints = {
-    arrived: boolean,
-    arrivalTime: string,
-    date: string,
-    user: {
-        name: string,
-        agency: string
-        entryTime: string
-    }
-}
-   
-  
 const initialData:TCheckpoints[] = [
     {
         arrived: false,

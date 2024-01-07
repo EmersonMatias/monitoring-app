@@ -1,28 +1,10 @@
 'use client'
 import { PieChart } from '@mui/x-charts/PieChart';
-import Header from '../inicio/components/Header.component';
-import { useEffect, useState } from 'react';
-import { TCheckpoints } from '../inicio/page';
-import axios, { AxiosResponse } from 'axios';
 import { currentTime, todaysDate } from '../../utils/constants';
-import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
-
-const initialData: TCheckpoints[] = [
-  {
-    arrived: false,
-    arrivalTime: "",
-    date: "",
-    user: {
-      name: "",
-      agency: "",
-      entryTime: ""
-    }
-  }
-]
+import { useGetAllCheckpoints } from '@/hooks/hooks-checkpoints';
 
 export default function Estatisticas() {
-  const [checkpoints, setCheckpoints] = useState<TCheckpoints[]>(initialData)
+  const { data: checkpoints } = useGetAllCheckpoints()
   const { day, month, year } = todaysDate()
   const { hour, minutes } = currentTime()
   const palette = ['red', 'orange', 'green'];
@@ -31,10 +13,8 @@ export default function Estatisticas() {
   let atrasado = 0;
   let aguardando = 0;
   let alert: TCheckpoints[] = []
-  const router = useRouter()
-  const token = Cookies.get("token")
 
-  checkpoints.map((checkpoint) => {
+  checkpoints?.map((checkpoint) => {
 
     if (checkpoint.date === `${day}/${month}/${year}` && checkpoint.user.agency !== "admin") {
       if (checkpoint.arrived === true) {
@@ -53,30 +33,8 @@ export default function Estatisticas() {
 
   })
 
-  const agencies = checkpoints.map((checkpoint) => {
-    return checkpoint.user.agency
-  })
-
-  const agenciesList = agencies?.filter((value, index, self) => self.indexOf(value) === index)
-
-  useEffect(() => {
-    const getCheckpoints = async () => {
-      const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
-      return setCheckpoints(checkpoints.data)
-    }
-
-    if(token === undefined){
-      return router.push("/")
-    }
-
-    getCheckpoints()
-
-  }, [token, router])
-
- 
   return (
     <div className='pb-20' >
-
       <main className='flex px-20 gap-10'>
 
         <div className='mt-10 bg-[#FFFFFF] w-fit h-fit p-5 border-[2px] rounded-2xl'>
@@ -89,24 +47,10 @@ export default function Estatisticas() {
         </div>
 
         <div className='mt-10 bg-white w-full p-5 border-[2px] rounded-2xl' >
-          <h2 className='text-3xl text-center mb-10 font-bold'>Status Alerta</h2>
-          <section className='flex gap-5 flex-col'>
 
-            {
-              /* {agenciesList?.map((agency) => (
-                <div className=' p-4 bg-[#ECECEC] rounded-md' key={agency}>
-                  <h3 className='text-center font-semibold text-lg'>{agency}</h3>
-                  {alert.map((alert) => (
-                    agency === alert.user.agency &&
-                    <div className='text-center mt-4' key={alert.user.name}>
-                      <span>{alert.user.name} </span> <span className='text-red-500 font-bold'> ATRASADO</span>
-                    </div>
-                  ))}
-  
-                </div>
-              ))}
-             */
-            }
+          <h2 className='text-3xl text-center mb-10 font-bold'>Status Alerta</h2>
+
+          <section className='flex gap-5 flex-col'>
             {
               alert.map((conteudo) => (
                 <div className='text-center mt-4 p-4 bg-[#ECECEC] rounded-md' key={conteudo.user.name}>
@@ -116,15 +60,10 @@ export default function Estatisticas() {
               ))
             }
 
-
-
-
           </section>
 
         </div>
       </main>
-
-
     </div>
 
 

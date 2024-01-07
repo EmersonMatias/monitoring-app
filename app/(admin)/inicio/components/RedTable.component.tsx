@@ -1,6 +1,5 @@
 'use client'
 import { currentTime, todaysDate } from "@/app/utils/constants"
-import { TCheckpoints } from "../page"
 
 export default function RedTable({ search, checkpoints }: { search: string, checkpoints: TCheckpoints[] }) {
     const { day, month, year } = todaysDate()
