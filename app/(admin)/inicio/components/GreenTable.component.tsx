@@ -1,10 +1,7 @@
 'use client'
-import { todaysDate } from "@/app/utils/constants"
 
-export default function GreenTable({search, checkpoints}: {search: string, checkpoints: TCheckpoints[]}) {
-    const {day,month,year} = todaysDate()
-    const todaysCheckpoint = checkpoints?.filter((checkpoints) => checkpoints.date === `${day}/${month}/${year}`)
-    const checkpointsOK = todaysCheckpoint?.filter((checkpoints) => checkpoints.arrived === true)
+export default function GreenTable({search, checkpoints}: {search: string, checkpoints: TCheckpoints[] | undefined}) {
+    const checkpointsOK = checkpoints?.filter((checkpoints) => checkpoints.arrived === true)
     const checkpointsFilter = checkpointsOK?.filter((checkpoints) => checkpoints.user.agency.toLowerCase().includes(`${search}`))
     const checkpointView = search.length === 0 ? checkpointsOK : checkpointsFilter
     

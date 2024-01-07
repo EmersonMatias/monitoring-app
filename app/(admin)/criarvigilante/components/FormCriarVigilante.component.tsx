@@ -30,8 +30,7 @@ export default function FormCriarVigilante() {
         }, 5000)
     }
 
-    console.log(createVigilantData)
-
+   
     return (
         <div className={`w-[600px] h-[700px] text-[#0b0b0b] bg-white mt-10 p-12 overflow-y-scroll ${styles.scrollable}`}>
             <form className="flex flex-col" onSubmit={(event) => { handleSubmite(event) }}>

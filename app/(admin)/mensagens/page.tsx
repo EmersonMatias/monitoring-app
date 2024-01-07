@@ -1,51 +1,22 @@
 'use client'
-import { useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import { useEffect } from "react";
 import FormMessage from "./FormMessage.component";
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation";
-
-type TMessage = {
-    id: number,
-    date: string,
-    hour: string,
-    message: string,
-    response: string,
-    viewed: boolean,
-    user: {
-        name: string,
-        agency: string
-    }
-}
+import { useGetAllMessages } from "@/hooks/hooks-messages";
 
 export default function Mensagens() {
-    const [messages, setMessages] = useState<TMessage[]>()
+    const { data: messages } = useGetAllMessages()
     const token = Cookies.get("token")
     const router = useRouter()
+    const messageR = messages?.slice()?.reverse()
+    console.log(messageR)
 
     useEffect(() => {
-        const getMessages = async () => {
-            try {
-                const messagesData: AxiosResponse<TMessage[]> = await axios.get(`${process.env.BACKEND_URL}/mensagens`)
-                console.log(messagesData.data)
-                return setMessages(messagesData.data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
- 
-        if(token === undefined){
+
+        if (token === undefined) {
             return router.push("/")
         }
-
-        getMessages()
-
-        const intervalId = setInterval(async () => {
-            await getMessages()
-  
-          }, 3000)
-          return () => clearInterval(intervalId);
-  
 
     }, [router, token])
 
@@ -55,7 +26,7 @@ export default function Mensagens() {
                 <div className="bg-white w-1/2 border-[2px] rounded-2xl p-5">
                     <h2 className='text-4xl text-center mb-10 font-bold text-[#0B0B0B]'>Mensagens</h2>
 
-                    {messages?.map((message) => (
+                    {messages?.slice()?.reverse()?.map((message) => (
                         <div key={message.id} className="text-left flex flex-col gap-2 pl-10 mt-4 p-4 bg-[#ECECEC] rounded-md">
                             <p><span className="font-bold">Vigilante:</span> {message?.user?.name}</p>
 
@@ -69,7 +40,7 @@ export default function Mensagens() {
 
                             {message?.viewed ?
                                 <p><span className="font-bold">Tratamento da mensagem:</span> <span className="">{message.response}</span></p> :
-                               <FormMessage messageId={message.id}/>
+                                <FormMessage messageId={message.id} />
                             }
 
 

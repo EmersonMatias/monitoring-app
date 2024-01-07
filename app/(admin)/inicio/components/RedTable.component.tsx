@@ -1,12 +1,10 @@
 'use client'
-import { currentTime, todaysDate } from "@/app/utils/constants"
+import { currentTime } from "@/app/utils/constants"
 
-export default function RedTable({ search, checkpoints }: { search: string, checkpoints: TCheckpoints[] }) {
-    const { day, month, year } = todaysDate()
-    const { hour, minutes, seconds } = currentTime()
-    const todaysCheckpoint = checkpoints?.filter((checkpoints) => checkpoints.date === `${day}/${month}/${year}`)
+export default function RedTable({ search, checkpoints }: { search: string, checkpoints: TCheckpoints[] | undefined }) {
+    const { hour, minutes } = currentTime()
    
-    const checkpointsAlert = todaysCheckpoint?.filter((checkpoints) =>
+    const checkpointsAlert = checkpoints?.filter((checkpoints) =>
         checkpoints.arrived === false &&
         (Number(checkpoints.user.entryTime.substring(0, 2)) < hour ||
             (Number(checkpoints.user.entryTime.substring(0, 2)) == hour && Number(checkpoints.user.entryTime.substring(3, 5)) < minutes))
@@ -31,7 +29,7 @@ export default function RedTable({ search, checkpoints }: { search: string, chec
                     </tr>
                 </thead>
                 <tbody>
-                    {checkpointView.map((vigilant: TCheckpoints) => (
+                    {checkpointView?.map((vigilant: TCheckpoints) => (
                         <tr key={vigilant.user.name} className={`rounded-2xl text-center ${vigilant.user.agency === "admin" && "hidden"}`}>
                             <td className="  px-4 py-2 max-w-[200px] text-sm ">{vigilant.user.name}</td>
                             <td className="px-4 py-2 text-sm">{vigilant.user.entryTime}</td>

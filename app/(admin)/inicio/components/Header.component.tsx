@@ -4,59 +4,33 @@ import Logo from "@/public/Logo.png"
 import Link from "next/link";
 import { handleExit } from "@/app/vigilante/components/VigilantHeader.component";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import axios, { AxiosResponse } from "axios";
-
-type TMessage = {
-    id: number,
-    date: string,
-    hour: string,
-    message: string,
-    response: string,
-    viewed: boolean,
-    user: {
-        name: string,
-        agency: string
-    }
-}
+import { useRef } from "react";
+import { useGetAllMessages } from "@/hooks/hooks-messages";
 
 export default function Header() {
     const isBrowser = typeof window !== "undefined";
     const router = useRouter()
-    const [messages, setMessages] = useState<TMessage[]>()
+    const { data: messages, isSuccess } = useGetAllMessages()
     const AlertAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/alertAudio.mp3") : null)
     const unviewedMessages = messages?.filter((message) => message.viewed === false).length
+    const messagesRef = useRef<TMessage[]>()
 
-    useEffect(() => {
-
-        const getMessages = async () => {
-            try {
-                const messagesData: AxiosResponse<TMessage[]> = await axios.get(`${process.env.BACKEND_URL}/mensagens`)
-
-                if (messagesData.status === 200) {
-                    if (JSON.stringify(messages) !== JSON.stringify(messagesData.data)) {
-                        if (messages !== undefined && messages?.length < messagesData?.data.length) {
-                            AlertAudio.current?.play()
-                        }
-                        setMessages(messagesData.data)
-                    }
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
+    if (isSuccess) {
+        if (messagesRef.current === undefined) {
+            messagesRef.current = messages
         }
 
-        getMessages()
+        if (messagesRef.current !== undefined) {
 
-        const intervalId = setInterval(() => {
-            getMessages()
+            if (JSON.stringify(messages) !== JSON.stringify(messagesRef.current)) {
 
-        }, 5000)
-        return () => clearInterval(intervalId);
-
-    }, [messages])
-
+                if (messages !== undefined && messages?.length > messagesRef.current.length) {
+                    AlertAudio.current?.play()
+                    messagesRef.current = messages
+                }
+            }
+        }
+    }
 
     return (
         <header className="h-20 bg-[#f0a830] flex items-center justify-center w-[100%]">

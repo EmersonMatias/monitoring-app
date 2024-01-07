@@ -1,26 +1,10 @@
 'use client'
-import { useRouter } from "next/navigation"
-import { currentTime, todaysDate } from "@/app/utils/constants"
+import { currentTime } from "@/app/utils/constants"
 
-const initialData:TCheckpoints[] = [
-    {
-        arrived: false,
-        arrivalTime: "",
-        date: "",
-        user: {
-            name: "",
-            agency: "",
-            entryTime: ""
-        }
-    }
-]
 
-export default function OrangeTable({search, checkpoints}: {search: string, checkpoints: TCheckpoints[]}) {
-    const router = useRouter()
-    const {day,month,year} = todaysDate()
+export default function OrangeTable({search, checkpoints}: {search: string, checkpoints: TCheckpoints[] | undefined}) {
     const { hour, minutes } = currentTime()
-    const todaysCheckpoint = checkpoints?.filter((checkpoints) => checkpoints.date === `${day}/${month}/${year}`)
-    const checkpointsWaiting = todaysCheckpoint?.filter((checkpoints) =>
+    const checkpointsWaiting = checkpoints?.filter((checkpoints) =>
         checkpoints.arrived === false &&
         (Number(checkpoints.user.entryTime.substring(0, 2)) > hour ||
         (Number(checkpoints.user.entryTime.substring(0, 2)) == hour && Number(checkpoints.user.entryTime.substring(3, 5)) >= minutes))
@@ -62,8 +46,4 @@ export default function OrangeTable({search, checkpoints}: {search: string, chec
             </table>
         </div>
     )
-}
-
-type TOrangeTable = {
-    vigilantWaiting: TCheckpoints[]
 }

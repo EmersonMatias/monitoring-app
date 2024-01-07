@@ -3,46 +3,22 @@ import OrangeTable from "./components/OrangeTable.component";
 import RedTable from "./components/RedTable.component";
 import GreenTable from "./components/GreenTable.component";
 import { useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
-
-const initialData:TCheckpoints[] = [
-    {
-        arrived: false,
-        arrivalTime: "",
-        date: "",
-        user: {
-            name: "",
-            agency: "",
-            entryTime: ""
-        }
-    }
-]
+import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints";
 
 export default function Inicio() {
-    const [checkpoints, setCheckpoints] = useState<TCheckpoints[]>(initialData)
     const [search, setSearch] = useState("")
     const router = useRouter()
     const token = Cookies.get("token")
 
-    useEffect(() => {
-        const getCheckpoints = async () => {
-            const checkpoints: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
-            return setCheckpoints(checkpoints.data)
-        }
+    const { data: checkpoints } = useGetAllTodayCheckpoint()
 
-        if(token === undefined){
+    useEffect(() => {
+
+        if (token === undefined) {
             return router.push("/")
         }
-
-        getCheckpoints()
- 
-        const intervalId = setInterval(async () => {
-          await  getCheckpoints()
-
-        }, 5000)
-        return () => clearInterval(intervalId);
 
     }, [router, token])
 
@@ -60,13 +36,12 @@ export default function Inicio() {
 
             <div className="px-20 py-3 mt-6 flex justify-between items-center font-bold">
                 <h2 className="text-3xl">Status Agências</h2>
-                {/*<p className="text-xl">Filtrar</p> */}
             </div>
 
             <section className="px-20 flex gap-10">
-                <GreenTable search={search} checkpoints={checkpoints}/>
-                <OrangeTable search={search} checkpoints={checkpoints}/>
-                <RedTable search={search} checkpoints={checkpoints}/>
+                <GreenTable search={search} checkpoints={checkpoints} />
+                <OrangeTable search={search} checkpoints={checkpoints} />
+                <RedTable search={search} checkpoints={checkpoints} />
             </section>
         </main>
     )

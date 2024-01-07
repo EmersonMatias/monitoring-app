@@ -1,32 +1,22 @@
 'use client'
-import axios from "axios"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
-import { useRouter } from "next/navigation"
+import { useSetMessageViewed } from "@/hooks/hooks-messages"
 import { FormEvent, useState } from "react"
 
-type TResponseData = {
-    response: string,
-    messageId: number
-}
-
-async function handleSubmit(event: FormEvent<HTMLFormElement>,responseData:TResponseData, router: AppRouterInstance){
-    event.preventDefault()
-    const sucess = await axios.put(`${process.env.BACKEND_URL}/visualizarmensagem`, responseData)
-    console.log(sucess)
-    if(sucess.status === 200){
-        router.refresh()
-    }
-
-}
-
-export default function FormMessage({messageId}: {messageId: number}) {
-    const router = useRouter()
-    const [responseData , setResponseData] = useState<TResponseData>({
+export default function FormMessage({ messageId }: { messageId: number }) {
+    const [responseData, setResponseData] = useState<TMessageViewed>({
         messageId, response: ""
     })
 
+    const { mutate: setMessageViewed, isPending } = useSetMessageViewed()
+
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        setMessageViewed(responseData)
+    }
+
+
     return (
-        <form className="flex flex-col" onSubmit={(event) => handleSubmit(event,responseData, router)}>
+        <form className="flex flex-col" onSubmit={(event) => handleSubmit(event)}>
             <label htmlFor="name" className="text-xl mb-2 font-bold">Tratamento de Mensagem:</label>
             <input
                 type="text"
@@ -34,12 +24,12 @@ export default function FormMessage({messageId}: {messageId: number}) {
                 id="name"
                 placeholder="Faça o tratamento da mensagem"
                 required
-                onChange={(event) => setResponseData({...responseData, response: event.target.value})}
+                onChange={(event) => setResponseData({ ...responseData, response: event.target.value })}
                 minLength={10}
             />
 
             <div className="flex justify-center">
-                <button className="bg-red-400 p-4 font-bold text-white rounded-md">Visualizar mensagem</button>
+                <button className="bg-red-400 p-4 font-bold text-white rounded-md disabled:opacity-50" disabled={isPending}>Visualizar mensagem</button>
             </div>
         </form>
     )

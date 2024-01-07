@@ -11,6 +11,7 @@ export default function Content() {
     const { mutate } = useMutation({
         mutationFn: async () => {
             const response = await axios.post(`${process.env.BACKEND_URL}/createcheckpoints`)
+            console.log(response)
             return response.data
         },
         onSuccess: () => {
@@ -25,6 +26,9 @@ export default function Content() {
         queryKey: ['usercheckpoints'],
         queryFn: async () => {
             const data: AxiosResponse<TUserCheckpoints> = await axios.get(`${process.env.BACKEND_URL}/checkpoints/currentday/${userId}`)
+            console.log(userId)
+            console.log(data.data)
+
             if (!data?.data) {
                 mutate()
             }
@@ -32,6 +36,7 @@ export default function Content() {
             return data.data
         }
     })
+
 
     return (
         <div>

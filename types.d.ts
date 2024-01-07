@@ -42,4 +42,21 @@ type TCreateUser = {
     login: string;
     password: string;
 }
-   
+
+type TMessage = {
+    id: number,
+    date: string,
+    hour: string,
+    message: string,
+    response: string,
+    viewed: boolean,
+    user: {
+        name: string,
+        agency: string
+    }
+}
+
+type TMessageViewed = {
+    response: string,
+    messageId: number
+}

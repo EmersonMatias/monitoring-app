@@ -1,9 +1,10 @@
 
 export function todaysDate(){
     const date = new Date()
-    const day = date.getDate()
-    const month = date.getMonth()+1
+    const day = date.getDate().toString().padStart(2, "0")
+    const monthc = date.getMonth()+1
     const year = date.getFullYear()
+    const month = monthc.toString().padStart(2,"0")
 
     const todaysDate = {
         day,month,year
