@@ -60,7 +60,7 @@ export default function StatusButton({ userId }: { userId: number }) {
                     STATUS OK
                 </button>
 
-                <button disabled={isPending || !max} className="p-3 bg-orange-500 rounded-md text-white font-bold max-w-[200px] min-w-[200px] disabled:opacity-50" onClick={hadlePanic}>
+                <button className="p-3 bg-orange-500 rounded-md text-white font-bold max-w-[200px] min-w-[200px] disabled:opacity-50" onClick={hadlePanic}>
                     STATUS PANICO DE COAÇÃO
                 </button>
             </div>

@@ -20,6 +20,6 @@ export function useGetAllTodayCheckpoint() {
       const data: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints=today`)
       return data.data
     },
-    refetchInterval: 5000
+    refetchInterval: 3000
   })
 }
