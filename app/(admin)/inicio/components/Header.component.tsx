@@ -12,7 +12,7 @@ export default function Header() {
     const router = useRouter()
     const { data: messages, isSuccess } = useGetAllMessages()
     const AlertAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/alertAudio.mp3") : null)
-    const unviewedMessages = messages?.filter((message) => message.viewed === false).length
+    const unviewedMessages = messages?.filter((message) => message?.viewed === false)?.length
     const messagesRef = useRef<TMessage[]>()
 
     if (isSuccess) {
@@ -31,6 +31,7 @@ export default function Header() {
             }
         }
     }
+    console.log(messages)
 
     return (
         <header className="h-20 bg-[#f0a830] flex items-center justify-center w-[100%]">

@@ -62,7 +62,7 @@ export default function VigilantReport({ userId }: { userId: string | undefined 
                     <tbody>
                         {vigilant?.checkpoint.map((checkpoints) => (
                             <tr key={checkpoints.id}>
-                                <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{formatarDataParaPTBR(checkpoints.date)}</td>
+                                <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{(checkpoints.date)}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {vigilant?.entryTime}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {vigilant?.departureTime}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {checkpoints?.arrivalTime}</td>
@@ -81,7 +81,7 @@ export default function VigilantReport({ userId }: { userId: string | undefined 
 
                         <p><span className="font-bold">Agência:</span> {vigilant.agency}</p>
 
-                        <p><span className="font-bold">Dia:</span> {formatarDataParaPTBR(message?.date)}</p>
+                        <p><span className="font-bold">Dia:</span> {(message?.date)}</p>
 
                         <p><span className="font-bold">Horário:</span> {message?.hour}</p>
 

@@ -14,6 +14,7 @@ export default function Inicio() {
 
     const { data: checkpoints } = useGetAllTodayCheckpoint()
 
+
     useEffect(() => {
 
         if (token === undefined) {

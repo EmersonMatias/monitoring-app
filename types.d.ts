@@ -23,7 +23,7 @@ type TVigilant = {
 type TCheckpoints = {
     arrived: boolean,
     arrivalTime: string,
-    date: Date,
+    date: string,
     user: {
         name: string,
         agency: string
