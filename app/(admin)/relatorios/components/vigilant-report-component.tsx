@@ -5,7 +5,7 @@ import { useReactToPrint } from "react-to-print"
 
 type TCheckpoint = {
     id: number,
-    date: string,
+    date: Date,
     arrived: boolean,
     arrivalTime: null,
     userId: number
@@ -29,7 +29,7 @@ export default function VigilantReport({ userId }: { userId: string | undefined 
         },
         enabled: (userId === undefined || userId.length === 0) ? false : true
     })
-    const contentDocument = useRef()
+    const contentDocument = useRef(null)
 
     const handlePrint = useReactToPrint({
         content: () => contentDocument?.current,

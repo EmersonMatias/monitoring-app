@@ -5,7 +5,7 @@ import { useReactToPrint } from "react-to-print"
 
 type TAgencyCheckpoints = {
     id: number
-    date: string,
+    date: Date,
     arrived: boolean,
     arrivalTime: string,
     userId: number,
@@ -18,7 +18,7 @@ type TAgencyCheckpoints = {
 
 type TAgencyMessages = {
     id: number,
-    date: string,
+    date: Date,
     hour: string,
     message: string,
     response: string,
@@ -50,7 +50,7 @@ export default function AgencyReport({ agency }: { agency: string | undefined })
         enabled: (agency === undefined || agency.length === 0) ? false : true
     })
 
-    const contentDocument = useRef()
+    const contentDocument = useRef(null)
 
     const handlePrint = useReactToPrint({
         content: () => contentDocument?.current
