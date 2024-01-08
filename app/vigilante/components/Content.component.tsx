@@ -4,7 +4,6 @@ import { TUserCheckpoints } from "../requests"
 import axios, { AxiosResponse } from "axios"
 import Cookies from "js-cookie"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { formatarDataParaPTBR } from "@/app/(admin)/estatistica/page"
 
 export default function Content() {
     const queryClient = useQueryClient()
@@ -38,6 +37,14 @@ export default function Content() {
         }
     })
 
+    function formatarDataParaPTBR(data: Date) {
+        const dataObjeto = new Date(data);
+        const dia = String(dataObjeto.getUTCDate()).padStart(2, '0');
+        const mes = String(dataObjeto.getUTCMonth() + 1).padStart(2, '0');
+        const ano = dataObjeto.getUTCFullYear();
+      
+        return `${dia}/${mes}/${ano}`;
+      }
    
     console.log(typeof(checkpoint?.date))
     return (

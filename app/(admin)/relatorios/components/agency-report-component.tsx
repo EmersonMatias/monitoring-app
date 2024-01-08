@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
 import { useRef } from "react"
 import { useReactToPrint } from "react-to-print"
-import { formatarDataParaPTBR } from "../../estatistica/page"
 
 type TAgencyCheckpoints = {
     id: number
@@ -41,6 +40,7 @@ export default function AgencyReport({ agency }: { agency: string | undefined })
         },
         enabled: (agency === undefined || agency.length === 0) ? false : true
     })
+
     const { data: agencyMessages } = useQuery({
         queryKey: ["agencymessages"],
         queryFn: async () => {
@@ -54,7 +54,16 @@ export default function AgencyReport({ agency }: { agency: string | undefined })
 
     const handlePrint = useReactToPrint({
         content: () => contentDocument?.current
-    })
+    }) 
+
+    function formatarDataParaPTBR(data: Date) {
+        const dataObjeto = new Date(data);
+        const dia = String(dataObjeto.getUTCDate()).padStart(2, '0');
+        const mes = String(dataObjeto.getUTCMonth() + 1).padStart(2, '0');
+        const ano = dataObjeto.getUTCFullYear();
+      
+        return `${dia}/${mes}/${ano}`;
+      }
 
     return (
         <>
@@ -81,7 +90,7 @@ export default function AgencyReport({ agency }: { agency: string | undefined })
                         {agencyCheckpoints?.map((checkpoints) => (
                             <tr key={checkpoints.id}>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{checkpoints.user.name}</td>
-                                <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{(checkpoints?.date)}</td>
+                                <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{formatarDataParaPTBR(checkpoints?.date)}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {checkpoints?.user?.entryTime}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {checkpoints?.user?.departureTime}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {checkpoints?.arrivalTime}</td>
@@ -100,7 +109,7 @@ export default function AgencyReport({ agency }: { agency: string | undefined })
                     <div key={message.id} className="w-[800px] text-left flex flex-col gap-2 pl-10 mt-4 p-4 bg-[#ECECEC] rounded-md">
                         <p><span className="font-bold">Vigilante:</span> {message.user.name}</p>
 
-                        <p><span className="font-bold">Dia:</span> {(message?.date)}</p>
+                        <p><span className="font-bold">Dia:</span> {formatarDataParaPTBR(message?.date)}</p>
 
                         <p><span className="font-bold">Horário:</span> {message?.hour}</p>
 

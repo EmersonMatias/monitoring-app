@@ -4,7 +4,6 @@ import FormMessage from "./FormMessage.component";
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation";
 import { useGetAllMessages } from "@/hooks/hooks-messages";
-import { formatarDataParaPTBR } from "../estatistica/page";
 
 export default function Mensagens() {
     const { data: messages } = useGetAllMessages()
@@ -20,6 +19,15 @@ export default function Mensagens() {
         }
 
     }, [router, token])
+
+    function formatarDataParaPTBR(data: Date) {
+        const dataObjeto = new Date(data);
+        const dia = String(dataObjeto.getUTCDate()).padStart(2, '0');
+        const mes = String(dataObjeto.getUTCMonth() + 1).padStart(2, '0');
+        const ano = dataObjeto.getUTCFullYear();
+      
+        return `${dia}/${mes}/${ano}`;
+      } 
 
     return (
         <>

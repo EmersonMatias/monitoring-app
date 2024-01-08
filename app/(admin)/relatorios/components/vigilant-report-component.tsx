@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
 import { useRef } from "react"
 import { useReactToPrint } from "react-to-print"
-import { formatarDataParaPTBR } from "../../estatistica/page"
 
 type TCheckpoint = {
     id: number,
@@ -33,14 +32,23 @@ export default function VigilantReport({ userId }: { userId: string | undefined 
     const contentDocument = useRef()
 
     const handlePrint = useReactToPrint({
-        content: () => contentDocument?.current
+        content: () => contentDocument?.current,
     })
-  
+
+    function formatarDataParaPTBR(data: Date) {
+        const dataObjeto = new Date(data);
+        const dia = String(dataObjeto.getUTCDate()).padStart(2, '0');
+        const mes = String(dataObjeto.getUTCMonth() + 1).padStart(2, '0');
+        const ano = dataObjeto.getUTCFullYear();
+
+        return `${dia}/${mes}/${ano}`;
+    }
+
 
     return (
         <>
             <button onClick={handlePrint}>
-                Gerar relatório
+                Gerar
             </button>
             <div ref={contentDocument} className={`bg-white mt-20 flex flex-col items-center pb-10 pt-10 border-[2px] rounded-2xl`} >
                 <p>Vigilante: {vigilant?.name} </p>
@@ -62,7 +70,7 @@ export default function VigilantReport({ userId }: { userId: string | undefined 
                     <tbody>
                         {vigilant?.checkpoint.map((checkpoints) => (
                             <tr key={checkpoints.id}>
-                                <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{(checkpoints.date)}</td>
+                                <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{formatarDataParaPTBR(checkpoints.date)}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {vigilant?.entryTime}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {vigilant?.departureTime}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {checkpoints?.arrivalTime}</td>
@@ -81,7 +89,7 @@ export default function VigilantReport({ userId }: { userId: string | undefined 
 
                         <p><span className="font-bold">Agência:</span> {vigilant.agency}</p>
 
-                        <p><span className="font-bold">Dia:</span> {(message?.date)}</p>
+                        <p><span className="font-bold">Dia:</span> {formatarDataParaPTBR(message?.date)}</p>
 
                         <p><span className="font-bold">Horário:</span> {message?.hour}</p>
 
