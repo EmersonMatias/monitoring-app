@@ -1,6 +1,7 @@
 import { logged } from "../utils/functions"
 import SOSButton from "./SOSButton.component"
 import Content from "./components/Content.component"
+import StatusButton from "./components/Status.component"
 import VigilantHeader from "./components/VigilantHeader.component"
 import styles from "./styles.module.css"
 
@@ -16,7 +17,7 @@ export default function Vigilante() {
             <Content />
             <SOSButton userId={Number(userId)}/>
 
-
+            <StatusButton userId={Number(userId)}/>
         </div>
     )
 }

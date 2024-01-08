@@ -4,6 +4,7 @@ import FormMessage from "./FormMessage.component";
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation";
 import { useGetAllMessages } from "@/hooks/hooks-messages";
+import { formatarDataParaPTBR } from "../estatistica/page";
 
 export default function Mensagens() {
     const { data: messages } = useGetAllMessages()
@@ -32,7 +33,7 @@ export default function Mensagens() {
 
                             <p><span className="font-bold">Agência:</span> {message?.user?.agency}</p>
 
-                            <p><span className="font-bold">Dia:</span> {message?.date}</p>
+                            <p><span className="font-bold">Dia:</span> {formatarDataParaPTBR(message?.date)}</p>
 
                             <p><span className="font-bold">Horário:</span> {message?.hour}</p>
 

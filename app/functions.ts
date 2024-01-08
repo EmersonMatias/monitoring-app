@@ -10,4 +10,3 @@ export function redirectToInicio() {
         return redirect("vigilante")
     }
 }
-

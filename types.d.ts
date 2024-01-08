@@ -23,7 +23,7 @@ type TVigilant = {
 type TCheckpoints = {
     arrived: boolean,
     arrivalTime: string,
-    date: string,
+    date: Date,
     user: {
         name: string,
         agency: string
@@ -45,7 +45,7 @@ type TCreateUser = {
 
 type TMessage = {
     id: number,
-    date: string,
+    date: Date,
     hour: string,
     message: string,
     response: string,

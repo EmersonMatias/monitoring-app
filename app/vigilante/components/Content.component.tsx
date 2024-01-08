@@ -4,6 +4,7 @@ import { TUserCheckpoints } from "../requests"
 import axios, { AxiosResponse } from "axios"
 import Cookies from "js-cookie"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { formatarDataParaPTBR } from "@/app/(admin)/estatistica/page"
 
 export default function Content() {
     const queryClient = useQueryClient()
@@ -22,7 +23,7 @@ export default function Content() {
         }
     })
 
-    const { data: checkpoint } = useQuery({
+    const { data: checkpoint, isSuccess } = useQuery({
         queryKey: ['usercheckpoints'],
         queryFn: async () => {
             const data: AxiosResponse<TUserCheckpoints> = await axios.get(`${process.env.BACKEND_URL}/checkpoints/currentday/${userId}`)
@@ -37,11 +38,12 @@ export default function Content() {
         }
     })
 
-
+   
+    console.log(typeof(checkpoint?.date))
     return (
         <div>
             <div key={checkpoint?.id} className="flex flex-col gap-3">
-                <p><span className="font-bold">Dia:</span> {checkpoint?.date}</p>
+                <p><span className="font-bold">Dia:</span>{isSuccess && formatarDataParaPTBR(checkpoint?.date)}</p>
                 <p><span className="font-bold">Horário de Chegada:</span> {checkpoint?.arrivalTime === "null" ? "Checkpoint não cadastrado" : checkpoint?.arrivalTime} </p>
 
                 <p className=" flex">

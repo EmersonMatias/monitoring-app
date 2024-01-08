@@ -3,6 +3,16 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { currentTime, todaysDate } from '../../utils/constants';
 import { useGetAllCheckpoints } from '@/hooks/hooks-checkpoints';
 
+export function formatarDataParaPTBR(data: Date) {
+  const dataObjeto = new Date(data);
+  const dia = String(dataObjeto.getUTCDate()).padStart(2, '0');
+  const mes = String(dataObjeto.getUTCMonth() + 1).padStart(2, '0');
+  const ano = dataObjeto.getUTCFullYear();
+
+  return `${dia}/${mes}/${ano}`;
+}
+
+
 export default function Estatisticas() {
   const { data: checkpoints } = useGetAllCheckpoints()
   const { day, month, year } = todaysDate()
@@ -14,9 +24,12 @@ export default function Estatisticas() {
   let aguardando = 0;
   let alert: TCheckpoints[] = []
 
-  checkpoints?.map((checkpoint) => {
+  const currentDay = new Date(`${month}-${day}-${year}`).toLocaleDateString('pt-br')
 
-    if (checkpoint.date === `${day}/${month}/${year}` && checkpoint.user.agency !== "admin") {
+  checkpoints?.map((checkpoint) => {
+    const date = formatarDataParaPTBR(checkpoint.date)
+
+    if (date === currentDay && checkpoint.user.agency !== "admin") {
       if (checkpoint.arrived === true) {
         chegou = chegou + 1
       } else if (checkpoint.arrived === false &&
