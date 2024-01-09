@@ -28,7 +28,6 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
         frequency: 0
     }
 
-    const [a, seta] = useState(false)
     const [sucessMessage, setSucessMessage] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [updateVigilantData, setUpdateVigilantData] = useState<TUpdateUser>(initialData)
@@ -54,7 +53,6 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                         password: "",
                         frequency: vigilant?.status[0]?.frequency
                     })
-                    seta(true)
                 }
             }
 
