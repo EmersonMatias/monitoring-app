@@ -8,7 +8,8 @@ export function useGetAllMessages(){
             const data: AxiosResponse<TMessage[]> = await axios.get(`${process.env.BACKEND_URL}/mensagens`)
             return data.data
         },
-        refetchInterval: 5000
+        refetchInterval: 3000,
+        refetchIntervalInBackground: true
     })
 }
 

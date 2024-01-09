@@ -37,26 +37,23 @@ export default function Content() {
         }
     })
 
-    function formatarDataParaPTBR(data: Date) {
-        const dataObjeto = new Date(data);
-        const dia = String(dataObjeto.getUTCDate()).padStart(2, '0');
-        const mes = String(dataObjeto.getUTCMonth() + 1).padStart(2, '0');
-        const ano = dataObjeto.getUTCFullYear();
-      
-        return `${dia}/${mes}/${ano}`;
-      }
-   
-    console.log(typeof(checkpoint?.date))
+
+
     return (
         <div>
             <div key={checkpoint?.id} className="flex flex-col gap-3">
-                <p><span className="font-bold">Dia:</span>{isSuccess && formatarDataParaPTBR(checkpoint?.date)}</p>
+
+                <p><span className="font-bold">Dia: </span>
+                    {isSuccess && `${checkpoint.day.toString().padStart(2, "0")}/
+                    ${checkpoint.month.toString().padStart(2, "0")}/
+                    ${checkpoint.year.toString().padStart(2, "0")}`}
+                </p>
                 <p><span className="font-bold">Horário de Chegada:</span> {checkpoint?.arrivalTime === "null" ? "Checkpoint não cadastrado" : checkpoint?.arrivalTime} </p>
 
-                <p className=" flex">
+                <p className=" flex items-center">
                     <span className="font-bold">Checkpoint Status: </span>
                     {checkpoint?.arrived ?
-                        <span className="bg-green-500 p-2 rounded-md text-white font-bold">Checkpoint realizado com sucesso</span> :
+                        <span className="bg-green-500 p-2 rounded-md text-white font-bold ml-2">Checkpoint realizado com sucesso</span> :
                         <span className="bg-red-500 p-2 rounded-md text-white font-bold text-center">Aguardando checkpoint</span>}
                 </p>
                 <Button checkpoint={checkpoint} />

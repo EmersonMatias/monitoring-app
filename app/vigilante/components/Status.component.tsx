@@ -1,25 +1,38 @@
 'use client'
 
+import { dateTime } from "@/app/utils/constants"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
+
+
+type TStatus = {
+    id: number,
+    hour: number,
+    minute: number,
+    status: string,
+    userId: number
+}
 
 export default function StatusButton({ userId }: { userId: number }) {
     const queryClient = useQueryClient()
+    const { hour, minute } = dateTime()
 
-    const { data, isSuccess } = useQuery({
+    const { data: status, isSuccess } = useQuery({
         queryKey: ["statusID"],
         queryFn: async () => {
 
-            const data = await axios.get(`${process.env.BACKEND_URL}/status/findbyid=${userId}`)
+            const data: AxiosResponse<TStatus> = await axios.get(`${process.env.BACKEND_URL}/status/findbyid=${userId}`)
             return data.data
         }
     })
 
+    console.log(status)
+
     const { mutate: updateStatus, isPending } = useMutation({
         mutationFn: async (newStatus: string) => {
-            const response = await axios.post(`${process.env.BACKEND_URL}/status/updatebyid=${data.id}`, { newStatus })
+            const response = await axios.post(`${process.env.BACKEND_URL}/status/updatebyid=${status?.id}`, { newStatus })
             console.log(response)
-            return data.data
+            return response
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["statusID"] })
@@ -37,23 +50,20 @@ export default function StatusButton({ userId }: { userId: number }) {
         updateStatus(statusPanic)
     }
 
-    const date1 = new Date(data?.time)
-    const date2 = new Date()
-
-    const hoursMi = Number(date1.toLocaleTimeString().substring(0, 2)) * 60 + Number(date1.toLocaleTimeString().substring(3, 5))
-    const hourMi2 = Number(date2.toLocaleTimeString().substring(0, 2)) * 60 + Number(date2.toLocaleTimeString().substring(3, 5))
-
-    const dif = hourMi2 - hoursMi
-    const max = dif > 60
-
+    const currentTime = Number(hour) * 60 + Number(minute)
+    const lastUpdate = isSuccess && status.hour * 60 + status.minute
+    const diff = currentTime - Number(lastUpdate)
+    const max = diff > 60
 
     return (
         <div className="mt-20 flex flex-col items-center ">
-            <p>Último status: {data?.status}</p>
-            <p>Horário do último status: {isSuccess ? (new Date(data?.time)).toLocaleTimeString() : ""} </p>
+            <p>Último status: {status?.status}</p>
+            <p>Horário do último status: {isSuccess ?
+                `${status.hour}:${status.minute}`
+                : ""} </p>
 
             {max && <p>Você ja pode fazer a marcação de status</p>}
-            {!max && <p>Você ainda não pode fazer sua atualização do status. Faltam {isSuccess ? 60 - dif : ""} minutos</p>}
+            {!max && <p>Você ainda não pode fazer sua atualização do status. Faltam {isSuccess ? diff : ""} minutos</p>}
 
             <div className="flex items-center flex-col gap-10 mt-10">
                 <button disabled={isPending || !max} className="p-3 bg-blue-500 rounded-md text-white font-bold max-w-[200px] min-w-[200px] disabled:opacity-50" onClick={handleOkay}>

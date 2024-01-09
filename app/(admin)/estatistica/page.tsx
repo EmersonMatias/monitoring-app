@@ -1,35 +1,25 @@
 'use client'
 import { PieChart } from '@mui/x-charts/PieChart';
-import { currentTime, todaysDate } from '../../utils/constants';
+import { currentTime, dateTime } from '../../utils/constants';
 import { useGetAllCheckpoints } from '@/hooks/hooks-checkpoints';
 
 
 export default function Estatisticas() {
   const { data: checkpoints } = useGetAllCheckpoints()
-  const { day, month, year } = todaysDate()
   const { hour, minutes } = currentTime()
+  const { day, month, year } = dateTime()
   const palette = ['red', 'orange', 'green'];
   const pieParams = { width: 700, height: 300 };
   let chegou = 0;
   let atrasado = 0;
   let aguardando = 0;
   let alert: TCheckpoints[] = []
-
-  function formatarDataParaPTBR(data: Date) {
-    const dataObjeto = new Date(data);
-    const dia = String(dataObjeto.getUTCDate()).padStart(2, '0');
-    const mes = String(dataObjeto.getUTCMonth() + 1).padStart(2, '0');
-    const ano = dataObjeto.getUTCFullYear();
-  
-    return `${dia}/${mes}/${ano}`;
-  }
-
-  const currentDay = new Date(`${month}-${day}-${year}`).toLocaleDateString('pt-br')
+  const currentDate = `${day}/${month}/${year}`
 
   checkpoints?.map((checkpoint) => {
-    const date = formatarDataParaPTBR(checkpoint.date)
-
-    if (date === currentDay && checkpoint.user.agency !== "admin") {
+    const checkpointDate = `${checkpoint.day.toString().padStart(2, "0")}/${checkpoint.month.toString().padStart(2, "0")}/${checkpoint.year.toString().padStart(2, "0")}`
+    console.log(checkpointDate, currentDate)
+    if (checkpointDate === currentDate && checkpoint.user.agency !== "admin") {
       if (checkpoint.arrived === true) {
         chegou = chegou + 1
       } else if (checkpoint.arrived === false &&

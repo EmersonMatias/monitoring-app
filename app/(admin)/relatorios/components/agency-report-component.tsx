@@ -5,7 +5,9 @@ import { useReactToPrint } from "react-to-print"
 
 type TAgencyCheckpoints = {
     id: number
-    date: Date,
+    day: number,
+    month: number,
+    year: number,
     arrived: boolean,
     arrivalTime: string,
     userId: number,
@@ -18,7 +20,9 @@ type TAgencyCheckpoints = {
 
 type TAgencyMessages = {
     id: number,
-    date: Date,
+    day: number,
+    month: number,
+    year: number,
     hour: string,
     message: string,
     response: string,
@@ -93,7 +97,7 @@ export default function AgencyReport({ agency }: { agency: string | undefined })
                         {agencyCheckpoints?.map((checkpoints) => (
                             <tr key={checkpoints.id}>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{checkpoints.user.name}</td>
-                                <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{formatarDataParaPTBR(checkpoints?.date)}</td>
+                                <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{checkpoints.day}/{checkpoints.month}/{checkpoints.year}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {checkpoints?.user?.entryTime}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {checkpoints?.user?.departureTime}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {checkpoints?.arrivalTime}</td>
@@ -112,7 +116,7 @@ export default function AgencyReport({ agency }: { agency: string | undefined })
                     <div key={message.id} className="w-[800px] text-left flex flex-col gap-2 pl-10 mt-4 p-4 bg-[#ECECEC] rounded-md">
                         <p><span className="font-bold">Vigilante:</span> {message.user.name}</p>
 
-                        <p><span className="font-bold">Dia:</span> {formatarDataParaPTBR(message?.date)}</p>
+                        <p><span className="font-bold">Dia:</span> {message.day}/{message.month}/{message.year}</p>
 
                         <p><span className="font-bold">Horário:</span> {message?.hour}</p>
 

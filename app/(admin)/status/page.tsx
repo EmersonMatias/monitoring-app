@@ -37,7 +37,7 @@ export default function Page() {
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.user.departureTime}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.user.agency}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.status}</td>
-                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{(new Date(eachStatus.time)).toLocaleTimeString()}</td>
+                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{`${eachStatus.hour.toString().padStart(2, "0")}:${eachStatus.minute.toString().padStart(2, "0")}`}</td>
                             </tr>
                         ))
                     }
@@ -56,7 +56,8 @@ type TUser = {
 }
 type TStatus = {
     id: 4,
-    time: Date,
+    hour: number,
+    minute: number
     status: string,
     userId: number,
     user: TUser

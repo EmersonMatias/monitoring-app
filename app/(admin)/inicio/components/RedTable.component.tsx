@@ -1,9 +1,12 @@
 'use client'
 import { currentTime } from "@/app/utils/constants"
+import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
+import { useEffect, useState } from "react"
 
-export default function RedTable({ search, checkpoints }: { search: string, checkpoints: TCheckpoints[] | undefined }) {
+export default function RedTable({ search }: { search: string}) {
+    const { data: checkpoints } = useGetAllTodayCheckpoint()
     const { hour, minutes } = currentTime()
-   
+
     const checkpointsAlert = checkpoints?.filter((checkpoints) =>
         checkpoints.arrived === false &&
         (Number(checkpoints.user.entryTime.substring(0, 2)) < hour ||
@@ -11,6 +14,20 @@ export default function RedTable({ search, checkpoints }: { search: string, chec
     )
     const checkpointsFilter = checkpointsAlert?.filter((checkpoints) => checkpoints.user.agency.toLowerCase().includes(`${search}`))
     const checkpointView = search.length === 0 ? checkpointsAlert : checkpointsFilter
+
+    const [update, setUpdate] = useState(false)
+
+    useEffect(() => {
+
+
+        const interval = setInterval(() => {
+            setUpdate(!update)
+        }, 3000);
+
+
+        return () => clearInterval(interval);
+
+    }, [update])
 
     return (
 

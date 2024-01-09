@@ -31,8 +31,7 @@ export default function Header() {
             }
         }
     }
-    console.log(messages)
-
+ 
     return (
         <header className="h-20 bg-[#f0a830] flex items-center justify-center w-[100%]">
 

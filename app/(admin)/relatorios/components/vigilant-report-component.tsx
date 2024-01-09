@@ -92,7 +92,7 @@ export default function VigilantReport({ userId }: { userId: string | undefined 
 
                         <p><span className="font-bold">Agência:</span> {vigilant.agency}</p>
 
-                        <p><span className="font-bold">Dia:</span> {formatarDataParaPTBR(message?.date)}</p>
+                        <p><span className="font-bold">Dia:</span> {message.day}/{message.month}/{message.year}</p>
 
                         <p><span className="font-bold">Horário:</span> {message?.hour}</p>
 

@@ -1,7 +1,9 @@
 
 export type TUserCheckpoints = {
     id: number,
-    date: Date,
+    day: number,
+    month: number,
+    year: number,
     arrived: boolean,
     arrivalTime: string,
     userId: number

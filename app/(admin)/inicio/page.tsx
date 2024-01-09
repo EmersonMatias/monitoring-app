@@ -7,13 +7,16 @@ import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
 import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints";
 
+
 export default function Inicio() {
     const [search, setSearch] = useState("")
     const router = useRouter()
     const token = Cookies.get("token")
+    const { data: checkpoints,isSuccess,isPending, } = useGetAllTodayCheckpoint()
+    console.log(checkpoints, isSuccess, isPending)
 
-    const { data: checkpoints } = useGetAllTodayCheckpoint()
 
+  
 
     useEffect(() => {
 
@@ -40,9 +43,9 @@ export default function Inicio() {
             </div>
 
             <section className="px-20 flex gap-10">
-                <GreenTable search={search} checkpoints={checkpoints} />
-                <OrangeTable search={search} checkpoints={checkpoints} />
-                <RedTable search={search} checkpoints={checkpoints} />
+                <GreenTable search={search}  />
+                <OrangeTable search={search}  />
+                <RedTable search={search}/>
             </section>
         </main>
     )

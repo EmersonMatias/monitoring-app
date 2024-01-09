@@ -20,15 +20,6 @@ export default function Mensagens() {
 
     }, [router, token])
 
-    function formatarDataParaPTBR(data: Date) {
-        const dataObjeto = new Date(data);
-        const dia = String(dataObjeto.getUTCDate()).padStart(2, '0');
-        const mes = String(dataObjeto.getUTCMonth() + 1).padStart(2, '0');
-        const ano = dataObjeto.getUTCFullYear();
-      
-        return `${dia}/${mes}/${ano}`;
-      } 
-
     return (
         <>
             <main className="flex mt-10 justify-center  ">
@@ -41,7 +32,11 @@ export default function Mensagens() {
 
                             <p><span className="font-bold">Agência:</span> {message?.user?.agency}</p>
 
-                            <p><span className="font-bold">Dia:</span> {formatarDataParaPTBR(message?.date)}</p>
+                            <p><span className="font-bold">Dia: </span>
+                                {message.day.toString().padStart(2, "0")}/
+                                {message.month.toString().padStart(2, "0")}/
+                                {message.year.toString().padStart(2, "0")}
+                            </p>
 
                             <p><span className="font-bold">Horário:</span> {message?.hour}</p>
 
