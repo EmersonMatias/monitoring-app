@@ -8,8 +8,8 @@ export default function FormCriarVigilante() {
     const [errorMessage, setErrorMessage] = useState(false)
     const styleInput = "pl-4 py-2 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50"
     const [createVigilantData, setCreateVigilantData] = useState<TCreateUser>(initialData)
-
-    const { mutate: createUser, isPending } = useCreateVigilant(createVigilantData, initialData, setCreateVigilantData,setSucessMessage, setErrorMessage)
+    console.log(createVigilantData)
+    const { mutate: createUser, isPending } = useCreateVigilant(createVigilantData, initialData, setCreateVigilantData, setSucessMessage, setErrorMessage)
 
     async function handleSubmite(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -30,7 +30,7 @@ export default function FormCriarVigilante() {
         }, 5000)
     }
 
-   
+
     return (
         <div className={`w-[600px] h-[700px] text-[#0b0b0b] bg-white mt-10 p-12 overflow-y-scroll ${styles.scrollable}`}>
             <form className="flex flex-col" onSubmit={(event) => { handleSubmite(event) }}>
@@ -127,6 +127,21 @@ export default function FormCriarVigilante() {
                     onChange={(event) => (setCreateVigilantData({ ...createVigilantData, departureTime: event.target.value }))}
                 />
 
+                <label htmlFor="frequency" className="text-base mb-2 font-bold">Frequência de comunicação:</label>
+                <input
+                    type="number"
+                    id="frequency"
+                    disabled={isPending}
+                    placeholder="Digite a frequência de cominucação em minutos "
+                    className={styleInput}
+                    minLength={5}
+                    maxLength={150}
+                    required
+                    value={createVigilantData.frequency}
+                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, frequency: Number(event.target.value) }))}
+                />
+
+
                 <label htmlFor="login" className="text-base mb-2 font-bold">Login:</label>
                 <input
                     type="text"
@@ -178,5 +193,6 @@ const initialData = {
     entryTime: "",
     departureTime: "",
     login: "",
-    password: ""
+    password: "",
+    frequency: 60
 }

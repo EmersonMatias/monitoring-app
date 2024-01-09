@@ -41,7 +41,7 @@ export default function Content() {
 
     return (
         <div>
-            <div key={checkpoint?.id} className="flex flex-col gap-3">
+            <div key={checkpoint?.id} className="flex flex-col gap-2 mt-2 text-base">
 
                 <p><span className="font-bold">Dia: </span>
                     {isSuccess && `${checkpoint?.day?.toString().padStart(2, "0")}/
@@ -51,10 +51,10 @@ export default function Content() {
                 <p><span className="font-bold">Horário de Chegada:</span> {checkpoint?.arrivalTime === "null" ? "Checkpoint não cadastrado" : checkpoint?.arrivalTime} </p>
 
                 <p className=" flex items-center">
-                    <span className="font-bold">Checkpoint Status: </span>
+                    <span className="font-bold ">Checkpoint Status: </span>
                     {checkpoint?.arrived ?
-                        <span className="bg-green-500 p-2 rounded-md text-white font-bold ml-2">Checkpoint realizado com sucesso</span> :
-                        <span className="bg-red-500 p-2 rounded-md text-white font-bold text-center">Aguardando checkpoint</span>}
+                        <span className="bg-green-500 p-2 text-sm rounded-md text-white font-bold ml-2">Checkpoint realizado com sucesso</span> :
+                        <span className="bg-red-500 p-2 rounded-md text-sm text-white font-bold text-center ml-2">Aguardando checkpoint</span>}
                 </p>
                 <Button checkpoint={checkpoint} />
             </div>

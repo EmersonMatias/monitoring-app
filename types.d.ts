@@ -44,6 +44,34 @@ type TCreateUser = {
     departureTime: string;
     login: string;
     password: string;
+    frequency: number
+}
+
+type TUpdateUser = {
+    name: string;
+    dateofbirth: string ;
+    rg: string ;
+    cpf: string ;
+    agency: string ;
+    entryTime: string ;
+    departureTime: string;
+    login: string;
+    password: string ;
+    frequency: number ;
+}
+
+type TGetUserForUpdate = {
+    name: string;
+    dateofbirth: string ;
+    rg: string;
+    cpf: string;
+    agency: string;
+    entryTime: string;
+    departureTime: string ;
+    login: string;
+    status: {
+        frequency: number;
+    }[]
 }
 
 type TMessage = {
@@ -69,7 +97,7 @@ type TMessageViewed = {
 type TUserStatus = {
     name: string,
     entryTime: string,
-    departureTime:string,
+    departureTime: string,
     agency: string
 }
 type TStatus = {

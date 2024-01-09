@@ -1,9 +1,12 @@
 'use client'
 import { useDeleteVigilant, useGetAllVigilants } from "@/hooks/hooks-vigilants"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function Configuraçoes() {
     const { data: vigilants } = useGetAllVigilants()
     const { mutate: deleteVigilant } = useDeleteVigilant()
+    const router = useRouter()
 
     async function handleDeleteVigilant(id: number) {
         const confirmDelete = confirm("Você tem certeza que deseja excluir esse vigilante?")
@@ -34,7 +37,9 @@ export default function Configuraçoes() {
                     {
                         vigilants?.map((vigilant) => (
                             <tr key={vigilant.id} className=" text-center">
-                                <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{vigilant.name}</td>
+                                <td onClick={() => {
+                                    router.push(`configuracoes/${vigilant.id}`)
+                                }}  className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{vigilant.name}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{vigilant.entryTime}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{vigilant.departureTime}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{vigilant.agency}</td>

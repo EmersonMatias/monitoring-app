@@ -18,8 +18,8 @@ export default function VigilantHeader() {
 
     return (
         <div className="flex justify-center">
-            <h1 className="text-4xl font-bold text-center py-4">Checkpoint</h1>
-            <button className="absolute top-5 right-5 bg-red-500 p-2 font-bold rounded text-white" onClick={() => handleExit(router)}>Sair</button>
+            <h1 className="text-xl font-bold text-center mt-4">Checkpoint</h1>
+            <button className="absolute text-xs top-3 right-5 bg-red-500 p-2 font-bold rounded text-white" onClick={() => handleExit(router)}>Sair</button>
         </div>
     )
 }
