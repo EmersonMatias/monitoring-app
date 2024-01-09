@@ -1,6 +1,5 @@
 'use client'
 import { useDeleteVigilant, useGetAllVigilants } from "@/hooks/hooks-vigilants"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 export default function Configuraçoes() {
