@@ -113,8 +113,8 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             placeholder="Digite o nome completo"
                             className={styleInput}
                             required
-                            value={updateVigilantData.name}
-                            onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, name: event.target.value }))}
+                            defaultValue={updateVigilantData.name}
+                            onChange={(event) => (setUpdateVigilantData({...updateVigilantData, name: event.target.value }))}
                         />
 
                         <label htmlFor="date" className=" text-base mb-2 font-bold">Data de Nascimento:</label>
@@ -127,7 +127,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             placeholder="Digite a data de nascimento"
                             className={styleInput}
                             required
-                            value={updateVigilantData.dateofbirth}
+                            defaultValue={updateVigilantData.dateofbirth}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, dateofbirth: event.target.value }))}
                         />
 
@@ -141,7 +141,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             required
                             minLength={9}
                             maxLength={9}
-                            value={updateVigilantData.rg}
+                            defaultValue={updateVigilantData.rg}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, rg: event.target.value.replace(/\D/g, '') }))}
                         />
 
@@ -155,7 +155,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             required
                             minLength={11}
                             maxLength={11}
-                            value={updateVigilantData.cpf}
+                            defaultValue={updateVigilantData.cpf}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, cpf: event.target.value.replace(/\D/g, '') }))}
 
                         />
@@ -168,7 +168,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             min={5}
                             className={styleInput}
                             required
-                            value={updateVigilantData.agency}
+                            defaultValue={updateVigilantData.agency}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, agency: event.target.value }))}
                         />
 
@@ -181,7 +181,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             required
                             minLength={5}
                             maxLength={5}
-                            value={updateVigilantData.entryTime}
+                            defaultValue={updateVigilantData.entryTime}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, entryTime: event.target.value }))}
                         />
 
@@ -192,7 +192,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             id="horariodesaida"
                             className={styleInput}
                             required
-                            value={updateVigilantData.departureTime}
+                            defaultValue={updateVigilantData.departureTime}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, departureTime: event.target.value }))}
                         />
 
@@ -206,7 +206,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             minLength={5}
                             maxLength={150}
                             required
-                            value={updateVigilantData.frequency}
+                            defaultValue={updateVigilantData.frequency}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, frequency: Number(event.target.value) }))}
                         />
 
@@ -221,7 +221,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             minLength={5}
                             maxLength={150}
                             required
-                            value={updateVigilantData.login}
+                            defaultValue={updateVigilantData.login}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, login: event.target.value }))}
                         />
 
@@ -234,7 +234,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             maxLength={150}
                             className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50"
                             required
-                            value={updateVigilantData.password}
+                            defaultValue={updateVigilantData.password}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, password: event.target.value }))}
                             disabled={isPending}
                         />
