@@ -39,16 +39,16 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                 const birthday = vigilant?.dateofbirth?.split("/")
 
                 setUpdateVigilantData({
-                    name: vigilant.name,
-                    agency: vigilant.agency,
-                    cpf: vigilant.cpf,
-                    rg: vigilant.rg,
-                    entryTime: vigilant.entryTime,
-                    departureTime: vigilant.departureTime,
+                    name: vigilant?.name,
+                    agency: vigilant?.agency,
+                    cpf: vigilant?.cpf,
+                    rg: vigilant?.rg,
+                    entryTime: vigilant?.entryTime,
+                    departureTime: vigilant?.departureTime,
                     dateofbirth: `${birthday[2]}-${birthday[1]}-${birthday[0]}`,
-                    login: vigilant.login,
+                    login: vigilant?.login,
                     password: "",
-                    frequency: vigilant.status[0].frequency
+                    frequency: vigilant?.status[0]?.frequency
                 })
             }
         }
