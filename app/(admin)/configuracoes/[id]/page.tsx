@@ -30,7 +30,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
     const [sucessMessage, setSucessMessage] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [updateVigilantData, setUpdateVigilantData] = useState<TUpdateUser>(initialData)
-    
+
     const styleInput = "pl-4 py-2 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50"
 
     useEffect(() => {
@@ -52,8 +52,12 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                 })
             }
         }
+        if (typeof window !== 'undefined') {
+            tes()
+        }
 
-        tes()
+
+
     }, [isSuccess, vigilant, updateVigilantData.name])
 
 
@@ -93,7 +97,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
 
     return (
         <div className="flex  flex-col items-center py-20">
-        <div className="px-20 flex justify-between items-center font-bold">
+            <div className="px-20 flex justify-between items-center font-bold">
                 <h2 className="text-3xl">Editar vigilante</h2>
             </div>
             {isSuccess &&
