@@ -14,6 +14,7 @@ export default function Header() {
     const AlertAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/alertAudio.mp3") : null)
     const unviewedMessages = messages?.filter((message) => message?.viewed === false)?.length
     const messagesRef = useRef<TMessage[]>()
+    console.log(messages)
 
     if (isSuccess) {
         if (messagesRef.current === undefined) {

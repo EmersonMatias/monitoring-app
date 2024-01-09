@@ -10,7 +10,7 @@ export default function Content() {
     const userId = Cookies.get("userId")
     const { mutate } = useMutation({
         mutationFn: async () => {
-            const response = await axios.post(`${process.env.BACKEND_URL}/createcheckpoints`)
+            const response = await axios.post(`${process.env.BACKEND_URL}/checkpoints/createall`)
             console.log(response)
             return response.data
         },
@@ -44,9 +44,9 @@ export default function Content() {
             <div key={checkpoint?.id} className="flex flex-col gap-3">
 
                 <p><span className="font-bold">Dia: </span>
-                    {isSuccess && `${checkpoint.day.toString().padStart(2, "0")}/
-                    ${checkpoint.month.toString().padStart(2, "0")}/
-                    ${checkpoint.year.toString().padStart(2, "0")}`}
+                    {isSuccess && `${checkpoint?.day?.toString().padStart(2, "0")}/
+                    ${checkpoint?.month?.toString().padStart(2, "0")}/
+                    ${checkpoint?.year?.toString().padStart(2, "0")}`}
                 </p>
                 <p><span className="font-bold">Horário de Chegada:</span> {checkpoint?.arrivalTime === "null" ? "Checkpoint não cadastrado" : checkpoint?.arrivalTime} </p>
 

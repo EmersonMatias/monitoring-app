@@ -104,7 +104,7 @@ export default function Relatorios() {
 
 
             <div className="flex flex-col">
-                <select className="p-2" onChange={(e) => { setTypeReport(e.target.value) }} >
+                <select className="p-2 w-[300px]" onChange={(e) => { setTypeReport(e.target.value) }} >
                     <option value="0">Escolha uma opção de relatório</option>
                     <option value="agencia" >Agência</option>
                     <option value="vigilante" >Vigilante</option>
