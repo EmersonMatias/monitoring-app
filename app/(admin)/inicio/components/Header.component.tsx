@@ -6,15 +6,49 @@ import { handleExit } from "@/app/vigilante/components/VigilantHeader.component"
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { useGetAllMessages } from "@/hooks/hooks-messages";
+import { useQuery } from "@tanstack/react-query";
+import axios, { AxiosResponse } from "axios";
 
 export default function Header() {
     const isBrowser = typeof window !== "undefined";
     const router = useRouter()
     const { data: messages, isSuccess } = useGetAllMessages()
+    const { data: status, isSuccess: statusSuccess } = useQuery({
+        queryKey: ["status"],
+        queryFn: async () => {
+            const data: AxiosResponse<TStatus[]> = await axios.get(`${process.env.BACKEND_URL}/status/getall`)
+            return data.data
+        },
+        refetchInterval: 3000,
+        refetchIntervalInBackground: true
+    })
+
+    const PanicAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3") : null)
     const AlertAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/alertAudio.mp3") : null)
     const unviewedMessages = messages?.filter((message) => message?.viewed === false)?.length
+    const panicStatus = status?.filter((oneStatus) => oneStatus.status === "PANIC").length
+
     const messagesRef = useRef<TMessage[]>()
-    console.log(messages)
+    const statusRef = useRef<TStatus[]>()
+
+    console.log(statusRef.current)
+
+    if (statusSuccess) {
+        if (statusRef.current === undefined) {
+            statusRef.current = status
+        }
+
+        if (statusRef.current !== undefined) {
+            if (JSON.stringify(status) !== JSON.stringify(statusRef.current)) {
+                status.map((oneStatus) => {
+                    if (oneStatus.status === "PANIC") {
+                        PanicAudio.current?.play()
+                        statusRef.current = status
+                    }
+                })
+            }
+        }
+    }
 
     if (isSuccess) {
         if (messagesRef.current === undefined) {
@@ -32,7 +66,7 @@ export default function Header() {
             }
         }
     }
- 
+
     return (
         <header className="h-20 bg-[#f0a830] flex items-center justify-center w-[100%]">
 
@@ -71,8 +105,12 @@ export default function Header() {
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697"></path><path d="M18 12v-5a2 2 0 0 0 -2 -2h-2"></path><path d="M8 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"></path><path d="M8 11h4"></path><path d="M8 15h3"></path><path d="M16.5 17.5m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0"></path><path d="M18.5 19.5l2.5 2.5"></path>
                     </svg>
                 </Link>
-                <Link href="status">
-                    <svg className="w-[40px] h-[40px] text-white"  stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                <Link href="status" className="relative">
+
+                    <div className={`text-white rounded-full w-[30px] h-[30px] flex justify-center items-center font-bold bg-red-500 absolute left-[-18px] top-[-8px] bg-opacity-80 ${panicStatus === 0 && "hidden"}`}>
+                        {panicStatus}
+                    </div>
+                    <svg className="w-[40px] h-[40px] text-white" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
                         <path d="M880 305H624V192c0-17.7-14.3-32-32-32H184v-40c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v784c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V640h248v113c0 17.7 14.3 32 32 32h416c17.7 0 32-14.3 32-32V337c0-17.7-14.3-32-32-32z"></path>
                     </svg>
                 </Link>

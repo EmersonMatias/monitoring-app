@@ -65,3 +65,18 @@ type TMessageViewed = {
     response: string,
     messageId: number
 }
+
+type TUserStatus = {
+    name: string,
+    entryTime: string,
+    departureTime:string,
+    agency: string
+}
+type TStatus = {
+    id: number,
+    hour: number,
+    minute: number
+    status: string,
+    userId: number,
+    user: TUserStatus
+}

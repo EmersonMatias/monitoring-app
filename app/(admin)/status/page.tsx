@@ -8,11 +8,11 @@ export default function Page() {
         queryFn: async () => {
             const data: AxiosResponse<TStatus[]> = await axios.get(`${process.env.BACKEND_URL}/status/getall`)
             return data.data
-        }
+        },
+        refetchInterval: 3000,
+        refetchIntervalInBackground: true
     })
-
-    console.log(status)
-
+ 
     return (
         <div className="flex justify-center">
 
@@ -46,19 +46,4 @@ export default function Page() {
             </table>
         </div>
     )
-}
-
-type TUser = {
-    name: string,
-    entryTime: string,
-    departureTime:string,
-    agency: string
-}
-type TStatus = {
-    id: 4,
-    hour: number,
-    minute: number
-    status: string,
-    userId: number,
-    user: TUser
 }
