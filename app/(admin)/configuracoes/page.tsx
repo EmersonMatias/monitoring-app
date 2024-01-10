@@ -38,7 +38,7 @@ export default function Configuraçoes() {
                             <tr key={vigilant.id} className=" text-center">
                                 <td onClick={() => {
                                     router.push(`configuracoes/${vigilant.id}`)
-                                }}  className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{vigilant.name}</td>
+                                }}  className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2 cursor-pointer">{vigilant.name}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{vigilant.entryTime}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{vigilant.departureTime}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{vigilant.agency}</td>

@@ -108,3 +108,9 @@ type TStatus = {
     userId: number,
     user: TUserStatus
 }
+
+
+type TAlert = {
+    id: number,
+    viewed: boolean
+}

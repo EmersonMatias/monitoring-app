@@ -4,10 +4,11 @@ import Logo from "@/public/Logo.png"
 import Link from "next/link";
 import { handleExit } from "@/app/vigilante/components/VigilantHeader.component";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGetAllMessages } from "@/hooks/hooks-messages";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
+import Cookies from "js-cookie";
 
 export default function Header() {
     const isBrowser = typeof window !== "undefined";
@@ -30,8 +31,23 @@ export default function Header() {
 
     const messagesRef = useRef<TMessage[]>()
     const statusRef = useRef<TStatus[]>()
+    const alertsString = Cookies.get("alerts")
+    const alertList: TAlert[] = alertsString !== undefined && JSON?.parse(alertsString)
+    const [visible, setVisible] = useState(true)
+    const unviwedAlerts  = alertList?.filter((alert) => alert?.viewed === false ).length
+    console.log(unviwedAlerts)
 
-    console.log(statusRef.current)
+    function handleOK(id: number){
+        const viewed = {id: 0, viewed: true}
+
+        alertList[id] = viewed
+
+        const newA = JSON.stringify(alertList)
+
+        Cookies.set("alerts", newA)
+
+        router.refresh()
+    }
 
     if (statusSuccess) {
         if (statusRef.current === undefined) {
@@ -57,10 +73,10 @@ export default function Header() {
 
         if (messagesRef.current !== undefined) {
 
-            if (JSON.stringify(messages) !== JSON.stringify(messagesRef.current)) {
+            if (JSON?.stringify(messages) !== JSON?.stringify(messagesRef.current)) {
 
-                if (messages !== undefined && messages?.length > messagesRef.current.length) {
-                    AlertAudio.current?.play()
+                if (messages !== undefined && messages?.length > messagesRef?.current?.length) {
+                    AlertAudio?.current?.play()
                     messagesRef.current = messages
                 }
             }
@@ -119,15 +135,34 @@ export default function Header() {
 
             <div className="absolute right-20 flex gap-8">
 
-                <Link href="/mensagens">
-                    <div className={`text-white rounded-full w-[30px] h-[30px] flex justify-center items-center font-bold bg-red-500 absolute left-[-10px] top-[-10px] bg-opacity-80 ${unviewedMessages === 0 && "hidden"}`}>
-                        {unviewedMessages}
+                <div onClick={() => setVisible(!visible)} className="relative">
+                    <div className={`text-white rounded-full w-[30px] h-[30px] flex justify-center items-center font-bold bg-red-500 absolute left-[-10px] top-[-10px] bg-opacity-80 ${unviwedAlerts === 0 && "hidden"}`}>
+                        {unviwedAlerts}
+                    </div>
+                    <div hidden={visible} className="absolute top-[70px] right-[-160px] bg-white w-[350px] h-[150px] rounded-lg p-5 overflow-y-scroll">
+                        {alertList?.map((alert) =>( 
+                            alert.viewed === false ?
+                            <div key={alert.id} className=" h-fit flex items-center mb-2">
+                                Confirmar notificação de alerta: <span className="bg-green-400 text-white font-bold p-2 ml-2 rounded" onClick={() => handleOK(alert.id)}>OK</span>
+                            </div> : null
+                        ))}
+
                     </div>
 
                     <svg className="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M4.214 3.227a.75.75 0 00-1.156-.956 8.97 8.97 0 00-1.856 3.826.75.75 0 001.466.316 7.47 7.47 0 011.546-3.186zM16.942 2.271a.75.75 0 00-1.157.956 7.47 7.47 0 011.547 3.186.75.75 0 001.466-.316 8.971 8.971 0 00-1.856-3.826z"></path><path fillRule="evenodd" d="M10 2a6 6 0 00-6 6c0 1.887-.454 3.665-1.257 5.234a.75.75 0 00.515 1.076 32.94 32.94 0 003.256.508 3.5 3.5 0 006.972 0 32.933 32.933 0 003.256-.508.75.75 0 00.515-1.076A11.448 11.448 0 0116 8a6 6 0 00-6-6zm0 14.5a2 2 0 01-1.95-1.557 33.54 33.54 0 003.9 0A2 2 0 0110 16.5z" clipRule="evenodd"></path>
                     </svg>
 
+                </div>
+
+                <Link href="/mensagens" className="relative">
+                    <div className={`text-white rounded-full w-[30px] h-[30px] flex justify-center items-center font-bold bg-red-500 absolute left-[-10px] top-[-10px] bg-opacity-80 ${unviewedMessages === 0 && "hidden"}`}>
+                        {unviewedMessages}
+                    </div>
+
+                    <svg className="w-[30px] h-[40px] text-gray-800 dark:text-white" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"></path>
+                    </svg>
                 </Link>
 
 

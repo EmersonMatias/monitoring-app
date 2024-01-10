@@ -28,7 +28,6 @@ export default function OrangeTable({ search }: { search: string }) {
 
     }, [update])
 
-    console.log(update)
 
     return (
         <div className="max-w-[600px] overflow-x-auto  mt-6  flex flex-col items-center bg-[#FFFFFF] p-5  border-[2px] rounded-2xl">
