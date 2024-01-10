@@ -60,7 +60,3 @@ export default function GreenTable({ search }: { search: string }) {
         </div>
     )
 }
-
-type TGreenTable = {
-    vigilantArrived: TCheckpoints[]
-}

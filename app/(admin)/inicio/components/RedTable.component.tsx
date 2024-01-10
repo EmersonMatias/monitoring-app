@@ -19,15 +19,7 @@ export default function RedTable({ search }: { search: string }) {
     const checkpointView = search.length === 0 ? checkpointsAlert : checkpointsFilter
     const [update, setUpdate] = useState(false)
     const PanicAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3") : null)
-    const alerts = Cookies.get("alerts")
 
-    if (alerts === undefined) {
-        const alertsList: TAlert[] = []
-
-        Cookies.set("alerts", JSON.stringify(alertsList))
-    }
-
-    
     if (isSuccess) {
         if (alertRef?.current === undefined) {
             alertRef.current = checkpointsAlert
@@ -38,17 +30,8 @@ export default function RedTable({ search }: { search: string }) {
                 console.log(checkpointsAlert?.length, alertRef?.current?.length)
                 if (checkpointsAlert?.length > alertRef?.current?.length) {
                     PanicAudio.current?.play()
-
-                    const list = alerts !== undefined &&  JSON.parse(alerts)
-                    const lengthList = list?.length
-                    const newAlert = {id: lengthList, viewed: false}
-                    const newList = [...list, newAlert]
-                    Cookies.set("alerts", JSON?.stringify(newList))
-                    
                     alertRef.current = checkpointsAlert
                 }
-
-
             }
         }
 
@@ -98,8 +81,4 @@ export default function RedTable({ search }: { search: string }) {
 
         </div>
     )
-}
-
-type TRedTable = {
-    vigilantAlert: TCheckpoints[]
 }
