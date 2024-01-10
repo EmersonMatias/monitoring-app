@@ -9,7 +9,8 @@ export function useGetAllCheckpoints() {
 
       return data.data
     },
-    refetchOnMount: true
+    refetchOnMount: true,
+
   })
 }
 
@@ -20,7 +21,6 @@ export function useGetAllTodayCheckpoint() {
       const data: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints=today`)
       return data.data
     },
-    refetchInterval: 3000,
     refetchIntervalInBackground: true
   })
 }

@@ -1,8 +1,10 @@
 'use client'
 import { currentTime } from "@/app/utils/constants"
+import { useCreateAlert } from "@/hooks/hooks-alert";
 import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { useEffect, useRef, useState } from "react"
-import Cookies from "js-cookie"
 
 export default function RedTable({ search }: { search: string }) {
     const isBrowser = typeof window !== "undefined";
@@ -19,6 +21,8 @@ export default function RedTable({ search }: { search: string }) {
     const checkpointView = search.length === 0 ? checkpointsAlert : checkpointsFilter
     const [update, setUpdate] = useState(false)
     const PanicAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3") : null)
+    const { mutate: createAlert } = useCreateAlert()
+
 
     if (isSuccess) {
         if (alertRef?.current === undefined) {
@@ -29,6 +33,9 @@ export default function RedTable({ search }: { search: string }) {
             if (JSON.stringify(alertRef?.current) !== JSON.stringify(checkpointsAlert)) {
                 console.log(checkpointsAlert?.length, alertRef?.current?.length)
                 if (checkpointsAlert?.length > alertRef?.current?.length) {
+                    const nameVigilant = checkpointsAlert[checkpointsAlert.length - 1].user.name
+                    console.log(nameVigilant)
+                    createAlert(nameVigilant)
                     PanicAudio.current?.play()
                     alertRef.current = checkpointsAlert
                 }

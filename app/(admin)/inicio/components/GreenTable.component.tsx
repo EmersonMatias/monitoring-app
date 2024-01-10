@@ -1,7 +1,6 @@
 'use client'
 
 import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
-import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function GreenTable({ search }: { search: string }) {
