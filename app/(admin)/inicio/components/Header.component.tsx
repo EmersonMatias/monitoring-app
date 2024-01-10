@@ -34,7 +34,7 @@ export default function Header() {
     const alertsString = Cookies.get("alerts")
     const alertList: TAlert[] = alertsString !== undefined && JSON?.parse(alertsString)
     const [visible, setVisible] = useState(true)
-    const unviwedAlerts  = alertList?.filter((alert) => alert?.viewed === false ).length
+    const unviwedAlerts  = alertsString !== undefined &&  alertList?.filter((alert) => alert?.viewed === false ).length
     console.log(unviwedAlerts)
 
     function handleOK(id: number){
