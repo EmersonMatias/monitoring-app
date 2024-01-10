@@ -35,7 +35,7 @@ export default function Header() {
     const alertList: TAlert[] = alertsString !== undefined && JSON?.parse(alertsString)
     const [visible, setVisible] = useState(true)
     const unviwedAlerts  = alertsString !== undefined &&  alertList?.filter((alert) => alert?.viewed === false ).length
-    console.log(unviwedAlerts)
+   
 
     function handleOK(id: number){
         const viewed = {id: 0, viewed: true}
