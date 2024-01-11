@@ -44,7 +44,9 @@ type TCreateUser = {
     departureTime: string;
     login: string;
     password: string;
-    frequency: number
+    frequency: number,
+    saturday: string,
+    sunday: string
 }
 
 type TUpdateUser = {
@@ -58,6 +60,8 @@ type TUpdateUser = {
     login: string;
     password: string ;
     frequency: number ;
+    saturday: string,
+    sunday: string
 }
 
 type TGetUserForUpdate = {
@@ -69,6 +73,8 @@ type TGetUserForUpdate = {
     entryTime: string;
     departureTime: string ;
     login: string;
+    saturday: string;
+    sunday: string;
     status: {
         frequency: number;
     }[]

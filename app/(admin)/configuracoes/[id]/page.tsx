@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
 
 export default function EditVigilant({ params }: { params: { id: string } }) {
-    const { data: vigilant, isSuccess, isRefetching} = useQuery({
+    const { data: vigilant, isSuccess, isRefetching } = useQuery({
         queryKey: ["editvigilant"],
         queryFn: async () => {
             const data: AxiosResponse<TGetUserForUpdate> = await axios.get(`${process.env.BACKEND_URL}/vigilantwithstatus=${params.id}`)
@@ -25,14 +25,16 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
         departureTime: "",
         login: "",
         password: "",
-        frequency: 0
+        frequency: 0,
+        saturday: "0",
+        sunday: "0"
     }
 
     const [sucessMessage, setSucessMessage] = useState(false)
     const [errorMessage, setErrorMessage] = useState(false)
     const [updateVigilantData, setUpdateVigilantData] = useState<TUpdateUser>(initialData)
     console.log(vigilant?.status[0].frequency)
-    
+
     const styleInput = "pl-4 py-2 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50"
 
     useEffect(() => {
@@ -51,7 +53,9 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                         dateofbirth: `${birthday[2]}-${birthday[1]}-${birthday[0]}`,
                         login: vigilant?.login,
                         password: "",
-                        frequency: vigilant?.status[0]?.frequency
+                        frequency: vigilant?.status[0]?.frequency,
+                        saturday: vigilant.saturday.toString(),
+                        sunday: vigilant.sunday.toString()
                     })
                 }
             }
@@ -79,6 +83,9 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
 
     async function handleSubmite(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
+        if(updateVigilantData.saturday === "0" || updateVigilantData.sunday === "0"){
+            return alert("Por favor, preencha todos os campos!")
+        }
         updateUser()
     }
 
@@ -116,7 +123,7 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             className={styleInput}
                             required
                             defaultValue={updateVigilantData?.name}
-                            onChange={(event) => setUpdateVigilantData({...updateVigilantData, name: event.target.value })}
+                            onChange={(event) => setUpdateVigilantData({ ...updateVigilantData, name: event.target.value })}
                         />
 
                         <label htmlFor="date" className=" text-base mb-2 font-bold">Data de Nascimento:</label>
@@ -197,6 +204,18 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             value={updateVigilantData.departureTime}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, departureTime: event.target.value }))}
                         />
+
+                        <select className=" px-4 py-4 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50" onChange={(e) => { setUpdateVigilantData({ ...updateVigilantData, saturday: e?.target.value }) }} >
+                            <option value="0">O vigilante trabalha de sábado?</option>
+                            <option value="true" >Sim</option>
+                            <option value="false" >Não</option>
+                        </select>
+
+                        <select className=" px-4 py-4 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50" onChange={(e) => { setUpdateVigilantData({ ...updateVigilantData, sunday: e?.target.value }) }} >
+                            <option value="0">O vigilante trabalha de domingo?</option>
+                            <option value="true" >Sim</option>
+                            <option value="false" >Não</option>
+                        </select>
 
                         <label htmlFor="frequency" className="text-base mb-2 font-bold">Frequência de comunicação:</label>
                         <input

@@ -36,8 +36,7 @@ export default function Content() {
             return data.data
         }
     })
-
-
+  
 
     return (
         <div>

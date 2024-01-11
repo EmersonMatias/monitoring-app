@@ -5,18 +5,11 @@ import GreenTable from "./components/GreenTable.component";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
-import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints";
-
 
 export default function Inicio() {
     const [search, setSearch] = useState("")
     const router = useRouter()
-    const token = Cookies.get("token")
-    const { data: checkpoints,isSuccess,isPending, } = useGetAllTodayCheckpoint()
-    console.log(checkpoints, isSuccess, isPending)
-
-
-  
+    const token = Cookies.get("token")  
 
     useEffect(() => {
 

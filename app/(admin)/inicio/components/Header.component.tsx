@@ -9,7 +9,7 @@ import { useGetAllMessages } from "@/hooks/hooks-messages";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
 import { useFindAllAlerts, useUpdateAlert } from "@/hooks/hooks-alert";
-
+import styles from "../../criarvigilante/styles.module.css"
 
 export default function Header() {
     const isBrowser = typeof window !== "undefined";
@@ -31,7 +31,7 @@ export default function Header() {
     const AlertAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/alertAudio.mp3") : null)
     const unviewedMessages = messages?.filter((message) => message?.viewed === false)?.length
     const panicStatus = status?.filter((oneStatus) => oneStatus.status === "PANIC").length
-    const [visible, setVisible] = useState(false)
+    const [visible, setVisible] = useState(true)
     const messagesRef = useRef<TMessage[]>()
     const statusRef = useRef<TStatus[]>()
 
@@ -132,7 +132,7 @@ export default function Header() {
                         {alertSuccess && alertsUnviewed}
                     </div>
 
-                    <div hidden={visible} className="absolute top-[70px] right-[-160px] bg-white w-[450px] h-[150px] rounded-lg p-5 overflow-y-scroll">
+                    <div hidden={visible} className={`absolute top-[70px] right-[-160px] bg-white w-[450px] h-[150px] rounded-lg p-5 overflow-y-scroll ${styles.scrollable}`}>
                         {alertSuccess && alerts?.map((alert) => (
                             alert?.viewed === false ?
                                 <div key={alert.id} className=" h-fit flex items-center mb-2">

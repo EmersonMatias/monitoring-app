@@ -1,0 +1,15 @@
+
+.scrollable::-webkit-scrollbar {
+    width: 0px;
+  }
+  
+  .scrollable::-webkit-scrollbar-thumb {
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+  }
+  
+  /* Para navegadores Firefox */
+  .scrollable {
+    scrollbar-width: 0px;
+    scrollbar-color: #ccc transparent;
+  }

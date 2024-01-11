@@ -13,6 +13,9 @@ export default function FormCriarVigilante() {
 
     async function handleSubmite(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
+        if(createVigilantData.saturday === "0" || createVigilantData.sunday === "0"){
+            return alert("Por favor, preencha todos os campos!")
+        }
         createUser()
     }
 
@@ -127,6 +130,18 @@ export default function FormCriarVigilante() {
                     onChange={(event) => (setCreateVigilantData({ ...createVigilantData, departureTime: event.target.value }))}
                 />
 
+                <select defaultValue="0" className=" px-4 py-4 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50" onChange={(e) => { setCreateVigilantData({...createVigilantData, saturday: e?.target.value}) }} >
+                    <option value="0">O vigilante trabalha de sábado?</option>
+                    <option value="true" >Sim</option>
+                    <option value="false" >Não</option>
+                </select>
+
+                <select defaultValue="0" className=" px-4 py-4 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50" onChange={(e) => { setCreateVigilantData({...createVigilantData, sunday: e?.target.value}) }} >
+                    <option value="0">O vigilante trabalha de domingo?</option>
+                    <option value="true" >Sim</option>
+                    <option value="false" >Não</option>
+                </select>
+
                 <label htmlFor="frequency" className="text-base mb-2 font-bold">Frequência de comunicação:</label>
                 <input
                     type="number"
@@ -194,5 +209,7 @@ const initialData = {
     departureTime: "",
     login: "",
     password: "",
-    frequency: 60
+    frequency: 60,
+    saturday: "0",
+    sunday: "0"
 }
