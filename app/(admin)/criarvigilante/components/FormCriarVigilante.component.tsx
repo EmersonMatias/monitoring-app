@@ -9,8 +9,8 @@ export default function FormCriarVigilante() {
     const styleInput = "pl-4 py-2 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50"
     const [createVigilantData, setCreateVigilantData] = useState<TCreateUser>(initialData)
     console.log(createVigilantData)
-    const { mutate: createUser, isPending } = useCreateVigilant(createVigilantData, initialData, setCreateVigilantData, setSucessMessage, setErrorMessage)
-
+    const { mutate: createUser, isPending,error } = useCreateVigilant(createVigilantData, initialData, setCreateVigilantData, setSucessMessage, setErrorMessage)
+console.log(error)
     async function handleSubmite(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
         if(createVigilantData.saturday === "0" || createVigilantData.sunday === "0"){

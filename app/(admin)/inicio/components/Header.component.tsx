@@ -132,11 +132,11 @@ export default function Header() {
                         {alertSuccess && alertsUnviewed}
                     </div>
 
-                    <div hidden={visible} className={`absolute top-[70px] right-[-160px] bg-white w-[450px] h-[150px] rounded-lg p-5 overflow-y-scroll ${styles.scrollable}`}>
+                    <div hidden={visible} className={`absolute top-[70px] right-[-160px] bg-white w-[400px] h-[150px] rounded-lg p-5 overflow-y-scroll ${styles.scrollable}`}>
                         {alertSuccess && alerts?.map((alert) => (
                             alert?.viewed === false ?
-                                <div key={alert.id} className=" h-fit flex items-center mb-2">
-                                    Confirmar notificação de atraso de {alert?.name}: <span className="bg-green-400 text-white font-bold p-2 ml-2 rounded cursor-pointer" onClick={() => handleOK(alert.id)}>OK</span>
+                                <div key={alert.id} className=" h-fit flex items-center mb-2 bg-zinc-200 rounded-md p-2">
+                                    Confirmar notificação de atraso de {alert?.name}: <button className="bg-green-400 text-white font-bold p-2 ml-2 rounded cursor-pointer" onClick={() => handleOK(alert.id)}>OK</button>
                                 </div> : null
                         ))}
                     </div>

@@ -58,7 +58,6 @@ type TUpdateUser = {
     entryTime: string ;
     departureTime: string;
     login: string;
-    password: string ;
     frequency: number ;
     saturday: string,
     sunday: string
@@ -122,4 +121,8 @@ type TAlerts = {
     month: number,
     year: number,
     name: string
+}
+
+type FormMessageProps = {
+    comment: string
 }

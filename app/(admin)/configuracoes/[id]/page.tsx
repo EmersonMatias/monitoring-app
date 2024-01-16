@@ -4,7 +4,7 @@ import styles from "./styles.module.css"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
 
-export default function EditVigilant({ params }: { params: { id: string } }) {
+export default function EditVigilant({ params }: { readonly params: { id: string } }) {
     const { data: vigilant, isSuccess, isRefetching } = useQuery({
         queryKey: ["editvigilant"],
         queryFn: async () => {
@@ -24,7 +24,6 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
         entryTime: "",
         departureTime: "",
         login: "",
-        password: "",
         frequency: 0,
         saturday: "0",
         sunday: "0"
@@ -52,7 +51,6 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                         departureTime: vigilant?.departureTime,
                         dateofbirth: `${birthday[2]}-${birthday[1]}-${birthday[0]}`,
                         login: vigilant?.login,
-                        password: "",
                         frequency: vigilant?.status[0]?.frequency,
                         saturday: vigilant.saturday.toString(),
                         sunday: vigilant.sunday.toString()
@@ -244,20 +242,6 @@ export default function EditVigilant({ params }: { params: { id: string } }) {
                             required
                             value={updateVigilantData.login}
                             onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, login: event.target.value }))}
-                        />
-
-                        <label htmlFor="senha" className="text-base mb-2 font-bold">Senha:</label>
-                        <input
-                            type="password"
-                            id="senha"
-                            placeholder="Digite a senha "
-                            minLength={8}
-                            maxLength={150}
-                            className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50"
-                            required
-                            value={updateVigilantData.password}
-                            onChange={(event) => (setUpdateVigilantData({ ...updateVigilantData, password: event.target.value }))}
-                            disabled={isPending}
                         />
 
                         <button className="bg-[#f0a830] py-3 mx-[150px] text-xl font-semibold rounded-md text-white disabled:opacity-50 " disabled={isPending}>{isPending ? "Atualizando usuário..." : "Atualizar usuário"}</button>

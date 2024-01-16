@@ -2,11 +2,9 @@
 import { currentTime } from "@/app/utils/constants"
 import { useCreateAlert } from "@/hooks/hooks-alert";
 import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useEffect, useRef, useState } from "react"
 
-export default function RedTable({ search }: { search: string }) {
+export default function RedTable({ search }: { readonly search: string }) {
     const isBrowser = typeof window !== "undefined";
     const { data: checkpoints, isSuccess } = useGetAllTodayCheckpoint()
     const { hour, minutes } = currentTime()
@@ -23,7 +21,6 @@ export default function RedTable({ search }: { search: string }) {
     const PanicAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3") : null)
     const { mutate: createAlert } = useCreateAlert()
 
-
     if (isSuccess) {
         if (alertRef?.current === undefined) {
             alertRef.current = checkpointsAlert
@@ -33,8 +30,10 @@ export default function RedTable({ search }: { search: string }) {
             if (JSON.stringify(alertRef?.current) !== JSON.stringify(checkpointsAlert)) {
                 console.log(checkpointsAlert?.length, alertRef?.current?.length)
                 if (checkpointsAlert?.length > alertRef?.current?.length) {
-                    const nameVigilant = checkpointsAlert[checkpointsAlert.length - 1].user.name
-                    console.log(nameVigilant)
+                    const diferencaArray1 = checkpointsAlert.filter(item => !alertRef.current?.includes(item))
+                   
+                    const nameVigilant = diferencaArray1[0]?.user?.name
+              
                     createAlert(nameVigilant)
                     PanicAudio.current?.play()
                     alertRef.current = checkpointsAlert
@@ -45,8 +44,6 @@ export default function RedTable({ search }: { search: string }) {
     }
 
     useEffect(() => {
-
-
         const interval = setInterval(() => {
             setUpdate(!update)
         }, 3000);

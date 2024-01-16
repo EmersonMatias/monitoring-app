@@ -6,7 +6,7 @@ export function useCreateAlert() {
 
     return useMutation({
         mutationFn: async (name: string) => {
-            const response = await axios.post(`${process.env.BACKEND_URL}/alert/create`)
+            const response = await axios.post(`${process.env.BACKEND_URL}/alert/create`, { name })
             return response.data
         },
         onSuccess: () => {
@@ -15,7 +15,7 @@ export function useCreateAlert() {
     })
 }
 
-export function useUpdateAlert(){
+export function useUpdateAlert() {
     const queryClient = useQueryClient()
 
     return useMutation({
