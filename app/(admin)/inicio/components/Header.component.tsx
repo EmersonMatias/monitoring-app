@@ -34,7 +34,7 @@ export default function Header() {
         }
 
         if (statusRef.current !== undefined) {
-            if (JSON.stringify(status) !== JSON.stringify(statusRef.current)) {
+            if (JSON.stringify(status) !== JSON.stringify(statusRef.current) && status.length > statusRef.current.length) {
                 status.map((oneStatus) => {
                     if (oneStatus.status === "PANIC") {
                         PanicAudio.current?.play()
