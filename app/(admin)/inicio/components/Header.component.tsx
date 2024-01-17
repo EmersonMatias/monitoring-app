@@ -33,8 +33,12 @@ export default function Header() {
             statusRef.current = status
         }
 
+
         if (statusRef.current !== undefined) {
-            if (JSON.stringify(status) !== JSON.stringify(statusRef.current) && status.length > statusRef.current.length) {
+            const statusQuantity = status.filter((oneStatus) => oneStatus.status === "PANIC").length
+            const statusRefQuantity = statusRef.current.filter((oneStatus) => oneStatus.status === "PANIC").length
+
+            if (JSON.stringify(status) !== JSON.stringify(statusRef.current) && statusQuantity > statusRefQuantity) {
                 status.map((oneStatus) => {
                     if (oneStatus.status === "PANIC") {
                         PanicAudio.current?.play()
