@@ -105,7 +105,7 @@ type TUserStatus = {
     departureTime: string,
     agency: string
 }
-type TStatus = {
+type TStatusWithUser = {
     id: number,
     hour: number,
     minute: number
@@ -125,4 +125,18 @@ type TAlerts = {
 
 type FormMessageProps = {
     comment: string
+}
+
+type FormEmergencyMessageProps = {
+    message: string
+}
+
+type TCreateMessageData = {
+    userId: number | undefined;
+    message: string;
+}
+
+type TUpdateStatus = {
+    newStatus: string,
+    statusID: number | undefined
 }

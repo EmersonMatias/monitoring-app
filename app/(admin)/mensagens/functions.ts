@@ -6,5 +6,6 @@ export async function onSubmitFormMessage(data: FormMessageProps, messageId: num
         messageId,
         response: data.comment
     }
+    
     setMessageViewed(responseData)
 }

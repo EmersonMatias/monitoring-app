@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
 
-export function useGetAllMessages(){
+export function useGetAllMessages() {
     return useQuery({
         queryKey: ["messages"],
         queryFn: async () => {
@@ -13,18 +13,31 @@ export function useGetAllMessages(){
     })
 }
 
-export function useSetMessageViewed(){
+export function useSetMessageViewed() {
     const queryClient = useQueryClient()
 
     return useMutation({
         mutationFn: async (responseData: TMessageViewed) => {
-            
+
             const sucess = await axios.put(`${process.env.BACKEND_URL}/visualizarmensagem`, responseData)
             return sucess
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["messages"]})
+            queryClient.invalidateQueries({ queryKey: ["messages"] })
+        }
+    })
+}
 
+export function useCreateMessage() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: async (data: TCreateMessageData) => {
+            const response = await axios.post(`${process.env.BACKEND_URL}/criarmensagem`, data)
+            return response.data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["messages"] })
         }
     })
 }

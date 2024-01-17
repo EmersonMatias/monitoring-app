@@ -37,7 +37,6 @@ export default function Content() {
         }
     })
   
-
     return (
         <div>
             <div key={checkpoint?.id} className="flex flex-col gap-2 mt-2 text-base">

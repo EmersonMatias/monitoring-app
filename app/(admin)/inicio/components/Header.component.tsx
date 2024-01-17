@@ -6,24 +6,15 @@ import { handleExit } from "@/app/vigilante/components/VigilantHeader.component"
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useGetAllMessages } from "@/hooks/hooks-messages";
-import { useQuery } from "@tanstack/react-query";
-import axios, { AxiosResponse } from "axios";
 import { useFindAllAlerts, useUpdateAlert } from "@/hooks/hooks-alert";
 import styles from "../../criarvigilante/styles.module.css"
+import { useGetAllStatus } from "@/hooks/hooks-status";
 
 export default function Header() {
     const isBrowser = typeof window !== "undefined";
     const router = useRouter()
     const { data: messages, isSuccess } = useGetAllMessages()
-    const { data: status, isSuccess: statusSuccess } = useQuery({
-        queryKey: ["status"],
-        queryFn: async () => {
-            const data: AxiosResponse<TStatus[]> = await axios.get(`${process.env.BACKEND_URL}/status/getall`)
-            return data.data
-        },
-        refetchInterval: 3000,
-        refetchIntervalInBackground: true
-    })
+    const { data: status, isSuccess: statusSuccess } = useGetAllStatus()
     const { data: alerts, isSuccess: alertSuccess } = useFindAllAlerts()
     const { mutate: updateAlert } = useUpdateAlert()
 
@@ -33,7 +24,7 @@ export default function Header() {
     const panicStatus = status?.filter((oneStatus) => oneStatus.status === "PANIC").length
     const [visible, setVisible] = useState(true)
     const messagesRef = useRef<TMessage[]>()
-    const statusRef = useRef<TStatus[]>()
+    const statusRef = useRef<TStatusWithUser[]>()
 
     const alertsUnviewed = alertSuccess && alerts?.filter((alert) => alert?.viewed === false).length
 
