@@ -39,6 +39,7 @@ export default function Header() {
 
     }).length
 
+    console.log(messages)
 
     function alertsUnviewed() {
         if (alertSuccess) {
@@ -55,7 +56,9 @@ export default function Header() {
     }
 
     useEffect(() => {
-        if (typeof window !== "undefined") {
+        const isBrowser = typeof window !== "undefined"
+
+        if (isBrowser) {
             PanicAudio.current = new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3")
             AlertAudio.current = new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/alertAudio.mp3")
         }

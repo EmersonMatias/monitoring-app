@@ -1,11 +1,10 @@
 'use client'
 import { currentTime } from "@/app/utils/constants"
 import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
-import { useEffect, useState } from "react"
 
 export default function OrangeTable({ search }: { search: string }) {
-    const { data: checkpoints } = useGetAllTodayCheckpoint()
-    const { hour, minutes } = currentTime()
+    const { data: checkpoints, isRefetching } = useGetAllTodayCheckpoint()
+    const { hour, minutes } = currentTime() 
     const checkpointsWaiting = checkpoints?.filter((checkpoints) =>
         checkpoints.arrived === false &&
         (Number(checkpoints.user.entryTime.substring(0, 2)) > hour ||
@@ -14,19 +13,6 @@ export default function OrangeTable({ search }: { search: string }) {
     const checkpointsFilter = checkpointsWaiting?.filter((checkpoints) => checkpoints.user.agency.toLowerCase().includes(`${search}`))
     const checkpointView = search.length === 0 ? checkpointsWaiting : checkpointsFilter
 
-    const [update, setUpdate] = useState(false)
-
-    useEffect(() => {
-
-
-        const interval = setInterval(() => {
-            setUpdate(!update)
-        }, 3000);
-
-
-        return () => clearInterval(interval);
-
-    }, [update])
 
 
     return (

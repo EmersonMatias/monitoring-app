@@ -1,57 +1,28 @@
 'use client'
-import { currentTime } from "@/app/utils/constants"
 import { useCreateAlert } from "@/hooks/hooks-alert";
 import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, } from "react"
+import { checkpointsRed, delayAlert } from "../functions";
 
 export default function RedTable({ search }: { readonly search: string }) {
-    const isBrowser = typeof window !== "undefined";
-    const { data: checkpoints, isSuccess } = useGetAllTodayCheckpoint()
-    const { hour, minutes } = currentTime()
-
-    const checkpointsAlert = checkpoints?.filter((checkpoints) =>
-        checkpoints.arrived === false &&
-        (Number(checkpoints.user.entryTime.substring(0, 2)) < hour ||
-            (Number(checkpoints.user.entryTime.substring(0, 2)) == hour && Number(checkpoints.user.entryTime.substring(3, 5)) < minutes))
-    )
-    const alertRef = useRef<TCheckpoints[]>()
-    const checkpointsFilter = checkpointsAlert?.filter((checkpoints) => checkpoints.user.agency.toLowerCase().includes(`${search}`))
-    const checkpointView = search.length === 0 ? checkpointsAlert : checkpointsFilter
-    const [update, setUpdate] = useState(false)
-    const PanicAudio = useRef(isBrowser ? new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3") : null)
+    const { data: checkpoints, isSuccess, isRefetching } = useGetAllTodayCheckpoint()
     const { mutate: createAlert } = useCreateAlert()
 
-    if (isSuccess) {
-        if (alertRef?.current === undefined) {
-            alertRef.current = checkpointsAlert
-        }
+    const alertRef = useRef()
+    const PanicAudio = useRef<HTMLAudioElement | null>(null)
 
-        if (alertRef?.current !== undefined && checkpointsAlert !== undefined) {
-            if (JSON.stringify(alertRef?.current) !== JSON.stringify(checkpointsAlert)) {
-                console.log(checkpointsAlert?.length, alertRef?.current?.length)
-                if (checkpointsAlert?.length > alertRef?.current?.length) {
-                    const diferencaArray1 = checkpointsAlert.filter(item => !alertRef.current?.includes(item))
-                   
-                    const nameVigilant = diferencaArray1[0]?.user?.name
-              
-                    createAlert(nameVigilant)
-                    PanicAudio.current?.play()
-                    alertRef.current = checkpointsAlert
-                }
-            }
-        }
+    const checkpointsAlert = checkpointsRed(checkpoints, search,isSuccess)
 
-    }
+    delayAlert({ PanicAudio, alertRef, checkpointsAlert, createAlert, isSuccess })
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setUpdate(!update)
-        }, 3000);
+        const isBrowser = typeof window !== "undefined"
 
+        if (isBrowser) {
+            PanicAudio.current = new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3")
+        }
 
-        return () => clearInterval(interval);
-
-    }, [update])
+    }, [])
 
     return (
 
@@ -70,7 +41,7 @@ export default function RedTable({ search }: { readonly search: string }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {checkpointView?.map((vigilant: TCheckpoints) => (
+                    {isSuccess && checkpointsAlert?.map((vigilant: TCheckpoints) => (
                         <tr key={vigilant.user.name} className={`rounded-2xl text-center ${vigilant.user.agency === "admin" && "hidden"}`}>
                             <td className="  px-4 py-2 max-w-[200px] text-sm ">{vigilant.user.name}</td>
                             <td className="px-4 py-2 text-sm">{vigilant.user.entryTime}</td>

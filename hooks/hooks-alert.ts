@@ -5,7 +5,7 @@ export function useCreateAlert() {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async (name: string) => {
+        mutationFn: async (name: string | undefined) => {
             const response = await axios.post(`${process.env.BACKEND_URL}/alert/create`, { name })
             return response.data
         },
