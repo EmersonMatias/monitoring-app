@@ -17,7 +17,7 @@ export default function Header() {
     const { data: messages, isSuccess } = useGetAllMessages()
     const { data: status, isSuccess: statusSuccess } = useGetAllStatus()
     const { data: alerts, isSuccess: alertSuccess } = useFindAllAlerts()
-    const { data: contingencies } = useGetAllContingency()
+    const { data: contingencies, isSuccess: contingencySuccess } = useGetAllContingency()
     const { mutate: updateAlert } = useUpdateAlert()
 
     const PanicAudio = useRef<HTMLAudioElement | null>(null)
@@ -29,7 +29,7 @@ export default function Header() {
     const statusRef = useRef<TStatusWithUser[]>()
     const { hour, minute } = dateTime()
 
-    const emergencyStatusContingency = contingencies?.filter((contingency) => {
+    const emergencyStatusContingency = contingencySuccess && contingencies?.filter((contingency) => {
         const lastStatus = Number(contingency?.hour) * 60 + Number(contingency?.minute)
         const currentTime = Number(hour) * 60 + Number(minute)
         const diff = currentTime - lastStatus
