@@ -105,6 +105,7 @@ type TUserStatus = {
     departureTime: string,
     agency: string
 }
+
 type TStatusWithUser = {
     id: number,
     hour: number,
@@ -140,3 +141,31 @@ type TUpdateStatus = {
     newStatus: string,
     statusID: number | undefined
 }
+
+// ! CONTINGENCY TYPES
+type TActivateContingencyData = {
+    userId: number,
+    frequency: number,
+}
+
+type TDeactivateContingencyData = {
+    userId: number
+}
+
+type TCheckpointContingencyData = {
+    userId: number,
+    status: string
+}
+
+type TContigency = {
+    id: number,
+    contigency: boolean,
+    frequency: number,
+    hour: number | null,
+    minute: number | null,
+    status: string,
+    userId: number,
+    user: {
+        name: string
+    }
+  }

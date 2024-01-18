@@ -1,9 +1,10 @@
 'use client'
 
 import { dateTime } from "@/app/utils/constants"
+import { useGetByUserIDContingency } from "@/hooks/hooks-contingency"
 import { useCreateMessage } from "@/hooks/hooks-messages"
 import { useUpdateStatus } from "@/hooks/hooks-status"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
 
@@ -17,6 +18,7 @@ type TStatus = {
 }
 
 export default function StatusButton({ userId }: { readonly userId: number }) {
+    const { data: contingency, isSuccess: contingencySuccess } = useGetByUserIDContingency(Number(userId))
     const { hour, minute } = dateTime()
     const [update, setUpdate] = useState(false)
 
@@ -94,23 +96,27 @@ export default function StatusButton({ userId }: { readonly userId: number }) {
     }
 
     return (
-        <div className="mt-5 flex flex-col items-center text-sm pb-10">
-            <p>Último status: {status?.status}</p>
-            <p>Horário do último status: {isSuccess ?
-                `${status?.hour?.toString().padStart(2, "0")}:${status?.minute?.toString().padStart(2, "0")}`
-                : ""} </p>
+        <div>
+            {(contingencySuccess && !contingency.contigency) &&
+                <div className="mt-5 flex flex-col items-center text-sm pb-10">
+                    <p>Último status: {status?.status}</p>
+                    <p>Horário do último status: {isSuccess ?
+                        `${status?.hour?.toString().padStart(2, "0")}:${status?.minute?.toString().padStart(2, "0")}`
+                        : ""} </p>
 
-            {statusMessage()}
+                    {statusMessage()}
 
-            <div className="flex items-center flex-col gap-2 mt-4 ">
-                <button disabled={statusTime()} className="p-2 bg-blue-500 rounded-md text-white font-bold max-w-[250px] min-w-[250px] disabled:opacity-50" onClick={handleOkay}>
-                    STATUS OK
-                </button>
+                    <div className="flex items-center flex-col gap-2 mt-4 ">
+                        <button disabled={statusTime()} className="p-2 bg-blue-500 rounded-md text-white font-bold max-w-[250px] min-w-[250px] disabled:opacity-50" onClick={handleOkay}>
+                            STATUS OK
+                        </button>
 
-                <button className="p-2 bg-orange-500 rounded-md text-white font-bold max-w-[250px] min-w-[250px] disabled:opacity-50" onClick={hadlePanic}>
-                    STATUS PANICO DE COAÇÃO
-                </button>
-            </div>
+                        <button className="p-2 bg-orange-500 rounded-md text-white font-bold max-w-[250px] min-w-[250px] disabled:opacity-50" onClick={hadlePanic}>
+                            STATUS PANICO DE COAÇÃO
+                        </button>
+                    </div>
+                </div>
+            }
         </div>
     )
 }
