@@ -2,9 +2,9 @@
 import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
 import { checkpointsGreen } from "../functions"
 
-export default function GreenTable({ search }: { search: string }) {
+export default function GreenTable({ search }: { readonly search: string }) {
     const { data: checkpoints, isSuccess } = useGetAllTodayCheckpoint()
- 
+
     return (
         <div className="max-w-[600px] overflow-x-auto mt-6 flex flex-col items-center bg-[#FFFFFF] p-5 border-[2px] rounded-2xl">
 
@@ -20,7 +20,6 @@ export default function GreenTable({ search }: { search: string }) {
                         <th className=" px-4 py-2 text-sm">Horário do Checkpoint</th>
                         <th className=" px-4 py-2 text-sm">Agência</th>
                         <th className=" px-4 py-2 text-sm">Status Atual</th>
-
                     </tr>
                 </thead>
                 <tbody>
