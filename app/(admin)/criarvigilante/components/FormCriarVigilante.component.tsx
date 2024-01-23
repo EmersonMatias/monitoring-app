@@ -32,7 +32,7 @@ export default function FormCriarVigilante() {
                     }}
                     required="Digite um nome"
                     register={register}
-                    message={errors.name && errors.name.message}
+                    message={errors?.name?.message}
                 />
 
                 <InputCreateVigilant
@@ -42,7 +42,7 @@ export default function FormCriarVigilante() {
                     label="Data de Nascimento"
                     required="Digite uma data de nascimento"
                     register={register}
-                    message={errors.dateofbirth && errors.dateofbirth.message}
+                    message={errors?.dateofbirth?.message}
                     validate={(data: string) => {
                         if (data.length !== 10) return "Digite uma data no formato DD/MM/YYYY"
                     }}
@@ -57,7 +57,7 @@ export default function FormCriarVigilante() {
                     required="Digite um RG"
                     placeholder="Digite o RG - Apenas números sem pontos ou espaço"
                     register={register}
-                    message={errors.rg && errors.rg.message}
+                    message={errors?.rg?.message}
                     validate={(data: string) => {
                         if (data.length !== 9) return "Digite um RG válido"
                     }}
@@ -72,7 +72,7 @@ export default function FormCriarVigilante() {
                     required="Digite um CPF"
                     placeholder="Digite o CPF - Apenas números sem pontos ou espaço"
                     register={register}
-                    message={errors.cpf && errors.cpf.message}
+                    message={errors?.cpf?.message}
                     validate={(data: string) => {
                         if (data.length !== 11) return "Digite um CPF válido"
                     }}
@@ -87,7 +87,7 @@ export default function FormCriarVigilante() {
                     required="Digite uma agência"
                     placeholder="Digite a agência"
                     register={register}
-                    message={errors.agency && errors.agency.message}
+                    message={errors?.agency?.message}
                     isPending={isPending}
                 />
 
@@ -98,7 +98,7 @@ export default function FormCriarVigilante() {
                     label="Horário de Entrada"
                     required="Digite um horário de entrada"
                     register={register}
-                    message={errors.entryTime && errors.entryTime.message}
+                    message={errors?.entryTime?.message}
                     isPending={isPending}
                 />
 
@@ -109,7 +109,7 @@ export default function FormCriarVigilante() {
                     label="Horário de Saída"
                     required="Digite um horário de saída"
                     register={register}
-                    message={errors.departureTime && errors.departureTime.message}
+                    message={errors?.departureTime?.message}
                     isPending={isPending}
                 />
 
@@ -147,7 +147,7 @@ export default function FormCriarVigilante() {
                     required="Digite um frequência de comunicação"
                     placeholder="Digite a frequência de cominucação em minutos "
                     register={register}
-                    message={errors.frequency && errors.frequency.message}
+                    message={errors?.frequency?.message}
                     isPending={isPending}
                 />
 
@@ -159,7 +159,7 @@ export default function FormCriarVigilante() {
                     required="Digite um login"
                     placeholder="Digite o login"
                     register={register}
-                    message={errors.login && errors.login.message}
+                    message={errors?.login?.message}
                     validate={(data: string) => {
                         if (data.length < 5) return "Digite um login de no mínimo 5 digitos"
                     }}
@@ -174,7 +174,7 @@ export default function FormCriarVigilante() {
                     required="Digite um senha"
                     placeholder="Digite a senha"
                     register={register}
-                    message={errors.password && errors.password.message}
+                    message={errors?.password?.message}
                     validate={(data: string) => {
                         if (data.length < 8) return "Digite um senha de no mínimo 8 digitos"
                     }}
