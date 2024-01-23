@@ -2,11 +2,16 @@
 import OrangeTable from "./components/OrangeTable.component";
 import RedTable from "./components/RedTable.component";
 import GreenTable from "./components/GreenTable.component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useCreateAllCheckpoints, useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints";
 
 export default function Inicio() {
     const [search, setSearch] = useState("")
+    const {mutate: createAllCheckpoints} = useCreateAllCheckpoints()
+    const { data: checkpoints, isSuccess } = useGetAllTodayCheckpoint(createAllCheckpoints)
 
+    console.log(checkpoints)
+   
     return (
         <main className="pb-20">
             <input

@@ -1,32 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
-import { Dispatch, SetStateAction } from "react"
+import { UseFormReset } from "react-hook-form"
 
-export function useCreateVigilant(
-    createVigilantData: TCreateUser,
-    initialData: TCreateUser,
-    setCreateVigilantData: Dispatch<SetStateAction<TCreateUser>>,
-    setSucessMessage: Dispatch<SetStateAction<boolean>>,
-    setErrorMessage: Dispatch<SetStateAction<boolean>>) {
+export function useCreateVigilant(resetForm: UseFormReset<TCreateUser>) {
     const queryClient = useQueryClient()
 
-
     return useMutation({
-        mutationFn: async () => {
+        mutationFn: async (createVigilantData: TCreateUser) => {
             const [year, month, day] = createVigilantData.dateofbirth.split("-")
-            const signupData = { ...createVigilantData, dateofbirth: `${day}/${month}/${year}`, accountType: "user" }
+            const signupData = { ...createVigilantData, dateofbirth: `${day}/${month}/${year}`, accountType: "user", frequency: Number(createVigilantData.frequency) }
             const sucess = (await axios.post(`${process.env.BACKEND_URL}/cadastrar`, signupData))
             return sucess
         },
         onSuccess: () => {
-
-            setSucessMessage(true)
-            setCreateVigilantData(initialData)
             queryClient.invalidateQueries({ queryKey: ["vigilantes"] })
-
-        },
-        onError: () => {
-            setErrorMessage(true)
+            resetForm()
         }
     })
 }

@@ -76,6 +76,7 @@ export function delayAlert({alertRef, checkpointsAlert, createAlert, isSuccess }
     }
 }
 
+
 type DelayAlertProps = {
     alertRef: MutableRefObject<TCheckpoints[] | undefined>,
     checkpointsAlert: TCheckpoints[] | undefined,

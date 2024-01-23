@@ -5,11 +5,11 @@ import { HeaderLinkContingency } from "./constants";
 import { contingencyNotifications } from "./functions";
 
 export default function HeaderContingency() {
-    const { data: contingencies, isSuccess } = useGetAllContingency()
+    const { data: contingencies, isSuccess, isPending } = useGetAllContingency()
 
     const notifications = contingencyNotifications(isSuccess, contingencies)
 
     return (
-        <HeaderLink href={HeaderLinkContingency.href} svg={HeaderLinkContingency.svg} notifications={notifications} />
+        <HeaderLink href={HeaderLinkContingency.href} svg={HeaderLinkContingency.svg} notifications={notifications} name="CONTINGÊNCIA"/>
     )
 }

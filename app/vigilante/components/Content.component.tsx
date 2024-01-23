@@ -5,24 +5,12 @@ import axios, { AxiosResponse } from "axios"
 import Cookies from "js-cookie"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useGetByUserIDContingency } from "@/hooks/hooks-contingency"
+import { useCreateAllCheckpoints } from "@/hooks/hooks-checkpoints"
 
 export default function Content({ name }: TContent) {
     const userId = Cookies.get("userId")
     const { data: contingency, isSuccess: contingencySuccess } = useGetByUserIDContingency(Number(userId))
-    const queryClient = useQueryClient()
-    const { mutate } = useMutation({
-        mutationFn: async () => {
-            const response = await axios.post(`${process.env.BACKEND_URL}/checkpoints/createall`)
-            console.log(response)
-            return response.data
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["usercheckpoints"] })
-        },
-        onError: () => {
-            console.log("FALHA AO CRIAR CHECKPOINTS")
-        }
-    })
+    const { mutate: createAllCheckpoints } = useCreateAllCheckpoints()
 
     const { data: checkpoint, isSuccess } = useQuery({
         queryKey: ['usercheckpoints'],
@@ -32,7 +20,7 @@ export default function Content({ name }: TContent) {
             console.log(data.data)
 
             if (!data?.data) {
-                mutate()
+                createAllCheckpoints()
             }
 
             return data.data
@@ -60,7 +48,6 @@ export default function Content({ name }: TContent) {
                     <Button checkpoint={checkpoint} />
                 </div>
             }
-
         </div>
     )
 }

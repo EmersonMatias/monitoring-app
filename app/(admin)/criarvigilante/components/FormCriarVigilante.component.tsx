@@ -1,215 +1,196 @@
 'use client'
-import { FormEvent, useState } from "react"
 import styles from "../styles.module.css"
 import { useCreateVigilant } from "@/hooks/hooks-vigilants";
+import { useForm } from "react-hook-form";
+import InputCreateVigilant from "@/components/InputCreateVigilant.component";
 
 export default function FormCriarVigilante() {
-    const [sucessMessage, setSucessMessage] = useState(false)
-    const [errorMessage, setErrorMessage] = useState(false)
-    const styleInput = "pl-4 py-2 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50"
-    const [createVigilantData, setCreateVigilantData] = useState<TCreateUser>(initialData)
-    console.log(createVigilantData)
-    const { mutate: createUser, isPending,error } = useCreateVigilant(createVigilantData, initialData, setCreateVigilantData, setSucessMessage, setErrorMessage)
-console.log(error)
-    async function handleSubmite(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        if(createVigilantData.saturday === "0" || createVigilantData.sunday === "0"){
-            return alert("Por favor, preencha todos os campos!")
-        }
-        createUser()
-    }
+    const { register, handleSubmit, formState: { errors }, reset: resetForm } = useForm<TCreateUser>()
+    const { mutate: createUser, isPending, reset, isSuccess, isError } = useCreateVigilant(resetForm)
 
-    if (sucessMessage) {
+    if (isSuccess || isError) {
         setTimeout(() => {
 
-            setSucessMessage(false)
+            reset()
         }, 5000)
     }
-
-    if (errorMessage) {
-        setTimeout(() => {
-
-            setErrorMessage(false)
-        }, 5000)
-    }
-
 
     return (
         <div className={`w-[600px] h-[700px] text-[#0b0b0b] bg-white mt-10 p-12 overflow-y-scroll ${styles.scrollable}`}>
-            <form className="flex flex-col" onSubmit={(event) => { handleSubmite(event) }}>
-                <label htmlFor="name" className="text-base mb-2 font-bold">Nome Completo:</label>
-                <input
-                    type="text"
-                    minLength={3}
-                    maxLength={150}
-                    disabled={isPending}
+            <form className="flex flex-col" onSubmit={handleSubmit((data) => createUser(data))}>
+
+                <InputCreateVigilant
                     id="name"
+                    name="name"
+                    type="text"
+                    label="Nome"
+                    isPending={isPending}
                     placeholder="Digite o nome completo"
-                    className={styleInput}
-                    required
-                    value={createVigilantData.name}
-                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, name: event.target.value }))}
+                    minLength={{
+                        value: 3,
+                        message: "Digite um nome com ao menos 3 letras"
+                    }}
+                    required="Digite um nome"
+                    register={register}
+                    message={errors.name && errors.name.message}
                 />
 
-                <label htmlFor="date" className=" text-base mb-2 font-bold">Data de Nascimento:</label>
-                <input
+                <InputCreateVigilant
+                    id="dob"
+                    name="dateofbirth"
                     type="date"
-                    disabled={isPending}
-                    id="date"
-                    minLength={10}
-                    maxLength={10}
-                    placeholder="Digite a data de nascimento"
-                    className={styleInput}
-                    required
-                    value={createVigilantData.dateofbirth}
-                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, dateofbirth: event.target.value }))}
+                    label="Data de Nascimento"
+                    required="Digite uma data de nascimento"
+                    register={register}
+                    message={errors.dateofbirth && errors.dateofbirth.message}
+                    validate={(data: string) => {
+                        if (data.length !== 10) return "Digite uma data no formato DD/MM/YYYY"
+                    }}
+                    isPending={isPending}
                 />
 
-                <label htmlFor="rg" className="text-base mb-2 font-bold">RG:</label>
-                <input
-                    type="text"
-                    disabled={isPending}
+                <InputCreateVigilant
                     id="rg"
-                    placeholder="Digite o RG - Apenas números sem pontos ou espaço "
-                    className={styleInput}
-                    required
-                    minLength={9}
-                    maxLength={9}
-                    value={createVigilantData.rg}
-                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, rg: event.target.value.replace(/\D/g, '') }))}
+                    name="rg"
+                    type="text"
+                    label="RG"
+                    required="Digite um RG"
+                    placeholder="Digite o RG - Apenas números sem pontos ou espaço"
+                    register={register}
+                    message={errors.rg && errors.rg.message}
+                    validate={(data: string) => {
+                        if (data.length !== 9) return "Digite um RG válido"
+                    }}
+                    isPending={isPending}
                 />
 
-                <label htmlFor="cpf" className="text-base mb-2 font-bold">CPF:</label>
-                <input
-                    type="text"
-                    disabled={isPending}
+                <InputCreateVigilant
                     id="cpf"
-                    placeholder="Digite o CPF - Apenas números sem pontos ou espaço "
-                    className={styleInput}
-                    required
-                    minLength={11}
-                    maxLength={11}
-                    value={createVigilantData.cpf}
-                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, cpf: event.target.value.replace(/\D/g, '') }))}
-
-                />
-
-                <label htmlFor="agencia" className="text-base mb-2 font-bold">Agência:</label>
-                <input
+                    name="cpf"
                     type="text"
-                    disabled={isPending}
-                    id="agencia"
-                    min={5}
-                    className={styleInput}
-                    required
-                    value={createVigilantData.agency}
-                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, agency: event.target.value }))}
+                    label="CPF"
+                    required="Digite um CPF"
+                    placeholder="Digite o CPF - Apenas números sem pontos ou espaço"
+                    register={register}
+                    message={errors.cpf && errors.cpf.message}
+                    validate={(data: string) => {
+                        if (data.length !== 11) return "Digite um CPF válido"
+                    }}
+                    isPending={isPending}
                 />
 
-                <label htmlFor="horariodeentrada" className="text-base mb-2 font-bold">Horário de Entrada:</label>
-                <input
+                <InputCreateVigilant
+                    id="agency"
+                    name="agency"
+                    type="text"
+                    label="Agência"
+                    required="Digite uma agência"
+                    placeholder="Digite a agência"
+                    register={register}
+                    message={errors.agency && errors.agency.message}
+                    isPending={isPending}
+                />
+
+                <InputCreateVigilant
+                    id="entryTime"
+                    name="entryTime"
                     type="time"
-                    disabled={isPending}
-                    id="horariodeentrada"
-                    className={styleInput}
-                    required
-                    minLength={5}
-                    maxLength={5}
-                    value={createVigilantData.entryTime}
-                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, entryTime: event.target.value }))}
+                    label="Horário de Entrada"
+                    required="Digite um horário de entrada"
+                    register={register}
+                    message={errors.entryTime && errors.entryTime.message}
+                    isPending={isPending}
                 />
 
-                <label htmlFor="horariodesaida" className="text-base mb-2 font-bold">Horário de Saída:</label>
-                <input
+                <InputCreateVigilant
+                    id="departureTime"
+                    name="departureTime"
                     type="time"
-                    disabled={isPending}
-                    id="horariodesaida"
-                    className={styleInput}
-                    required
-                    value={createVigilantData.departureTime}
-                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, departureTime: event.target.value }))}
+                    label="Horário de Saída"
+                    required="Digite um horário de saída"
+                    register={register}
+                    message={errors.departureTime && errors.departureTime.message}
+                    isPending={isPending}
                 />
 
-                <select defaultValue="0" className=" px-4 py-4 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50" onChange={(e) => { setCreateVigilantData({...createVigilantData, saturday: e?.target.value}) }} >
-                    <option value="0">O vigilante trabalha de sábado?</option>
-                    <option value="true" >Sim</option>
-                    <option value="false" >Não</option>
-                </select>
+                <select
+                    disabled={isPending}
+                    {...register("saturday", {
+                        required: "Escolha uma opção"
+                    })}
+                    className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-2 disabled:opacity-50 mt-2">
 
-                <select defaultValue="0" className=" px-4 py-4 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50" onChange={(e) => { setCreateVigilantData({...createVigilantData, sunday: e?.target.value}) }} >
-                    <option value="0">O vigilante trabalha de domingo?</option>
-                    <option value="true" >Sim</option>
-                    <option value="false" >Não</option>
+                    <option value="">O vigilante trabalha de sábado?</option>
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
                 </select>
+                {errors.saturday && <p className="pl-2 font-bold text-red-600">{errors.saturday.message}</p>}
 
-                <label htmlFor="frequency" className="text-base mb-2 font-bold">Frequência de comunicação:</label>
-                <input
-                    type="number"
+                <select
+                    disabled={isPending}
+                    {...register("sunday", {
+                        required: "Escolha uma opção"
+                    })}
+                    className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-2 disabled:opacity-50 mt2">
+
+                    <option value="">O vigilante trabalha de domingo?</option>
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
+                </select>
+                {errors.sunday && <p className="pl-2 font-bold text-red-600">{errors.sunday.message}</p>}
+
+                <InputCreateVigilant
                     id="frequency"
-                    disabled={isPending}
+                    name="frequency"
+                    type="number"
+                    label="Frequência de comunicação:"
+                    required="Digite um frequência de comunicação"
                     placeholder="Digite a frequência de cominucação em minutos "
-                    className={styleInput}
-                    minLength={5}
-                    maxLength={150}
-                    required
-                    value={createVigilantData.frequency}
-                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, frequency: Number(event.target.value) }))}
+                    register={register}
+                    message={errors.frequency && errors.frequency.message}
+                    isPending={isPending}
                 />
 
-
-                <label htmlFor="login" className="text-base mb-2 font-bold">Login:</label>
-                <input
-                    type="text"
+                <InputCreateVigilant
                     id="login"
-                    disabled={isPending}
-                    placeholder="Digite o login "
-                    className={styleInput}
-                    minLength={5}
-                    maxLength={150}
-                    required
-                    value={createVigilantData.login}
-                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, login: event.target.value }))}
+                    name="login"
+                    type="text"
+                    label="Login"
+                    required="Digite um login"
+                    placeholder="Digite o login"
+                    register={register}
+                    message={errors.login && errors.login.message}
+                    validate={(data: string) => {
+                        if (data.length < 5) return "Digite um login de no mínimo 5 digitos"
+                    }}
+                    isPending={isPending}
                 />
 
-                <label htmlFor="senha" className="text-base mb-2 font-bold">Senha:</label>
-                <input
-                    type="password"
-                    id="senha"
-                    placeholder="Digite a senha "
-                    minLength={8}
-                    maxLength={150}
-                    className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-6 disabled:opacity-50"
-                    required
-                    value={createVigilantData.password}
-                    onChange={(event) => (setCreateVigilantData({ ...createVigilantData, password: event.target.value }))}
-                    disabled={isPending}
+                <InputCreateVigilant
+                    id="password"
+                    name="password"
+                    type="text"
+                    label="Senha"
+                    required="Digite um senha"
+                    placeholder="Digite a senha"
+                    register={register}
+                    message={errors.password && errors.password.message}
+                    validate={(data: string) => {
+                        if (data.length < 8) return "Digite um senha de no mínimo 8 digitos"
+                    }}
+                    isPending={isPending}
                 />
 
                 <button className="bg-[#f0a830] py-3 mx-[150px] text-xl font-semibold rounded-md text-white disabled:opacity-50 " disabled={isPending}>{isPending ? "Criando usuário..." : "Criar Usuário"}</button>
             </form>
 
-            <div className={`fixed font-bold text-2xl bottom-10 right-10 bg-green-500 bg-opacity-70 p-8 rounded-lg ${sucessMessage ? "" : "hidden"}`} >
+            <div className={`fixed font-bold text-2xl bottom-10 right-10 bg-green-500 bg-opacity-70 p-8 rounded-lg ${isSuccess ? "" : "hidden"}`} >
                 Conta criada com sucesso
             </div>
 
-            <div className={`max-w-80 fixed text-center font-bold text-2xl bottom-10 right-10 bg-red-500 bg-opacity-70 p-8 rounded-lg ${errorMessage ? "" : "hidden"}`} >
+            <div className={`max-w-80 fixed text-center font-bold text-2xl bottom-10 right-10 bg-red-500 bg-opacity-70 p-8 rounded-lg ${isError ? "" : "hidden"}`} >
                 Conta não criada! Verifique os dados inseridos.
             </div>
         </div>
     )
-}
-
-const initialData = {
-    name: "",
-    dateofbirth: "",
-    rg: "",
-    cpf: "",
-    agency: "",
-    entryTime: "",
-    departureTime: "",
-    login: "",
-    password: "",
-    frequency: 60,
-    saturday: "0",
-    sunday: "0"
 }

@@ -18,6 +18,17 @@ type TVigilant = {
     entryTime: string,
     departureTime: string,
     agency: string
+    saturday: boolean
+    sunday: boolean
+    contigency: {
+        id: number,
+        contigency: boolean,
+        frequency: number,
+        hour: number | null,
+        minute: number | null,
+        status: string,
+        userId: number,
+    }
 }
 
 type TCheckpoints = {
@@ -48,6 +59,7 @@ type TCreateUser = {
     saturday: string,
     sunday: string
 }
+
 
 type TUpdateUser = {
     name: string;

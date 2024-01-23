@@ -1,9 +1,11 @@
 'use client'
-import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
+import { useCreateAllCheckpoints, useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
 import { checkpointsOrange } from "../functions"
 
 export default function OrangeTable({ search }: { readonly search: string }) {
-    const { data: checkpoints, isSuccess, isRefetching } = useGetAllTodayCheckpoint()
+    const {mutate: createAllCheckpoints} = useCreateAllCheckpoints()
+
+    const { data: checkpoints, isSuccess, isRefetching } = useGetAllTodayCheckpoint(createAllCheckpoints)
 
     return (
         <div className="max-w-[600px] overflow-x-auto  mt-6  flex flex-col items-center bg-[#FFFFFF] p-5  border-[2px] rounded-2xl">

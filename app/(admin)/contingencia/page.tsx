@@ -3,7 +3,7 @@ import { dateTime } from "@/app/utils/constants"
 import { useGetAllContingency } from "@/hooks/hooks-contingency"
 
 export default function Contingency(){
-    const {data: contingency} = useGetAllContingency()
+    const {data: contingency, isRefetching} = useGetAllContingency()
     const {hour, minute} = dateTime()
 
     function late(contingency: TContigency){
@@ -11,7 +11,7 @@ export default function Contingency(){
         const currentTime = Number(hour) * 60 + Number(minute)
         const diff = currentTime - lastStatus
         const restTime = Number(contingency?.frequency) - diff
-        
+
         if(restTime >=0){
             return <div className="bg-[#76a561] py-1 px-2 rounded-lg font-bold text-white">OK</div>
 

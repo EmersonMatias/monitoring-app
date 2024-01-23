@@ -1,11 +1,13 @@
 'use client'
 import { useCreateAlert } from "@/hooks/hooks-alert";
-import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
+import { useCreateAllCheckpoints, useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
 import { useRef } from "react"
 import { checkpointsRed, delayAlert } from "../functions";
 
 export default function RedTable({ search }: { readonly search: string }) {
-    const { data: checkpoints, isSuccess, isFetching } = useGetAllTodayCheckpoint()
+    const {mutate: createAllCheckpoints} = useCreateAllCheckpoints()
+
+    const { data: checkpoints, isSuccess, isFetching } = useGetAllTodayCheckpoint(createAllCheckpoints)
     const { mutate: createAlert } = useCreateAlert()
 
     const alertRef = useRef()

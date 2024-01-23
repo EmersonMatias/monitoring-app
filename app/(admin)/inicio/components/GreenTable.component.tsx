@@ -1,9 +1,10 @@
 'use client'
-import { useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
+import { useCreateAllCheckpoints, useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
 import { checkpointsGreen } from "../functions"
 
 export default function GreenTable({ search }: { readonly search: string }) {
-    const { data: checkpoints, isSuccess } = useGetAllTodayCheckpoint()
+    const {mutate: createAllCheckpoints} = useCreateAllCheckpoints()
+    const { data: checkpoints, isSuccess } = useGetAllTodayCheckpoint(createAllCheckpoints)
 
     return (
         <div className="max-w-[600px] overflow-x-auto mt-6 flex flex-col items-center bg-[#FFFFFF] p-5 border-[2px] rounded-2xl">

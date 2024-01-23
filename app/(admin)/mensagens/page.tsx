@@ -1,24 +1,9 @@
 'use client'
-import { useEffect } from "react";
 import FormMessage from "./FormMessage.component";
-import Cookies from "js-cookie"
-import { useRouter } from "next/navigation";
 import { useGetAllMessages } from "@/hooks/hooks-messages";
 
 export default function Mensagens() {
     const { data: messages } = useGetAllMessages()
-    const token = Cookies.get("token")
-    const router = useRouter()
-    const messageR = messages?.slice()?.reverse()
-    console.log(messageR)
- 
-    useEffect(() => {
-
-        if (token === undefined) {
-            return router.push("/")
-        }
-
-    }, [router, token])
 
     return (
         <main className="flex mt-10 justify-center  ">
