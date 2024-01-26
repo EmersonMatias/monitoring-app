@@ -1,11 +1,12 @@
-import { useGetAllVigilants } from "@/hooks/hooks-vigilants"
+
 import { useState } from "react"
 import VigilantReport from "./vigilant-report-component"
+import { useFindAllVigilants } from "@/hooks/hooks-vigilants"
 
 
 
 export default function ChooseVigilant({ typeReport }: { typeReport: string }) {
-    const { data: vigilants } = useGetAllVigilants()
+    const { data: vigilants } = useFindAllVigilants()
     const [userId, setUserId] = useState<string | undefined>("0")
     const [withFilter, setWithFilter] = useState<string>("0")
     const [report, setReport] = useState(false)
