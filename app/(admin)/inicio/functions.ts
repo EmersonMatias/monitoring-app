@@ -4,7 +4,7 @@ import { MutableRefObject } from "react"
 
 export function checkpointsGreen(checkpoints: TCheckpoints[] | undefined, search: string) {
     const checkpointsOK = checkpoints?.filter((checkpoints) => checkpoints.arrived === true)
-    const checkpointsFilter = checkpointsOK?.filter((checkpoints) => checkpoints.user.agency.name.toLowerCase().includes(`${search.toLowerCase()}`))
+    const checkpointsFilter = checkpointsOK?.filter((checkpoints) => checkpoints.user.agency.name?.toLowerCase().includes(`${search?.toLowerCase()}`))
     if (search.length === 0) {
         return checkpointsOK
     } else return checkpointsFilter
@@ -23,7 +23,7 @@ export function checkpointsRed(checkpoints: TCheckpoints[] | undefined, search: 
         if (!checkpoint.arrived && hourMinutes > checkpointHourMinutes) return checkpoint
     })
 
-    const checkpointsAlertSearch = checkpointsAlert?.filter((checkpoints) => checkpoints.user.agency.name.toLowerCase().includes(`${search.toLowerCase()}`))
+    const checkpointsAlertSearch = checkpointsAlert?.filter((checkpoints) => checkpoints.user.agency?.name?.toLowerCase().includes(`${search?.toLowerCase()}`))
 
     if (search.length === 0) {
         return checkpointsAlert
@@ -42,7 +42,7 @@ export function checkpointsOrange(checkpoints: TCheckpoints[] | undefined, searc
         if (!checkpoint.arrived && hourMinutes <= checkpointHourMinutes) return checkpoint
     })
 
-    const checkpointsWaitingSearch = checkpointsWaiting?.filter((checkpoints) => checkpoints.user.agency.name.toLowerCase().includes(`${search.toLowerCase()}`))
+    const checkpointsWaitingSearch = checkpointsWaiting?.filter((checkpoints) => checkpoints.user.agency.name?.toLowerCase().includes(`${search?.toLowerCase()}`))
 
     if (search.length === 0) {
         return checkpointsWaiting
