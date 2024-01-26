@@ -1,5 +1,6 @@
 import { UseMutateFunction, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
+import { UseFormReset } from "react-hook-form"
 
 export function useGetAllCheckpoints() {
   return useQuery({
@@ -20,7 +21,7 @@ export function useGetAllTodayCheckpoint(createAllCheckpoints: UseMutateFunction
     queryFn: async () => {
       const data: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints=today`)
 
-      if(data.data.length === 0){
+      if (data.data.length === 0) {
         createAllCheckpoints()
       }
 
@@ -45,6 +46,22 @@ export function useCreateAllCheckpoints() {
     },
     onError: () => {
       console.log("FALHA AO CRIAR CHECKPOINTS")
+    }
+  })
+}
+
+export function useCreateCheckpoint(resetForm: UseFormReset<TCreateCheckpointForm>) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({day,month,year,userId}: TCreateCheckpointData) => {
+      const data = {day,month,year}
+
+      const response = await axios.post(`${process.env.BACKEND_URL}/checkpoint/${userId}`, data)
+      return response.data
+    },
+    onSuccess: () => {
+      resetForm()
     }
   })
 }

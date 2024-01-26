@@ -19,16 +19,16 @@ type InputCreateVigilantProps = {
     }
     readonly placeholder?: string
     readonly message?: string
-    readonly isPending: boolean
+    readonly isPending?: boolean
 }
 
-export default function InputCreateVigilant({ register,message,isPending, type, id, label, validate, required, minLength, maxLength, name, placeholder }: InputCreateVigilantProps) {
+export default function InputForm({ register,message,isPending, type, id, label, validate, required, minLength, maxLength, name, placeholder }: InputCreateVigilantProps) {
 
     return (
         <div className="flex flex-col mt-2">
             <label className="text-base mb-2 font-bold" htmlFor={id}>{label}</label>
             <input id={id}
-                className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-2 disabled:opacity-50"
+                className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-2 disabled:opacity-50 w-[500px]"
                 type={type}
                 disabled={isPending}
                 placeholder={placeholder}

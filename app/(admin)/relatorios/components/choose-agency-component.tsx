@@ -1,9 +1,9 @@
-import { useGetAllVigilants } from "@/hooks/hooks-vigilants"
+import { useFindAllVigilants } from "@/hooks/hooks-vigilants"
 import { useState } from "react"
 import AgencyReport from "./agency-report-component"
 
 export default function ChooseAgency({ typeReport }: { typeReport: string }) {
-    const { data: vigilants } = useGetAllVigilants()
+    const { data: vigilants } = useFindAllVigilants()
     const [agency, setAgency] = useState<string>("0")
     const agencies = vigilants?.map((vigilant) => {
         return vigilant.agency
@@ -29,7 +29,7 @@ export default function ChooseAgency({ typeReport }: { typeReport: string }) {
 
                     {
                         agenciesList?.map((agency) => (
-                            <option className="" key={agency} value={agency}>{agency}</option>
+                            <option className="" key={agency.id} value={agency.name}>{agency.name}</option>
                         ))
                     }
 

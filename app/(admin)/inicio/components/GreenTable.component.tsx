@@ -29,7 +29,7 @@ export default function GreenTable({ search }: { readonly search: string }) {
                             <td className="px-4 py-2 max-w-[200px] text-sm">{vigilant.user.name}</td>
                             <td className="px-4 py-2 text-sm">{vigilant.user.entryTime}</td>
                             <td className="px-4 py-2 text-sm">{vigilant.arrivalTime}</td>
-                            <td className="px-4 py-2 text-sm">{vigilant.user.agency}</td>
+                            <td className="px-4 py-2 text-sm">{vigilant.user.agency.name}</td>
                             <td className="px-4 py-2 text-sm  justify-center items-center ">
                                 <div className="bg-[#76a561] py-1 px-2 rounded-lg font-bold text-white">OK</div>
                             </td>

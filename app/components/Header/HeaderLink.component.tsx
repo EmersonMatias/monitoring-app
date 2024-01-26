@@ -12,7 +12,7 @@ export default function HeaderLink({ href, svg, notifications, name }: LinkCusto
             }
 
             {svg}
-            <p className="mt-2 text-sm font-bold text-white max-w-[100px] text-center">{name}</p>
+            <p className="mt-2 text-sm font-bold text-white max-w-[150px] text-center">{name}</p>
         </Link>
     )
 }

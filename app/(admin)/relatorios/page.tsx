@@ -1,8 +1,6 @@
 'use client'
-
-import { useGetAllVigilants } from "@/hooks/hooks-vigilants"
 import axios, { AxiosResponse } from "axios"
-import { Dispatch, FormEvent, MouseEvent, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, FormEvent, SetStateAction, useState } from "react"
 import ChooseVigilant from "./components/choose-vigilant-component"
 import ChooseAgency from "./components/choose-agency-component"
 

@@ -19,14 +19,42 @@ export function useCreateVigilant(resetForm: UseFormReset<TCreateUser>) {
     })
 }
 
-export function useGetAllVigilants() {
+export function useFindAllVigilants() {
     return useQuery({
-        queryKey: ["vigilantes"],
+        queryKey: ["vigilants"],
         queryFn: async () => {
             const data: AxiosResponse<TVigilant[]> = await axios.get(`${process.env.BACKEND_URL}/vigilants`)
             return data.data
         },
         refetchOnMount: true
+    })
+}
+
+export function useFindOneVigilant(id: number) {
+    return useQuery({
+        queryKey: ["vigilant", `${id}`],
+        queryFn: async () => {
+            const data: AxiosResponse<TVigilant2> = await axios.get(`${process.env.BACKEND_URL}/vigilants/${id}`)
+            return data.data
+        },
+        refetchOnMount: true,
+    })
+}
+
+export function useUpdateVigilant() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: async (updateVigilantData: TUpdateUser & { id: number }) => {
+            const [year, month, day] = updateVigilantData.dateofbirth.split("-")
+
+            const response = await axios.post(`${process.env.BACKEND_URL}/vigilants/${updateVigilantData.id}`, { ...updateVigilantData, dateofbirth: `${day}/${month}/${year}` })
+            console.log(response)
+            return response.data
+        },
+        onSuccess: (_, updateVigilantData) => {
+            queryClient.invalidateQueries({queryKey: ["vigilant", `${updateVigilantData.id}`]})
+        }   
     })
 }
 
@@ -36,11 +64,11 @@ export function useDeleteVigilant() {
     return useMutation({
         mutationFn: async (id: number) => {
             const sucess = await axios.delete(`${process.env.BACKEND_URL}/vigilants/${id}`)
-            return sucess
+            return sucess.data
         },
         onSuccess: () => {
-            alert("Usuário deletado com sucesso!")
-            queryClient.invalidateQueries({ queryKey: ["vigilantes"] })
+            queryClient.invalidateQueries({ queryKey: ["vigilants"] })
         }
     })
 }
+

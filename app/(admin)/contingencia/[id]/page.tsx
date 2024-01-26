@@ -1,11 +1,12 @@
 'use client'
+import ButtonForm from "@/components/ButtonForm"
 import InputOrange from "@/components/InputOrange.component"
 import { useActivateContingency, useDeactivateContingency, useGetByUserIDContingency } from "@/hooks/hooks-contingency"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 
-export default function CreateContingency({ params }: { params: { id: string } }) {
+export default function CreateContingency({ params }: { readonly params: { id: string } }) {
     const { data: contingency, isSuccess } = useGetByUserIDContingency(Number(params.id))
     const { register, handleSubmit, setValue } = useForm<{ frequency: number }>()
     const { mutate: activateContingency } = useActivateContingency()
@@ -47,7 +48,7 @@ export default function CreateContingency({ params }: { params: { id: string } }
                             label="Digite a frequência"
                             required="Por favor, digite uma frequência"
                         />
-                        <button className="p-2 bg-[#f0a830] text-white font-bold py-3 rounded-md">Ativar contingência</button>
+                        <ButtonForm>Ativar contingência</ButtonForm>
                     </form>
                 </div>
             }
@@ -55,7 +56,12 @@ export default function CreateContingency({ params }: { params: { id: string } }
             {(isSuccess && contingency.contigency) &&
                 <div className="bg-white w-[400px]  mt-10 rounded-md p-5 flex flex-col items-center ">
                     <p className="font-semibold text-lg mb-5">Contingência está ativa</p>
-                    <button className="p-2 bg-red-400 text-white font-bold py-3 rounded-md" onClick={onSubmitDeactivateContingency}>Desativar contingência</button>
+
+                    <button
+                        className="p-2 bg-red-400 text-white font-bold py-3 rounded-md"
+                        onClick={onSubmitDeactivateContingency}>
+                        Desativar contingência
+                    </button>
                 </div>
             }
         </div>

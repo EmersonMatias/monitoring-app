@@ -36,7 +36,7 @@ export default function Page() {
                                 <td className=" px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{eachStatus.user.name}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.user.entryTime}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.user.departureTime}</td>
-                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.user.agency}</td>
+                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.user.agency.name}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.status}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{`${eachStatus.hour.toString().padStart(2, "0")}:${eachStatus.minute.toString().padStart(2, "0")}`}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">

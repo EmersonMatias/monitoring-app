@@ -4,7 +4,7 @@ import Logo from "@/public/Logo.png"
 import { handleExit } from "@/app/vigilante/components/VigilantHeader.component";
 import { useRouter } from "next/navigation";
 import HeaderLink from "./HeaderLink.component";
-import { HeaderLinkCreateVigilant, HeaderLinkHome, HeaderLinkReports, HeaderLinkSettings, HeaderLinkStatistic } from "./constants";
+import { HeaderLinkCreateAgency, HeaderLinkCreateVigilant, HeaderLinkHome, HeaderLinkReports, HeaderLinkSettings, HeaderLinkStatistic } from "./constants";
 import HeaderContingency from "./HeaderContingency.component";
 import HeaderStatus from "./HeaderStatus.component";
 import HeaderMessages from "./HeaderMessages.component";
@@ -24,6 +24,8 @@ export default function Header() {
                 <HeaderLink href={HeaderLinkStatistic.href} svg={HeaderLinkStatistic.svg} name="ESTATÍSTICAS"/>
 
                 <HeaderLink href={HeaderLinkCreateVigilant.href} svg={HeaderLinkCreateVigilant.svg} name="CRIAR VIGILANTE"/>
+
+                <HeaderLink href={HeaderLinkCreateAgency.href} svg={HeaderLinkCreateAgency.svg} name="CRIAR VIGILANTE"/>
 
                 <HeaderContingency />
 

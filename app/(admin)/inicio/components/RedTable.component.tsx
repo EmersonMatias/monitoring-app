@@ -32,10 +32,10 @@ export default function RedTable({ search }: { readonly search: string }) {
                 </thead>
                 <tbody>
                     {isSuccess && checkpointsAlert?.map((vigilant: TCheckpoints) => (
-                        <tr key={vigilant.user.name} className={`rounded-2xl text-center ${vigilant.user.agency === "admin" && "hidden"}`}>
+                        <tr key={vigilant.user.name} className={`rounded-2xl text-center ${vigilant.user.agency.name === "admin" && "hidden"}`}>
                             <td className=" px-4 py-2 max-w-[200px] text-sm ">{vigilant.user.name}</td>
                             <td className="px-4 py-2 text-sm">{vigilant.user.entryTime}</td>
-                            <td className="px-4 py-2 text-sm">{vigilant.user.agency}</td>
+                            <td className="px-4 py-2 text-sm">{vigilant.user.agency.name}</td>
                             <td className="px-4 py-2  justify-center items-center text-sm">
                                 <div className="bg-[#FC6F6F] text-white py-1 px-2 rounded-lg font-bold">Alerta</div>
                             </td>

@@ -17,7 +17,7 @@ type TVigilant = {
     name: string,
     entryTime: string,
     departureTime: string,
-    agency: string
+    agency: TAgency
     saturday: boolean
     sunday: boolean
     contigency: {
@@ -31,6 +31,27 @@ type TVigilant = {
     }
 }
 
+type TVigilant2 = {
+    name: string,
+    dateofbirth: string,
+    login: string,
+    rg: string,
+    cpf: string,
+    entryTime: string,
+    departureTime: string,
+    saturday: boolean,
+    sunday: boolean,
+    agency: {
+      id: number,
+      name: string
+    },
+    status: [
+      {
+        frequency: number
+      }
+    ]
+  }
+
 type TCheckpoints = {
     id: number
     arrived: boolean,
@@ -40,7 +61,7 @@ type TCheckpoints = {
     year: number,
     user: {
         name: string,
-        agency: string
+        agency: TAgency
         entryTime: string
     }
 }
@@ -50,7 +71,7 @@ type TCreateUser = {
     dateofbirth: string;
     rg: string;
     cpf: string;
-    agency: string;
+    agencyId: string;
     entryTime: string;
     departureTime: string;
     login: string;
@@ -61,12 +82,22 @@ type TCreateUser = {
 }
 
 
+type TAgency = {
+    id: number,
+    name: string
+}
+
+type TCreateAgency = {
+    name: string
+}
+
+
 type TUpdateUser = {
     name: string;
     dateofbirth: string ;
     rg: string ;
     cpf: string ;
-    agency: string ;
+    agencyId: number ;
     entryTime: string ;
     departureTime: string;
     login: string;
@@ -115,7 +146,7 @@ type TUserStatus = {
     name: string,
     entryTime: string,
     departureTime: string,
-    agency: string
+    agency: TAgency
 }
 
 type TStatusWithUser = {
@@ -154,6 +185,19 @@ type TUpdateStatus = {
     statusID: number | undefined
 }
 
+// ! CHECKPOINT TYPES
+
+type TCreateCheckpointForm = {
+    date: string
+}
+
+type TCreateCheckpointData = {
+    day: number,
+    month: number,
+    year: number,
+    userId: number
+}
+
 // ! CONTINGENCY TYPES
 type TActivateContingencyData = {
     userId: number,
@@ -180,4 +224,6 @@ type TContigency = {
     user: {
         name: string
     }
-  }
+}
+
+

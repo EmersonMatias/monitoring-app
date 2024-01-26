@@ -3,7 +3,6 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { currentTime, dateTime } from '../../utils/constants';
 import { useGetAllCheckpoints } from '@/hooks/hooks-checkpoints';
 
-
 export default function Estatisticas() {
   const { data: checkpoints } = useGetAllCheckpoints()
   const { hour, minutes } = currentTime()
@@ -19,7 +18,7 @@ export default function Estatisticas() {
   checkpoints?.map((checkpoint) => {
     const checkpointDate = `${checkpoint.day.toString().padStart(2, "0")}/${checkpoint.month.toString().padStart(2, "0")}/${checkpoint.year.toString().padStart(2, "0")}`
     console.log(checkpointDate, currentDate)
-    if (checkpointDate === currentDate && checkpoint.user.agency !== "admin") {
+    if (checkpointDate === currentDate && checkpoint.user.agency.name !== "admin") {
       if (checkpoint.arrived === true) {
         chegou = chegou + 1
       } else if (checkpoint.arrived === false &&
@@ -57,7 +56,7 @@ export default function Estatisticas() {
             {
               alert.map((conteudo) => (
                 <div className='text-center mt-4 p-4 bg-[#ECECEC] rounded-md' key={conteudo.user.name}>
-                  <p className='font-bold'>{conteudo.user.agency}</p>
+                  <p className='font-bold'>{conteudo.user.agency.name}</p>
                   <span>{conteudo.user.name} </span> <span className='text-red-500 font-bold'> ATRASADO</span>
                 </div>
               ))
