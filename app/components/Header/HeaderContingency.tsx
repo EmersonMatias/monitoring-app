@@ -1,6 +1,6 @@
 'use client'
 import { useGetAllContingency } from "@/hooks/hooks-contingency";
-import HeaderLink from "./HeaderLink.component";
+import HeaderLink from "./HeaderLink";
 import { HeaderLinkContingency } from "./constants";
 import { contingencyNotifications } from "./functions";
 

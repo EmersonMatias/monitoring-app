@@ -1,9 +1,9 @@
 'use client'
 import FormMessage from "./FormMessage.component";
-import { useGetAllMessages } from "@/hooks/hooks-messages";
+import { useFindAllMessages } from "@/hooks/hooks-messages";
 
 export default function Mensagens() {
-    const { data: messages } = useGetAllMessages()
+    const { data: messages } = useFindAllMessages()
 
     return (
         <main className="flex mt-10 justify-center  ">
@@ -14,7 +14,7 @@ export default function Mensagens() {
                     <div key={message.id} className="text-left flex flex-col gap-2 pl-10 mt-4 p-4 bg-[#ECECEC] rounded-md">
                         <p><span className="font-bold">Vigilante:</span> {message?.user?.name}</p>
 
-                        <p><span className="font-bold">Agência:</span> {message?.user?.agency}</p>
+                        <p><span className="font-bold">Agência:</span> {message?.user?.agency.name}</p>
 
                         <p><span className="font-bold">Dia: </span>
                             {message.day.toString().padStart(2, "0")}/

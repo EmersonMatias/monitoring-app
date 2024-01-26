@@ -1,6 +1,6 @@
 'use client'
 import { useGetAllStatus } from "@/hooks/hooks-status";
-import HeaderLink from "./HeaderLink.component";
+import HeaderLink from "./HeaderLink";
 import { HeaderLinkStatus } from "./constants";
 import { useRef } from "react";
 import { panicStatusAlert } from "./functions";

@@ -3,12 +3,12 @@ import Image from "next/image";
 import Logo from "@/public/Logo.png"
 import { handleExit } from "@/app/vigilante/components/VigilantHeader.component";
 import { useRouter } from "next/navigation";
-import HeaderLink from "./HeaderLink.component";
+import HeaderLink from "./HeaderLink";
 import { HeaderLinkCreateAgency, HeaderLinkCreateVigilant, HeaderLinkHome, HeaderLinkReports, HeaderLinkSettings, HeaderLinkStatistic } from "./constants";
-import HeaderContingency from "./HeaderContingency.component";
-import HeaderStatus from "./HeaderStatus.component";
-import HeaderMessages from "./HeaderMessages.component";
-import HeaderAlerts from "./HeaderAlerts.component";
+import HeaderContingency from "./HeaderContingency";
+import HeaderStatus from "./HeaderStatus";
+import HeaderMessages from "./HeaderMessages";
+import HeaderAlerts from "./HeaderAlerts";
 
 export default function Header() {
     const router = useRouter()
@@ -25,7 +25,7 @@ export default function Header() {
 
                 <HeaderLink href={HeaderLinkCreateVigilant.href} svg={HeaderLinkCreateVigilant.svg} name="CRIAR VIGILANTE"/>
 
-                <HeaderLink href={HeaderLinkCreateAgency.href} svg={HeaderLinkCreateAgency.svg} name="CRIAR VIGILANTE"/>
+                <HeaderLink href={HeaderLinkCreateAgency.href} svg={HeaderLinkCreateAgency.svg} name="CRIAR AGÊNCIA"/>
 
                 <HeaderContingency />
 

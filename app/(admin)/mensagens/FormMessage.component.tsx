@@ -25,7 +25,7 @@ export default function FormMessage({ messageId }: { readonly messageId: number 
             {errors.comment && <p className="mt-2 pl-2 font-bold text-red-600">{errors.comment.message}</p>}
 
             <div className="flex justify-center">
-                <button className="bg-red-400 p-4 mt-6 font-bold text-white rounded-md disabled:opacity-50" disabled={isPending}>Salvar comentário</button>
+                <button className="bg-red-400 p-4 mt-6 font-bold text-white rounded-md disabled:opacity-50" disabled={isPending}>{isPending ? "Salvando comentário..." : "Salvar comentário"}</button>
             </div>
         </form>
     )

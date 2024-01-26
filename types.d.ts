@@ -133,7 +133,7 @@ type TMessage = {
     viewed: boolean,
     user: {
         name: string,
-        agency: string
+        agency: TAgency
     }
 }
 

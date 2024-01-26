@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { logged } from "../utils/functions"
-import Header from "../components/Header/Header.component"
+import Header from "../components/Header/Header"
 
 export default function Layout({
   children,
