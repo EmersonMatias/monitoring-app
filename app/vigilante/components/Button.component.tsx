@@ -1,27 +1,19 @@
 'use client'
-import axios from "axios"
-import { TUserCheckpoints } from "../requests"
-import { useRouter } from "next/navigation"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
-async function handleButton(checkpoint: TUserCheckpoints | undefined, router: AppRouterInstance) {
+import { useUpdateCheckpoint } from "@/hooks/hooks-checkpoints"
+
+export default function Button({ checkpoint }: { readonly checkpoint: TUserCheckpoints | undefined }) {
+    const { mutate: updateCheckpoint } = useUpdateCheckpoint()
     const checkpointId = checkpoint?.id
-    const sucess = await axios.put(`${process.env.BACKEND_URL}/checkpoint`, { checkpointId })
-
-    if (sucess.status === 200) {
-        location.reload()
-        router.refresh()
-    }
-}
-
-export default function Button({ checkpoint }: { checkpoint: TUserCheckpoints | undefined }) {
-    const router = useRouter()
-
+    
     return (
         <div className="flex justify-center mt-4">
             {checkpoint?.arrived ?
                 <div className="bg-green-500 p-2 rounded-lg font-bold text-white">Checkpoint do dia realizado!</div> :
-                <button className="bg-blue-600 p-2 rounded-lg cursor-pointer font-bold text-white" onClick={() => handleButton(checkpoint, router)}>Fazer Checkpoint</button>
+                <button 
+                className="bg-blue-600 p-2 rounded-lg cursor-pointer font-bold text-white"
+                onClick={() => updateCheckpoint(checkpointId)}
+                >Fazer Checkpoint</button>
             }
         </div>
     )

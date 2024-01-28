@@ -10,7 +10,7 @@ export function contingencyNotifications(isSuccess: boolean, contingencies: TCon
         const currentTime = Number(hour) * 60 + Number(minute)
         const diff = currentTime - lastStatus
         if (contingency.contigency) {
-            if (Number(contingency?.frequency) - diff < 0) return contingency
+            if (diff > 5 || contingency.status === "EMERGENCY") return contingency
         }
 
     }).length
@@ -44,6 +44,40 @@ export function panicStatusAlert({ isSuccess, statusRef, status }: PanicStatusAl
     }
 }
 
+export function emergencyContingencyAlert({ isSuccess, contingenciesRef, contingencies }: EmergencyContingencyAlertProps) {
+    if (!isSuccess) return null
+
+    const currentContingency = contingenciesRef.current
+
+    if (currentContingency === undefined) {
+        contingenciesRef.current = contingencies
+    }
+    console.log(contingencies)
+    console.log(currentContingency)
+
+    const lengthContingencies = Number(contingencies?.filter((contingency) => contingency.status === "EMERGENCY" && contingency.contigency).length)
+    const lengthContingenciesRef = Number(contingenciesRef?.current?.filter((contingency) => contingency.status === "EMERGENCY" && contingency.contigency).length)
+    const diffContingencies = JSON.stringify(contingencies) !== JSON.stringify(currentContingency)
+    console.log(diffContingencies)
+    console.log(lengthContingencies)
+    console.log(lengthContingenciesRef)
+
+    if (currentContingency && diffContingencies && lengthContingencies > lengthContingenciesRef) {
+        const PanicAudio = new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3")
+
+        contingencies?.forEach((contingency) => {
+            if (contingency.status === "EMERGENCY") {
+                PanicAudio.play()
+                contingenciesRef.current = contingencies
+            }
+        })
+
+    }else{
+        contingenciesRef.current = contingencies
+    }
+}
+
+
 export function messageAlert({ isSuccess, messages, messagesRef }: MessageAlertProps) {
     if (!isSuccess) return null
 
@@ -74,5 +108,11 @@ type PanicStatusAlertProps = {
     isSuccess: boolean
     statusRef: MutableRefObject<TStatusWithUser[] | undefined>,
     status: TStatusWithUser[] | undefined
+}
+
+type EmergencyContingencyAlertProps = {
+    isSuccess: boolean
+    contingenciesRef: MutableRefObject<TContigency[] | undefined>,
+    contingencies: TContigency[] | undefined
 }
 

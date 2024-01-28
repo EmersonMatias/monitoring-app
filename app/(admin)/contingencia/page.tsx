@@ -1,24 +1,35 @@
 'use client'
 import { dateTime } from "@/app/utils/constants"
 import { useGetAllContingency } from "@/hooks/hooks-contingency"
+import { useEffect, useRef } from "react"
 
 export default function Contingency() {
     const { data: contingency, isRefetching } = useGetAllContingency()
     const { hour, minute } = dateTime()
-
+    const testeRef = useRef<GeolocationCoordinates>()
     function late(contingency: TContigency) {
         const lastStatus = Number(contingency?.hour) * 60 + Number(contingency?.minute)
         const currentTime = Number(hour) * 60 + Number(minute)
         const diff = currentTime - lastStatus
         const restTime = Number(contingency?.frequency) - diff
 
-        if (restTime >= 0) {
+
+        if (diff <= 5) {
             return <div className="bg-[#76a561] py-1 px-2 rounded-lg font-bold text-white">OK</div>
 
         } else {
             return <div className="bg-[#FC6F6F] text-base p-2 mb-4 font-bold text-center rounded-lg text-white"> ATRASADO </div>
         }
     }
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const pos = position.coords
+            testeRef.current = pos
+            return pos
+        }, null, { enableHighAccuracy: true })
+    }, [])
+
 
     return (
         <main className="flex flex-col items-center">
@@ -50,6 +61,10 @@ export default function Contingency() {
 
                 </tbody>
             </table>
+            <div>
+                <p>Latitude: {testeRef.current?.latitude}</p>
+                <p>Longitude: {testeRef.current?.longitude}</p>
+            </div>
         </main>
     )
 }

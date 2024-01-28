@@ -1,31 +1,14 @@
 'use client'
 import Button from "./Button.component"
-import { TUserCheckpoints } from "../requests"
-import axios, { AxiosResponse } from "axios"
 import Cookies from "js-cookie"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useGetByUserIDContingency } from "@/hooks/hooks-contingency"
-import { useCreateAllCheckpoints } from "@/hooks/hooks-checkpoints"
+import { useCreateAllCheckpoints, useGetCheckpoint } from "@/hooks/hooks-checkpoints"
 
 export default function Content({ name }: TContent) {
     const userId = Cookies.get("userId")
     const { data: contingency, isSuccess: contingencySuccess } = useGetByUserIDContingency(Number(userId))
     const { mutate: createAllCheckpoints } = useCreateAllCheckpoints()
-
-    const { data: checkpoint, isSuccess } = useQuery({
-        queryKey: ['usercheckpoints'],
-        queryFn: async () => {
-            const data: AxiosResponse<TUserCheckpoints> = await axios.get(`${process.env.BACKEND_URL}/checkpoints/currentday/${userId}`)
-            console.log(userId)
-            console.log(data.data)
-
-            if (!data?.data) {
-                createAllCheckpoints()
-            }
-
-            return data.data
-        }
-    })
+    const { data: checkpoint, isSuccess } = useGetCheckpoint(Number(userId), createAllCheckpoints)
 
     return (
         <div>

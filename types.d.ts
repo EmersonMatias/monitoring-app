@@ -66,6 +66,16 @@ type TCheckpoints = {
     }
 }
 
+type TUserCheckpoints = {
+    id: number,
+    day: number,
+    month: number,
+    year: number,
+    arrived: boolean,
+    arrivalTime: string,
+    userId: number
+}
+
 type TCreateUser = {
     name: string;
     dateofbirth: string;

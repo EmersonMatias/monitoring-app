@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { messageAlert } from "./functions";
 
 export default function HeaderMessages() {
-    const { data: messages, isSuccess, isPending } = useFindAllMessages()
+    const { data: messages, isSuccess } = useFindAllMessages()
     const messagesRef = useRef<TMessage[]>()
     const notifications = messages?.filter((message) => message?.viewed === false)?.length
 

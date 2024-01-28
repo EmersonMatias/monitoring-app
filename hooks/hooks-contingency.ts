@@ -36,9 +36,6 @@ export function useCheckpointContingency() {
         mutationFn: async (checkpointContingencyData: TCheckpointContingencyData) => {
             const response = axios.post(`${process.env.BACKEND_URL}/contingency/checkpoint`, checkpointContingencyData)
             return (await response).data
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["contingencyID"] })
         }
     })
 }
