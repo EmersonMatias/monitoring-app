@@ -1,17 +1,17 @@
-'use client'
-import styles from "../styles.module.css"
-import { useCreateVigilant } from "@/hooks/hooks-vigilants";
-import { useForm } from "react-hook-form";
-import InputForm from "@/components/InputForm";
-import SucessMessage from "@/components/SucessMessage";
-import ErrorMessage from "@/components/ErrorMessage";
-import { useFindAllAgency } from "@/hooks/hooks-agency";
-import ButtonForm from "@/components/ButtonForm";
+import InputForm from "@/components/InputForm"
+import { useUpdateVigilant } from "@/hooks/hooks-vigilants"
+import { useForm } from "react-hook-form"
+import SucessMessage from "@/components/SucessMessage"
+import ErrorMessage from "@/components/ErrorMessage"
+import ButtonForm from "@/components/ButtonForm"
+import { handleFormEditVigilant, initialDataFormEditVigilant } from "./functions"
 
-export default function FormCriarVigilante() {
-    const { data: agencies } = useFindAllAgency()
-    const { register, handleSubmit, formState: { errors }, reset: resetForm } = useForm<TCreateUser>()
-    const { mutate: createUser, isPending, reset, isSuccess, isError } = useCreateVigilant(resetForm)
+export default function FormEditVigilant({ id, vigilant, agencies }: { readonly id: number, readonly vigilant: Vigilant, readonly agencies: Agency[] }) {
+    const { register, handleSubmit, formState: { errors } } = useForm<UpdateVigilantForm>({
+        defaultValues: initialDataFormEditVigilant(vigilant)
+    })
+
+    const { mutate: updateVigilant, isPending, reset, isSuccess, isError } = useUpdateVigilant(id)
 
     if (isSuccess || isError) {
         setTimeout(() => {
@@ -19,10 +19,10 @@ export default function FormCriarVigilante() {
             reset()
         }, 5000)
     }
-
+//handleFormEditVigilant(data, updateVigilant, id)
     return (
-        <div className={`w-[600px] h-[600px] text-[#0b0b0b] bg-white p-10 overflow-y-scroll ${styles.scrollable}`}>
-            <form className="horizontal-center" onSubmit={handleSubmit((data) => createUser(data))}>
+        <div className={`w-[600px] h-[600px] text-[#0b0b0b] bg-white p-10 overflow-y-scroll `}>
+            <form className="horizontal-center" onSubmit={handleSubmit((data) => handleFormEditVigilant(data, updateVigilant))}>
 
                 <InputForm
                     id="name"
@@ -42,12 +42,12 @@ export default function FormCriarVigilante() {
 
                 <InputForm
                     id="dob"
-                    name="dateofbirth"
+                    name="dateOfBirth"
                     type="date"
                     label="Data de Nascimento"
                     required="Digite uma data de nascimento"
                     register={register}
-                    message={errors?.dateofbirth?.message}
+                    message={errors?.dateOfBirth?.message}
                     validate={(data: string) => {
                         if (data.length !== 10) return "Digite uma data no formato DD/MM/YYYY"
                     }}
@@ -89,7 +89,7 @@ export default function FormCriarVigilante() {
                     {...register("agencyId", {
                         required: "Escolha uma opção"
                     })}
-                    className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-2 disabled:opacity-50 mt2 w-[500px]">
+                    className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-2 disabled:opacity-50 mt2">
 
                     <option value="">Escolha uma agência</option>
                     {agencies?.map((agency) => {
@@ -124,29 +124,29 @@ export default function FormCriarVigilante() {
 
                 <select
                     disabled={isPending}
-                    {...register("saturday", {
+                    {...register("workOnSaturday", {
                         required: "Escolha uma opção"
                     })}
-                    className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-2 disabled:opacity-50 mt-2 w-[500px]">
+                    className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-2 disabled:opacity-50 mt-2">
 
                     <option value="">O vigilante trabalha de sábado?</option>
                     <option value="true">Sim</option>
                     <option value="false">Não</option>
                 </select>
-                {errors.saturday && <p className="pl-2 font-bold text-red-600">{errors.saturday.message}</p>}
+                {errors.workOnSaturday && <p className="pl-2 font-bold text-red-600">{errors.workOnSaturday.message}</p>}
 
                 <select
                     disabled={isPending}
-                    {...register("sunday", {
+                    {...register("workOnSunday", {
                         required: "Escolha uma opção"
                     })}
-                    className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-2 disabled:opacity-50 mt2 w-[500px]">
+                    className="pl-4 py-2 bg-[#fdd28846] rounded-xl mb-2 disabled:opacity-50 mt2">
 
                     <option value="">O vigilante trabalha de domingo?</option>
                     <option value="true">Sim</option>
                     <option value="false">Não</option>
                 </select>
-                {errors.sunday && <p className="pl-2 font-bold text-red-600">{errors.sunday.message}</p>}
+                {errors.workOnSunday && <p className="pl-2 font-bold text-red-600">{errors.workOnSunday.message}</p>}
 
                 <InputForm
                     id="frequency"
@@ -175,25 +175,12 @@ export default function FormCriarVigilante() {
                     isPending={isPending}
                 />
 
-                <InputForm
-                    id="password"
-                    name="password"
-                    type="text"
-                    label="Senha"
-                    required="Digite um senha"
-                    placeholder="Digite a senha"
-                    register={register}
-                    message={errors?.password?.message}
-                    validate={(data: string) => {
-                        if (data.length < 8) return "Digite um senha de no mínimo 8 digitos"
-                    }}
-                    isPending={isPending}
-                />
-                <ButtonForm disabled={isPending}>{isPending ? "Criando usuário..." : "Criar Usuário"}</ButtonForm>
+                    <ButtonForm disabled={isPending}>{isPending ? "Editando Vigilante..." : "Editar Vigilante"}</ButtonForm>
             </form>
 
-            <SucessMessage hidden={!isSuccess}>Vigilante criado com sucesso</SucessMessage>
-            <ErrorMessage hidden={!isError}>Erro ao criar conta. Verifique os dados!</ErrorMessage>
+
+            <SucessMessage hidden={!isSuccess}>Vigilante editado com sucesso</SucessMessage>
+            <ErrorMessage hidden={!isError}>Erro ao editar vigilante. Verifique os dados!</ErrorMessage>
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import H1 from "@/components/H1.component";
-import FormCreateAgency from "./components/FormCreateAgency";
+import FormCreateAgency from "./FormCreateAgency";
+
 
 export default function CriarAgencia() {
     return (

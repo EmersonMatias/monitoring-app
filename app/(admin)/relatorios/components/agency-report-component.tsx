@@ -1,113 +1,16 @@
-import { useQuery } from "@tanstack/react-query"
-import axios, { AxiosResponse } from "axios"
+import { useQueryMessages } from "@/hooks/hooks-messages"
 import { useRef } from "react"
 import { useReactToPrint } from "react-to-print"
+import { agencyQueries } from "../functions"
 
-type TAgencyCheckpoints = {
-    id: number
-    day: number,
-    month: number,
-    year: number,
-    arrived: boolean,
-    arrivalTime: string,
-    userId: number,
-    user: {
-        name: string,
-        entryTime: string,
-        departureTime: string
-    }
-}
-
-type TAgencyMessages = {
-    id: number,
-    day: number,
-    month: number,
-    year: number,
-    hour: string,
-    message: string,
-    response: string,
-    viewed: boolean,
-    userId: number,
-    user: {
-        name: string,
-        entryTime: string,
-        departureTime: string
-    }
-}
-
-export default function AgencyReport({ agency, withFilter, firstDate, endDate }: { agency: string | undefined, withFilter: string, firstDate: string, endDate: string }) {
-    const { data: agencyCheckpoints } = useQuery({
-        queryKey: ["agencycheckpoints"],
-        queryFn: async () => {
-            if (withFilter === "false") {
-                const data: AxiosResponse<TAgencyCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpointss/${agency}`)
-                return data.data
-            } else if (withFilter === "true") {
-                const firstDateSplit = firstDate.split("-")
-                const endDateSplit = endDate.split("-")
-                const filter = {
-                    day: {
-                        first: firstDateSplit[2],
-                        end: endDateSplit[2]
-                    },
-                    month: {
-                        first: firstDateSplit[1],
-                        end: endDateSplit[1]
-                    },
-                    year: {
-                        first: firstDateSplit[0],
-                        end: endDateSplit[0]
-                    }
-                }
-
-                const data: AxiosResponse<TAgencyCheckpoints[]> = await axios.post(`${process.env.BACKEND_URL}/checkpointsfilter=${agency}`, { filter })
-                return data.data
-
-            }
-
-        },
-        enabled: (agency === undefined || agency.length === 0) ? false : true
-    })
-
-    const { data: agencyMessages } = useQuery({
-        queryKey: ["agencymessages"],
-        queryFn: async () => {
-            if (withFilter === "false") {
-                const data: AxiosResponse<TAgencyMessages[]> = await axios.get(`${process.env.BACKEND_URL}/messages/${agency}`)
-                return data.data
-            } else if (withFilter === "true") {
-                const firstDateSplit = firstDate.split("-")
-                const endDateSplit = endDate.split("-")
-                const filter = {
-                    day: {
-                        first: firstDateSplit[2],
-                        end: endDateSplit[2]
-                    },
-                    month: {
-                        first: firstDateSplit[1],
-                        end: endDateSplit[1]
-                    },
-                    year: {
-                        first: firstDateSplit[0],
-                        end: endDateSplit[0]
-                    }
-                }
-
-                const data: AxiosResponse<TAgencyMessages[]> = await axios.post(`${process.env.BACKEND_URL}/messages/${agency}`, { filter })
-                return data.data
-            }
-
-        },
-        enabled: (agency === undefined || agency.length === 0) ? false : true
-    })
+export default function AgencyReport({ agencyId, firstDate, endDate }: { agencyId: string, firstDate: string, endDate: string }) {
+    const { data: agencyMessages } = useQueryMessages(agencyQueries(firstDate, endDate, agencyId))
 
     const contentDocument = useRef(null)
 
     const handlePrint = useReactToPrint({
         content: () => contentDocument?.current
     })
-
-
 
     return (
         <div className="flex flex-col items-center mt-20">
@@ -118,7 +21,7 @@ export default function AgencyReport({ agency, withFilter, firstDate, endDate }:
                 </svg>
             </button>
             <div ref={contentDocument} className={`bg-white mt-20 flex flex-col items-center pb-10 pt-10 border-[2px] rounded-2xl`} >
-                <p>Agência: {agency} </p>
+                <p>Agência: {agencyId} </p>
 
 
                 <h3 className="text-3xl font-bold mt-20">Checkpoints</h3>
@@ -134,7 +37,8 @@ export default function AgencyReport({ agency, withFilter, firstDate, endDate }:
                         </tr>
                     </thead>
                     <tbody>
-                        {agencyCheckpoints?.map((checkpoints) => (
+                        {/*
+                        agencyCheckpoints?.map((checkpoints) => (
                             <tr key={checkpoints.id}>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{checkpoints.user.name}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{checkpoints.day}/{checkpoints.month}/{checkpoints.year}</td>
@@ -144,7 +48,8 @@ export default function AgencyReport({ agency, withFilter, firstDate, endDate }:
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {checkpoints?.arrived === true ? "Sim" : "Não"}</td>
 
                             </tr>
-                        ))}
+                        ))
+                        */}
 
 
 
@@ -154,7 +59,7 @@ export default function AgencyReport({ agency, withFilter, firstDate, endDate }:
                 <h3 className="text-3xl font-bold mt-10">Mensagens:</h3>
                 {agencyMessages?.map((message) => (
                     <div key={message.id} className="w-[800px] text-left flex flex-col gap-2 pl-10 mt-4 p-4 bg-[#ECECEC] rounded-md">
-                        <p><span className="font-bold">Vigilante:</span> {message.user.name}</p>
+                        <p><span className="font-bold">Vigilante:</span> {message?.user?.name}</p>
 
                         <p><span className="font-bold">Dia:</span> {message.day}/{message.month}/{message.year}</p>
 
@@ -166,7 +71,6 @@ export default function AgencyReport({ agency, withFilter, firstDate, endDate }:
                             <p><span className="font-bold">Tratamento da mensagem:</span> <span className="">{message.response}</span></p> :
                             <p>Mensagem não visualizada.</p>
                         }
-
 
                     </div>
                 ))}

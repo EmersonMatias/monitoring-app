@@ -1,11 +1,11 @@
 'use client'
 import Input from "@/components/Input.component"
-import { useSetMessageViewed } from "@/hooks/hooks-messages"
+import { useUpdateMessage } from "@/hooks/hooks-messages"
 import { useForm } from "react-hook-form"
 import { onSubmitFormMessage } from "./functions"
 
 export default function FormMessage({ messageId }: { readonly messageId: number }) {
-    const { mutate: setMessageViewed, isPending } = useSetMessageViewed()
+    const { mutate: setMessageViewed, isPending } = useUpdateMessage()
     const { register, handleSubmit, formState: { errors } } = useForm<FormMessageProps>()
 
     return (

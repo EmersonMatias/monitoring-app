@@ -1,48 +1,49 @@
 import { dateTime } from "@/app/utils/constants"
+import { convertTimeToBrasilia } from "@/functions/functions"
 import { UseMutateFunction } from "@tanstack/react-query"
 import { MutableRefObject } from "react"
 
-export function checkpointsGreen(checkpoints: TCheckpoints[] | undefined, search: string) {
+export function checkpointsGreen(checkpoints: Checkpoints[] | undefined, search: string) {
     const checkpointsOK = checkpoints?.filter((checkpoints) => checkpoints.arrived === true)
-    const checkpointsFilter = checkpointsOK?.filter((checkpoints) => checkpoints.user.agency.name?.toLowerCase().includes(`${search?.toLowerCase()}`))
+    const checkpointsFilter = checkpointsOK?.filter((checkpoints) => checkpoints?.agency.name?.toLowerCase().includes(`${search?.toLowerCase()}`))
     if (search.length === 0) {
         return checkpointsOK
     } else return checkpointsFilter
 
 }
 
-export function checkpointsRed(checkpoints: TCheckpoints[] | undefined, search: string, isSuccess: boolean) {
+export function checkpointsRed(checkpoints: Checkpoints[] | undefined, search: string, isSuccess: boolean) {
     if(!isSuccess) return undefined
     
     const { hour, minute } = dateTime()
 
     const checkpointsAlert = checkpoints?.filter((checkpoint) => {
         const hourMinutes = Number(hour) * 60 + Number(minute)
-        const checkpointHourMinutes = Number(checkpoint.user.entryTime.substring(0, 2)) * 60 + Number(checkpoint.user.entryTime.substring(3, 5))
+        const checkpointHourMinutes = Number(convertTimeToBrasilia(checkpoint?.user?.entryTime).substring(0, 2)) * 60 + Number(convertTimeToBrasilia(checkpoint?.user?.entryTime).substring(3, 5))
 
         if (!checkpoint.arrived && hourMinutes > checkpointHourMinutes) return checkpoint
     })
 
-    const checkpointsAlertSearch = checkpointsAlert?.filter((checkpoints) => checkpoints.user.agency?.name?.toLowerCase().includes(`${search?.toLowerCase()}`))
+    const checkpointsAlertSearch = checkpointsAlert?.filter((checkpoints) => checkpoints?.agency?.name?.toLowerCase().includes(`${search?.toLowerCase()}`))
 
     if (search.length === 0) {
         return checkpointsAlert
     } else return checkpointsAlertSearch
 }
 
-export function checkpointsOrange(checkpoints: TCheckpoints[] | undefined, search: string, isSuccess: boolean) {
+export function checkpointsOrange(checkpoints: Checkpoints[] | undefined, search: string, isSuccess: boolean) {
     if(!isSuccess) return undefined
     
     const { hour, minute } = dateTime()
 
     const checkpointsWaiting = checkpoints?.filter((checkpoint) => {
         const hourMinutes = Number(hour) * 60 + Number(minute)
-        const checkpointHourMinutes = Number(checkpoint.user.entryTime.substring(0, 2)) * 60 + Number(checkpoint.user.entryTime.substring(3, 5))
+        const checkpointHourMinutes = Number(convertTimeToBrasilia(checkpoint?.user?.entryTime).substring(0, 2)) * 60 + Number(convertTimeToBrasilia(checkpoint?.user?.entryTime).substring(3, 5))
 
         if (!checkpoint.arrived && hourMinutes <= checkpointHourMinutes) return checkpoint
     })
 
-    const checkpointsWaitingSearch = checkpointsWaiting?.filter((checkpoints) => checkpoints.user.agency.name?.toLowerCase().includes(`${search?.toLowerCase()}`))
+    const checkpointsWaitingSearch = checkpointsWaiting?.filter((checkpoints) => checkpoints?.agency.name?.toLowerCase().includes(`${search?.toLowerCase()}`))
 
     if (search.length === 0) {
         return checkpointsWaiting
@@ -78,8 +79,8 @@ export function delayAlert({alertRef, checkpointsAlert, createAlert, isSuccess }
 
 
 type DelayAlertProps = {
-    alertRef: MutableRefObject<TCheckpoints[] | undefined>,
-    checkpointsAlert: TCheckpoints[] | undefined,
+    alertRef: MutableRefObject<Checkpoints[] | undefined>,
+    checkpointsAlert: Checkpoints[] | undefined,
     createAlert: UseMutateFunction<any, Error, string | undefined, unknown>,
     isSuccess: boolean
 }

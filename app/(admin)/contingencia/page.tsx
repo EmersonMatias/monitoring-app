@@ -75,7 +75,7 @@ export default function Contingency() {
                         contingency?.map((oneContingency) => (
                             oneContingency.contigency &&
                             <tr key={oneContingency.id} className=" text-center">
-                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{oneContingency.user.name}</td>
+                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{oneContingency?.user?.name}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{oneContingency.hour?.toString().padStart(2, "0")}:{oneContingency.minute?.toString().padStart(2, "0")}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{oneContingency.status}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{oneContingency.frequency} minutos</td>

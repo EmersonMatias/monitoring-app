@@ -1,5 +1,6 @@
 import H1 from "@/components/H1.component";
-import FormCriarVigilante from "./components/FormCriarVigilante.component";
+import FormCriarVigilante from "./FormCriarVigilante.component";
+
 
 export default function CriarVigilante() {
     return (

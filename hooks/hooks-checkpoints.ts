@@ -2,28 +2,14 @@ import { UseMutateFunction, useMutation, useQuery, useQueryClient } from "@tanst
 import axios, { AxiosResponse } from "axios"
 import { UseFormReset } from "react-hook-form"
 
-export function useGetAllCheckpoints() {
+export function useFindManyCheckpoints({ date }: { date?: string }) {
+  const dateKey = date && 'dateParam'
+  const dateQuery = date !== undefined ? `date=${date}` : ''
+
   return useQuery({
-    queryKey: ["checkpoints"],
+    queryKey: ["checkpoints", dateKey],
     queryFn: async () => {
-      const data: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints`)
-
-      return data.data
-    },
-    refetchOnMount: true,
-
-  })
-}
-
-export function useGetAllTodayCheckpoint(createAllCheckpoints: UseMutateFunction<any, Error, void, unknown>) {
-  return useQuery({
-    queryKey: ["checkpoints-today"],
-    queryFn: async () => {
-      const data: AxiosResponse<TCheckpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints=today`)
-
-      if (data.data.length === 0) {
-        createAllCheckpoints()
-      }
+      const data: AxiosResponse<Checkpoints[]> = await axios.get(`${process.env.BACKEND_URL}/checkpoints?${dateQuery}`)
 
       return data.data
     },
@@ -32,19 +18,19 @@ export function useGetAllTodayCheckpoint(createAllCheckpoints: UseMutateFunction
   })
 }
 
-export function useGetCheckpoint(userId: number, createAllCheckpoints: UseMutateFunction<any, Error, void, unknown>){
+export function useGetCheckpoint(userId: number, createAllCheckpoints: UseMutateFunction<any, Error, void, unknown>) {
   return useQuery({
     queryKey: ['checkpoint', `${userId}`],
     queryFn: async () => {
-        const data: AxiosResponse<TUserCheckpoints> = await axios.get(`${process.env.BACKEND_URL}/checkpoint/${userId}`)
+      const data: AxiosResponse<TUserCheckpoints> = await axios.get(`${process.env.BACKEND_URL}/checkpoint/${userId}`)
 
-        if (!data?.data) {
-            createAllCheckpoints()
-        }
+      if (!data?.data) {
+        createAllCheckpoints()
+      }
 
-        return data.data
+      return data.data
     }
-})
+  })
 }
 
 export function useCreateAllCheckpoints() {
@@ -69,8 +55,8 @@ export function useCreateCheckpoint(resetForm: UseFormReset<TCreateCheckpointFor
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({day,month,year,userId}: TCreateCheckpointData) => {
-      const data = {day,month,year}
+    mutationFn: async ({ day, month, year, userId }: TCreateCheckpointData) => {
+      const data = { day, month, year }
 
       const response = await axios.post(`${process.env.BACKEND_URL}/checkpoint/${userId}`, data)
       return response.data
@@ -90,7 +76,7 @@ export function useUpdateCheckpoint() {
       return response.data
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({queryKey: ['checkpoint', `${data.userId}`]})
+      queryClient.invalidateQueries({ queryKey: ['checkpoint', `${data.userId}`] })
     }
   })
 }

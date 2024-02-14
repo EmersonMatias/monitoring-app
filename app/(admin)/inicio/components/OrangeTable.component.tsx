@@ -1,12 +1,13 @@
 'use client'
-import { useCreateAllCheckpoints, useGetAllTodayCheckpoint } from "@/hooks/hooks-checkpoints"
+import { useCreateAllCheckpoints, useFindManyCheckpoints } from "@/hooks/hooks-checkpoints"
 import { checkpointsOrange } from "../functions"
+import { convertTimeToBrasilia } from "@/functions/functions"
 
 export default function OrangeTable({ search }: { readonly search: string }) {
-    const {mutate: createAllCheckpoints} = useCreateAllCheckpoints()
-
-    const { data: checkpoints, isSuccess, isRefetching } = useGetAllTodayCheckpoint(createAllCheckpoints)
-
+    const { mutate: createAllCheckpoints } = useCreateAllCheckpoints()
+    const today = new Date().toISOString()
+    const { data: checkpoints, isSuccess, isRefetching } = useFindManyCheckpoints({ date: today })
+   
     return (
         <div className="max-w-[600px] overflow-x-auto  mt-6  flex flex-col items-center bg-[#FFFFFF] p-5  border-[2px] rounded-2xl">
             <div className="bg-[#FFB649] text-base p-1 font-bold text-center mb-4  rounded-lg text-white">
@@ -25,11 +26,11 @@ export default function OrangeTable({ search }: { readonly search: string }) {
                 </thead>
 
                 <tbody>
-                    {isSuccess && checkpointsOrange(checkpoints, search, isSuccess)?.map((vigilant: TCheckpoints) => (
-                        <tr key={vigilant.user.name} className="text-center">
-                            <td className="  px-4 py-2 max-w-[200px] text-sm ">{vigilant.user.name}</td>
-                            <td className="px-4 py-2 text-sm">{vigilant.user.entryTime}</td>
-                            <td className="px-4 py-2 text-sm">{vigilant.user.agency.name}</td>
+                    {isSuccess && checkpointsOrange(checkpoints, search, isSuccess)?.map((checkpoint: Checkpoints) => (
+                        <tr key={checkpoint?.user?.name} className="text-center">
+                            <td className="  px-4 py-2 max-w-[200px] text-sm ">{checkpoint?.user?.name}</td>
+                            <td className="px-4 py-2 text-sm">{convertTimeToBrasilia(checkpoint?.user?.entryTime)}</td>
+                            <td className="px-4 py-2 text-sm">{checkpoint?.agency.name}</td>
                             <td className="px-4 py-2  justify-center items-center text-sm">
                                 <div className="bg-[#FFB649] py-1 px-2 rounded-lg font-bold text-white">Aguardando</div>
                             </td>

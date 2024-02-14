@@ -52,15 +52,10 @@ export function emergencyContingencyAlert({ isSuccess, contingenciesRef, conting
     if (currentContingency === undefined) {
         contingenciesRef.current = contingencies
     }
-    console.log(contingencies)
-    console.log(currentContingency)
-
+   
     const lengthContingencies = Number(contingencies?.filter((contingency) => contingency.status === "EMERGENCY" && contingency.contigency).length)
     const lengthContingenciesRef = Number(contingenciesRef?.current?.filter((contingency) => contingency.status === "EMERGENCY" && contingency.contigency).length)
     const diffContingencies = JSON.stringify(contingencies) !== JSON.stringify(currentContingency)
-    console.log(diffContingencies)
-    console.log(lengthContingencies)
-    console.log(lengthContingenciesRef)
 
     if (currentContingency && diffContingencies && lengthContingencies > lengthContingenciesRef) {
         const PanicAudio = new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3")

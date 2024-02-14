@@ -2,14 +2,17 @@
 import ErrorMessage from "@/components/ErrorMessage"
 import SucessMessage from "@/components/SucessMessage"
 import { settingsIcon } from "./constants"
-import { useDeleteVigilant, useFindAllVigilants } from "@/hooks/hooks-vigilants"
+import { useDeleteVigilant, useFindManyVigilants } from "@/hooks/hooks-vigilants"
 import { useRouter } from "next/navigation"
 import { handleDeleteVigilant } from "./functions"
+import { convertTimeToBrasilia } from "@/functions/functions"
 
 export default function SettingsTable() {
-    const { data: vigilants, isSuccess } = useFindAllVigilants()
+    const { data: vigilants, isSuccess } = useFindManyVigilants()
     const { mutate: deleteVigilant, isSuccess: vigilantDeleted, isError, reset } = useDeleteVigilant()
     const router = useRouter()
+
+    console.log(vigilants)
 
     if (vigilantDeleted || isError) {
         setTimeout(() => {
@@ -40,13 +43,13 @@ export default function SettingsTable() {
                     vigilants?.map((vigilant) => (
                         <tr key={vigilant.id} className=" text-center">
                             <td className=" px-5 py-5 max-w-[200px] border-y-slate-300 border-y-2">{vigilant.name}</td>
-                            <td className="px-5 py-5  border-y-slate-300 border-y-2">{vigilant.entryTime}</td>
-                            <td className="px-5 py-5  border-y-slate-300 border-y-2">{vigilant.departureTime}</td>
+                            <td className="px-5 py-5  border-y-slate-300 border-y-2">{convertTimeToBrasilia(vigilant.entryTime) }</td>
+                            <td className="px-5 py-5  border-y-slate-300 border-y-2">{convertTimeToBrasilia(vigilant.departureTime)}</td>
                             <td className="px-5 py-5  border-y-slate-300 border-y-2">{vigilant.agency.name}</td>
 
                             <td className="px-2 py-5 border-y-slate-300 border-y-2">
                                 <div className="flex justify-center">
-                                    {vigilant.contigency.contigency === true ?
+                                    {vigilant.contigency.active === true ?
                                         <p
                                             className="bg-green-400 py-2 px-4 w-fit rounded-md text-white font-bold"
                                             title="Contingência">
@@ -55,7 +58,8 @@ export default function SettingsTable() {
                                             className="bg-red-500 py-2 px-4 w-fit rounded-md text-white font-bold"
                                             title="Contingência">
                                             OFF
-                                        </p>}
+                                        </p>
+                                    }
                                 </div>
                             </td>
 

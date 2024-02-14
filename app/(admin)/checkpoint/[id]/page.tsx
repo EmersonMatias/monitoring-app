@@ -5,14 +5,14 @@ import ErrorMessage from "@/components/ErrorMessage"
 import H1 from "@/components/H1.component"
 import InputForm from "@/components/InputForm"
 import ButtonForm from "@/components/ButtonForm"
-import { useFindOneVigilant } from "@/hooks/hooks-vigilants"
+import { useFindUniqueVigilant } from "@/hooks/hooks-vigilants"
 import { useCreateCheckpoint } from "@/hooks/hooks-checkpoints"
 import { useForm } from "react-hook-form"
 import { onSubmitCreateCheckpointForm } from "./functions"
 
-export default function Checkpoint({ params }: { params: { id: string } }) {
+export default function Checkpoint({ params: { id } }: { readonly params: { id: string } }) {
     const { register, handleSubmit, formState: { errors }, reset: resetForm } = useForm<TCreateCheckpointForm>()
-    const { data: vigilant } = useFindOneVigilant(Number(params.id))
+    const { data: vigilant } = useFindUniqueVigilant(Number(id))
     const { mutate: createCheckpoint, isPending, isSuccess, isError, reset } = useCreateCheckpoint(resetForm)
 
     if (isSuccess || isError) {
@@ -32,7 +32,7 @@ export default function Checkpoint({ params }: { params: { id: string } }) {
                     <span className="text-lg font-bold">Vigilante:</span> {vigilant?.name}
                 </div>
 
-                <form className="horizontal-center" onSubmit={handleSubmit((data) => onSubmitCreateCheckpointForm(data, Number(params.id), createCheckpoint))}>
+                <form className="horizontal-center" onSubmit={handleSubmit((data) => onSubmitCreateCheckpointForm(data, Number(id), createCheckpoint))}>
 
                     <InputForm
                         id="date"

@@ -21,27 +21,27 @@ export default function Header() {
             </div>
 
             <div className="flex gap-10 items-center">
-                <HeaderLink href={HeaderLinkStatistic.href} svg={HeaderLinkStatistic.svg} name="ESTATÍSTICAS"/>
+                {/*<HeaderLink href={HeaderLinkStatistic.href} svg={HeaderLinkStatistic.svg} name="ESTATÍSTICAS"/> */}
 
-                <HeaderLink href={HeaderLinkCreateVigilant.href} svg={HeaderLinkCreateVigilant.svg} name="CRIAR VIGILANTE"/>
+                <HeaderLink href={HeaderLinkCreateVigilant.href} svg={HeaderLinkCreateVigilant.svg} name="CRIAR VIGILANTE" />
 
-                <HeaderLink href={HeaderLinkCreateAgency.href} svg={HeaderLinkCreateAgency.svg} name="CRIAR AGÊNCIA"/>
+                <HeaderLink href={HeaderLinkCreateAgency.href} svg={HeaderLinkCreateAgency.svg} name="CRIAR AGÊNCIA" />
 
-                <HeaderContingency />
+                {/* <HeaderContingency /> */}
 
-                <HeaderLink href={HeaderLinkHome.href} svg={HeaderLinkHome.svg} name="INICIO"/>
+                <HeaderLink href={HeaderLinkHome.href} svg={HeaderLinkHome.svg} name="INICIO" />
 
-                <HeaderLink href={HeaderLinkReports.href} svg={HeaderLinkReports.svg} name="RELATÓRIOS"/>
+                {/* <HeaderLink href={HeaderLinkReports.href} svg={HeaderLinkReports.svg} name="RELATÓRIOS"/> */}
 
-                <HeaderLink href={HeaderLinkSettings.href} svg={HeaderLinkSettings.svg} name="CONFIGURAÇÕES"/>
+                {<HeaderLink href={HeaderLinkSettings.href} svg={HeaderLinkSettings.svg} name="CONFIGURAÇÕES"/>}
 
-                <HeaderStatus />
+                {/*    <HeaderStatus /> */}
             </div>
 
             <div className="flex gap-5 mr-10 items-center">
-                <HeaderAlerts/>
+                {/*  <HeaderAlerts /> */}
 
-                <HeaderMessages />
+                {/*  <HeaderMessages /> */}
 
                 <button className=" bg-red-400 px-4 py-3 h-fit w-fit font-bold rounded text-white ml-5" onClick={() => { handleExit(router) }}>Sair</button>
             </div>

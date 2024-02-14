@@ -1,9 +1,9 @@
-import { useFindAllVigilants } from "@/hooks/hooks-vigilants"
+import { useQueryVigilants } from "@/hooks/hooks-vigilants"
 import { useState } from "react"
 import AgencyReport from "./agency-report-component"
 
-export default function ChooseAgency({ typeReport }: { typeReport: string }) {
-    const { data: vigilants } = useFindAllVigilants()
+export default function ChooseAgency() {
+    const { data: vigilants } = useQueryVigilants()
     const [agency, setAgency] = useState<string>("0")
     const agencies = vigilants?.map((vigilant) => {
         return vigilant.agency
@@ -22,14 +22,14 @@ export default function ChooseAgency({ typeReport }: { typeReport: string }) {
 
     return (
         <div>
-            <div className={`flex flex-col ${typeReport === "agencia" ? "" : "hidden"} mt-10 px-[400px]`}>
+            <div className={`flex flex-col mt-10 px-[400px]`}>
 
                 <select id="cars" name="cars" className="p-2" onChange={(e) => { setAgency(e.target.value) }} >
                     <option value="0">Escolha uma agência</option>
 
                     {
-                        agenciesList?.map((agency) => (
-                            <option className="" key={agency.id} value={agency.name}>{agency.name}</option>
+                        agenciesList?.map((agency) => ( 
+                            <option className="" key={agency.id} value={agency.id}>{agency.name}</option>
                         ))
                     }
 
@@ -70,7 +70,7 @@ export default function ChooseAgency({ typeReport }: { typeReport: string }) {
                 </button>
 
             </div>
-            {report && <AgencyReport agency={agency} withFilter={withFilter} firstDate={firstDate} endDate={endDate}/>}
+            {report && <AgencyReport agencyId={agency} firstDate={firstDate} endDate={endDate}/>}
 
         </div>
     )

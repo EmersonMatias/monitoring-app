@@ -1,67 +1,15 @@
-import { useQuery } from "@tanstack/react-query"
-import axios, { AxiosResponse } from "axios"
+import { useQueryVigilant } from "@/hooks/hooks-vigilants"
 import { useRef } from "react"
 import { useReactToPrint } from "react-to-print"
+import { Vigilantqueries } from "../functions"
 
-type TCheckpoint = {
-    id: number,
-    day: number,
-    month: number,
-    year: number,
-    arrived: boolean,
-    arrivalTime: null,
-    userId: number
-}
-
-type TVigilantReport = {
-    name: string,
-    agency: string,
-    entryTime: string,
-    departureTime: string,
-    checkpoint: TCheckpoint[]
-    messages: TMessage[]
-}
-
-export default function VigilantReport({ userId, withFilter, firstDate, endDate }: { userId: string | undefined, withFilter: string, firstDate: string, endDate: string }) {
-    const { data: vigilant } = useQuery({
-        queryKey: ["datavigilant"],
-        queryFn: async () => {
-            if (withFilter === "false") {
-                const data: AxiosResponse<TVigilantReport> = await axios.get(`${process.env.BACKEND_URL}/vigilants/${userId}`)
-                return data.data
-            } else if (withFilter === "true") {
-                const firstDateSplit = firstDate.split("-")
-                const endDateSplit = endDate.split("-")
-
-                const filter = {
-                    day: {
-                        first: firstDateSplit[2],
-                        end: endDateSplit[2]
-                    },
-                    month: {
-                        first: firstDateSplit[1],
-                        end: endDateSplit[1]
-                    },
-                    year: {
-                        first: firstDateSplit[0],
-                        end: endDateSplit[0]
-                    }
-                }
-
-                const data: AxiosResponse<TVigilantReport> = await axios.post(`${process.env.BACKEND_URL}/vigilantsfilter=${userId}`, { filter })
-                return data.data
-            }
-
-        },
-        enabled: (userId === undefined || userId.length === 0) ? false : true
-    })
+export default function VigilantReport({ userId, firstDate, endDate }: { userId: string | undefined,firstDate: string, endDate: string }) {
+    const { data: vigilant } = useQueryVigilant(Number(userId), Vigilantqueries(firstDate, endDate))
     const contentDocument = useRef(null)
 
     const handlePrint = useReactToPrint({
         content: () => contentDocument?.current,
     })
-
-    console.log(vigilant)
 
     return (
         <div className="flex flex-col items-center mt-20">
@@ -73,7 +21,7 @@ export default function VigilantReport({ userId, withFilter, firstDate, endDate 
             </button>
             <div ref={contentDocument} className={`bg-white mt-20 flex flex-col items-center pb-10 pt-10 border-[2px] rounded-2xl`} >
                 <p>Vigilante: {vigilant?.name} </p>
-                <p>Agência: {vigilant?.agency}</p>
+                <p>Agência: {vigilant?.agency.name}</p>
                 <p>Horário de Entrada: {vigilant?.entryTime}</p>
                 <p>Horário de Saída: {vigilant?.departureTime}</p>
 
@@ -89,7 +37,7 @@ export default function VigilantReport({ userId, withFilter, firstDate, endDate 
                         </tr>
                     </thead>
                     <tbody>
-                        {vigilant?.checkpoint.map((checkpoints) => (
+                        {vigilant?.checkpoint?.map((checkpoints) => (
                             <tr key={checkpoints.id}>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{`${checkpoints.day}/${checkpoints.month}/${checkpoints.year}`}</td>
                                 <td className="  px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2"> {vigilant?.entryTime}</td>
@@ -108,7 +56,7 @@ export default function VigilantReport({ userId, withFilter, firstDate, endDate 
                     <div key={message.id} className="w-[800px] text-left flex flex-col gap-2 pl-10 mt-4 p-4 bg-[#ECECEC] rounded-md">
                         <p><span className="font-bold">Vigilante:</span> {vigilant.name}</p>
 
-                        <p><span className="font-bold">Agência:</span> {vigilant.agency}</p>
+                        <p><span className="font-bold">Agência:</span> {vigilant.agency.name}</p>
 
                         <p><span className="font-bold">Dia:</span> {message.day}/{message.month}/{message.year}</p>
 

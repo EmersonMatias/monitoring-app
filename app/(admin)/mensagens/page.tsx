@@ -1,9 +1,9 @@
 'use client'
 import FormMessage from "./FormMessage.component";
-import { useFindAllMessages } from "@/hooks/hooks-messages";
+import { useQueryMessages } from "@/hooks/hooks-messages";
 
 export default function Mensagens() {
-    const { data: messages } = useFindAllMessages()
+    const { data: messages } = useQueryMessages()
 
     return (
         <main className="flex mt-10 justify-center  ">

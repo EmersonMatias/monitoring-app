@@ -12,46 +12,6 @@ type TSigninResponse = {
     agency: string
 }
 
-type TVigilant = {
-    id: number,
-    name: string,
-    entryTime: string,
-    departureTime: string,
-    agency: TAgency
-    saturday: boolean
-    sunday: boolean
-    contigency: {
-        id: number,
-        contigency: boolean,
-        frequency: number,
-        hour: number | null,
-        minute: number | null,
-        status: string,
-        userId: number,
-    }
-}
-
-type TVigilant2 = {
-    name: string,
-    dateofbirth: string,
-    login: string,
-    rg: string,
-    cpf: string,
-    entryTime: string,
-    departureTime: string,
-    saturday: boolean,
-    sunday: boolean,
-    agency: {
-      id: number,
-      name: string
-    },
-    status: [
-      {
-        frequency: number
-      }
-    ]
-  }
-
 type TCheckpoints = {
     id: number
     arrived: boolean,
@@ -59,7 +19,8 @@ type TCheckpoints = {
     day: number,
     month: number,
     year: number,
-    user: {
+    userId: number,
+    user?: {
         name: string,
         agency: TAgency
         entryTime: string
@@ -76,54 +37,30 @@ type TUserCheckpoints = {
     userId: number
 }
 
-type TCreateUser = {
+type TUpdateUser = TCreateUser
+
+type TUpdateUser = {
     name: string;
     dateofbirth: string;
     rg: string;
     cpf: string;
-    agencyId: string;
+    agencyId: number;
     entryTime: string;
     departureTime: string;
     login: string;
-    password: string;
-    frequency: number,
-    saturday: string,
-    sunday: string
-}
-
-
-type TAgency = {
-    id: number,
-    name: string
-}
-
-type TCreateAgency = {
-    name: string
-}
-
-
-type TUpdateUser = {
-    name: string;
-    dateofbirth: string ;
-    rg: string ;
-    cpf: string ;
-    agencyId: number ;
-    entryTime: string ;
-    departureTime: string;
-    login: string;
-    frequency: number ;
+    frequency: number;
     saturday: string,
     sunday: string
 }
 
 type TGetUserForUpdate = {
     name: string;
-    dateofbirth: string ;
+    dateofbirth: string;
     rg: string;
     cpf: string;
     agency: string;
     entryTime: string;
-    departureTime: string ;
+    departureTime: string;
     login: string;
     saturday: string;
     sunday: string;
@@ -141,13 +78,14 @@ type TMessage = {
     message: string,
     response: string,
     viewed: boolean,
-    user: {
+    userId?: number,
+    user?: {
         name: string,
         agency: TAgency
     }
 }
 
-type TMessageViewed = {
+type TUpdateMessage = {
     response: string,
     messageId: number
 }
@@ -166,6 +104,15 @@ type TStatusWithUser = {
     status: string,
     userId: number,
     user: TUserStatus
+}
+
+type Status = {
+    id: number,
+    hour: number,
+    minute: number,
+    status: string,
+    frequency: number,
+    userId: number
 }
 
 type TAlerts = {
@@ -231,8 +178,105 @@ type TContigency = {
     minute: number | null,
     status: string,
     userId: number,
-    user: {
+    user?: {
         name: string
+    }
+}
+
+// ! NOVOS TIPOS
+
+interface Status {
+    id: number
+    timestamp: Date
+    situation: "OK" | "PANIC"
+    frequency: number
+    userId: number
+}
+
+interface Contingency {
+    id: number
+    active: boolean
+    timestamp: Date
+    frequency: number
+    situation: "OK" | "PANIC"
+    userId: number
+}
+
+// ? Vigilant Types
+interface VigilantBase {
+    name: string
+    dateOfBirth: Date
+    rg: string
+    cpf: string
+    entryTime: Date
+    departureTime: Date
+    workOnSaturday: boolean
+    workOnSunday: boolean
+    agencyId: number
+    login: string
+    password: string
+    accountType: "user" | "admin"
+}
+
+interface VigilantBody extends VigilantBase {
+    frequency: number
+}
+
+interface Vigilant extends VigilantBase {
+    id: number,
+    status: Omit<Status, 'userId'>
+}
+
+interface Vigilants extends VigilantBase{
+    id: number,
+    status: Omit<Status, 'userId'>
+    contigency: Omit<Contingency, 'userId'>
+    agency: Agency
+}
+
+type CreateVigilantForm = Omit<VigilantBody, 'dateOfBirth' | 'entryTime' | 'departureTime' | 'agencyId' | 'workOnSaturday' | 'workOnSunday' | 'accountType' | 'frequency'> & {
+    dateOfBirth: string,
+    entryTime: string,
+    departureTime: string,
+    agencyId: string,
+    workOnSaturday: string,
+    workOnSunday: string,
+    frequency: string
+}
+
+type UpdateVigilantForm = Omit<CreateVigilantForm, 'password'>
+
+type UpdateVigilantBody = Omit<VigilantBody, 'password' | 'accountType'>
+
+// ? Agency Types
+interface Agency{
+    id: number,
+    name: string
+}
+
+type CreateAgencyForm = Omit<Agency, 'id'>
+
+type Checkpoints = {
+    id: number,
+    date: Date,
+    arrived: boolean,
+    arrivalTime: Date,
+    agency: Agency
+    user: {
+        id: number,
+        name: string,
+        entryTime: Date,
+        departureTime: Date,
+        workOnSaturday: boolean,
+        workOnSunday: boolean
+    }
+}
+
+interface CustomError extends Error {
+    response: {
+        data: {
+            message: string
+        }
     }
 }
 

@@ -1,11 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
 
-export function useFindAllMessages() {
+type MessagesQueries = {
+    agencyId: number,
+    dayGte: string,
+    dayLte: string,
+    monthGte: string,
+    monthLte: string,
+    yearGte: string,
+    yearLte: string,
+}
+
+export function useQueryMessages(queries?: MessagesQueries) {
     return useQuery({
         queryKey: ["messages"],
         queryFn: async () => {
-            const data: AxiosResponse<TMessage[]> = await axios.get(`${process.env.BACKEND_URL}/messages`)
+            const data: AxiosResponse<TMessage[]> = await axios.get(`${process.env.BACKEND_URL}/messages?agencyId=${queries?.agencyId}&dayGte=${queries?.dayGte}&dayLte=${queries?.dayLte}&monthGte=${queries?.monthGte}&monthLte=${queries?.monthLte}&yearGte=${queries?.yearGte}&yearLte=${queries?.yearLte}`)
             return data.data
         },
         refetchInterval: 3000,
@@ -13,13 +23,13 @@ export function useFindAllMessages() {
     })
 }
 
-export function useSetMessageViewed() {
+export function useUpdateMessage() {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async (responseData: TMessageViewed) => {
+        mutationFn: async (updateMessage: TUpdateMessage) => {
 
-            const sucess = await axios.put(`${process.env.BACKEND_URL}/visualizarmensagem`, responseData)
+            const sucess = await axios.put(`${process.env.BACKEND_URL}/messages/${updateMessage.messageId}`, { response: updateMessage.response })
             return sucess
         },
         onSuccess: () => {
@@ -33,7 +43,7 @@ export function useCreateMessage() {
 
     return useMutation({
         mutationFn: async (data: TCreateMessageData) => {
-            const response = await axios.post(`${process.env.BACKEND_URL}/criarmensagem`, data)
+            const response = await axios.post(`${process.env.BACKEND_URL}/messages`, data)
             return response.data
         },
         onSuccess: () => {
