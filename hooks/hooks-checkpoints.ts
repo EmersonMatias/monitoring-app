@@ -55,10 +55,9 @@ export function useCreateCheckpoint(resetForm: UseFormReset<TCreateCheckpointFor
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ day, month, year, userId }: TCreateCheckpointData) => {
-      const data = { day, month, year }
+    mutationFn: async ({ date, userId }: CreateCheckpoint) => {
 
-      const response = await axios.post(`${process.env.BACKEND_URL}/checkpoint/${userId}`, data)
+      const response = await axios.post(`${process.env.BACKEND_URL}/checkpoints/${userId}`, { date })
       return response.data
     },
     onSuccess: () => {

@@ -22,33 +22,38 @@ export default function Checkpoint({ params: { id } }: { readonly params: { id: 
         }, 5000)
     }
 
+    console.log(vigilant)
+
     return (
         <div className="flex flex-col items-center justify-center py-10">
-            <H1>Criar Checkpoint</H1>
+            {vigilant &&
+                <>
+                    <H1>Criar Checkpoint</H1>
 
-            <div className={`w-[600px] text-[#0b0b0b] flex flex-col items-center justify-center bg-white p-12 overflow-y-scroll ${styles.scrollable}`}>
+                    <div className={`w-[600px] text-[#0b0b0b] flex flex-col items-center justify-center bg-white p-12 overflow-y-scroll ${styles.scrollable}`}>
 
-                <div className="mb-10">
-                    <span className="text-lg font-bold">Vigilante:</span> {vigilant?.name}
-                </div>
+                        <div className="mb-10">
+                            <span className="text-lg font-bold">Vigilante:</span> {vigilant?.name}
+                        </div>
 
-                <form className="horizontal-center" onSubmit={handleSubmit((data) => onSubmitCreateCheckpointForm(data, Number(id), createCheckpoint))}>
+                        <form className="horizontal-center" onSubmit={handleSubmit((data) => onSubmitCreateCheckpointForm(data, Number(id), createCheckpoint))}>
 
-                    <InputForm
-                        id="date"
-                        name="date"
-                        type="date"
-                        label="Escolha o dia que você quer criar o checkpoint para o vigilante:"
-                        register={register}
-                        required="Por favor, digite uma data"
-                        message={errors.date?.message}
-                    />
-                    <ButtonForm disabled={isPending}>{isPending ? "Criando Checkpoint..." : "Criar Checkpoint"}</ButtonForm>
-                </form>
-            </div>
+                            <InputForm
+                                id="date"
+                                name="date"
+                                type="date"
+                                label="Escolha o dia que você quer criar o checkpoint para o vigilante:"
+                                register={register}
+                                required="Por favor, digite uma data"
+                                message={errors.date?.message}
+                            />
+                            <ButtonForm disabled={isPending}>{isPending ? "Criando Checkpoint..." : "Criar Checkpoint"}</ButtonForm>
+                        </form>
+                    </div>
 
-            <SucessMessage hidden={!isSuccess}>Checkpoint criado com sucesso.</SucessMessage>
-            <ErrorMessage hidden={!isError}>Checkpoint não foi criado. Verifique os dados!</ErrorMessage>
+                    <SucessMessage hidden={!isSuccess}>Checkpoint criado com sucesso.</SucessMessage>
+                    <ErrorMessage hidden={!isError}>Checkpoint não foi criado. Verifique os dados!</ErrorMessage>
+                </>}
         </div>
 
     )

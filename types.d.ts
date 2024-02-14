@@ -148,10 +148,8 @@ type TCreateCheckpointForm = {
     date: string
 }
 
-type TCreateCheckpointData = {
-    day: number,
-    month: number,
-    year: number,
+type CreateCheckpoint = {
+    date: Date
     userId: number
 }
 
