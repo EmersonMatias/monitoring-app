@@ -4,12 +4,14 @@ import { AxiosResponse } from "axios"
 export async function onSubmitFormMessage(
     data: FormMessageProps,
     messageId: number,
-    setMessageViewed: UseMutateFunction<AxiosResponse<any, any>, Error, TUpdateMessage, unknown>
+    setMessageViewed: UseMutateFunction<AxiosResponse<any, any>, Error, {
+        updateMessage: UpdateMessage;
+        messageId: number;
+    }, unknown>
 ) {
-    const responseData = {
-        messageId,
+    const updateMessage: UpdateMessage = {
         response: data.comment
     }
 
-    setMessageViewed(responseData)
+    setMessageViewed({ updateMessage, messageId })
 }

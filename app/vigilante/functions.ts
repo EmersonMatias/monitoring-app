@@ -1,17 +1,25 @@
-import { UseMutateFunction } from "@tanstack/react-query"
-import { UseFormResetField } from "react-hook-form"
+import Cookies from "js-cookie"
 import { dateTime } from "../utils/constants"
+import { UseFormResetField } from "react-hook-form"
+import { UseMutateFunction } from "@tanstack/react-query"
 
-export async function onSubmitFormEmergencyMessage(data: FormEmergencyMessageProps, userId: number, createMessage: UseMutateFunction<any, Error, TCreateMessageData, unknown>, resetField: UseFormResetField<FormEmergencyMessageProps>) {
-    const createMessageData = {
+export async function onSubmitNewMessage({ data, resetField, createMessage }: OnSubmitMessage) {
+    const agencyId = Number(Cookies.get('agencyId'))
+    const userId = Number(Cookies.get('userId'))
+    const dateTime = new Date()
+
+    const createMessageData: CreateMessage = {
         userId,
-        message: data.message
+        message: data.message,
+        agencyId,
+        dateTime
     }
 
     createMessage(createMessageData)
 
     resetField("message")
 }
+
 
 export async function resetMutation(messageCreated: boolean, reset: () => void) {
     if (messageCreated) {
@@ -34,4 +42,12 @@ export function contingencyTime(contingency: TContigency | undefined) {
     }
 
     return response
+}
+
+
+
+type OnSubmitMessage = {
+    data: FormNewMessage
+    resetField: UseFormResetField<FormNewMessage>
+    createMessage: UseMutateFunction<any, Error, CreateMessage, unknown>
 }

@@ -1,7 +1,3 @@
-type TFormSignin = {
-    token: string | undefined,
-    accountType: string | undefined
-}
 
 type TSigninResponse = {
     name: string,
@@ -69,27 +65,6 @@ type TGetUserForUpdate = {
     }[]
 }
 
-type TMessage = {
-    id: number,
-    day: number,
-    month: number,
-    year: number,
-    hour: string,
-    message: string,
-    response: string,
-    viewed: boolean,
-    userId?: number,
-    user?: {
-        name: string,
-        agency: TAgency
-    }
-}
-
-type TUpdateMessage = {
-    response: string,
-    messageId: number
-}
-
 type TUserStatus = {
     name: string,
     entryTime: string,
@@ -128,13 +103,8 @@ type FormMessageProps = {
     comment: string
 }
 
-type FormEmergencyMessageProps = {
+type FormNewMessage = {
     message: string
-}
-
-type TCreateMessageData = {
-    userId: number | undefined;
-    message: string;
 }
 
 type TUpdateStatus = {
@@ -200,7 +170,34 @@ interface Contingency {
     userId: number
 }
 
-// ? Vigilant Types
+// ! Message Types
+interface Message {
+    id: number,
+    dateTime: Date,
+    message: string,
+    viewed: boolean,
+    response: string,
+    agency: Agency
+    user: {
+        id: number,
+        name: string
+    }
+}
+
+type UpdateMessage = {
+    response: string
+}
+
+type CreateMessage = {
+    userId: number,
+    agencyId: number
+    message: string
+    dateTime: Date
+}
+
+
+
+// ! Vigilant Types
 interface VigilantBase {
     name: string
     dateOfBirth: Date
@@ -225,7 +222,7 @@ interface Vigilant extends VigilantBase {
     status: Omit<Status, 'userId'>
 }
 
-interface Vigilants extends VigilantBase{
+interface Vigilants extends VigilantBase {
     id: number,
     status: Omit<Status, 'userId'>
     contigency: Omit<Contingency, 'userId'>
@@ -246,8 +243,8 @@ type UpdateVigilantForm = Omit<CreateVigilantForm, 'password'>
 
 type UpdateVigilantBody = Omit<VigilantBody, 'password' | 'accountType'>
 
-// ? Agency Types
-interface Agency{
+// ! Agency Types
+interface Agency {
     id: number,
     name: string
 }

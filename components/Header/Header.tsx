@@ -33,7 +33,7 @@ export default function Header() {
 
                 {/* <HeaderLink href={HeaderLinkReports.href} svg={HeaderLinkReports.svg} name="RELATÓRIOS"/> */}
 
-                {<HeaderLink href={HeaderLinkSettings.href} svg={HeaderLinkSettings.svg} name="CONFIGURAÇÕES"/>}
+                {<HeaderLink href={HeaderLinkSettings.href} svg={HeaderLinkSettings.svg} name="CONFIGURAÇÕES" />}
 
                 {/*    <HeaderStatus /> */}
             </div>
@@ -41,7 +41,7 @@ export default function Header() {
             <div className="flex gap-5 mr-10 items-center">
                 {/*  <HeaderAlerts /> */}
 
-                {/*  <HeaderMessages /> */}
+                {<HeaderMessages />}
 
                 <button className=" bg-red-400 px-4 py-3 h-fit w-fit font-bold rounded text-white ml-5" onClick={() => { handleExit(router) }}>Sair</button>
             </div>

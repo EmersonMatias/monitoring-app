@@ -2,20 +2,18 @@
 import Input from "@/components/Input.component";
 import { useCreateMessage } from "@/hooks/hooks-messages";
 import { useForm } from "react-hook-form";
-import { onSubmitFormEmergencyMessage, resetMutation } from "./functions";
-import { useGetByUserIDContingency } from "@/hooks/hooks-contingency";
+import { resetMutation, onSubmitNewMessage } from "./functions";
 
-export default function SOSButton({ userId }: { readonly userId: number | undefined }) {
-    const { data: contingency, isSuccess } = useGetByUserIDContingency(Number(userId))
+export default function EmergencyMessage() {
     const { mutate: createMessage, isSuccess: messageCreated, isPending, reset } = useCreateMessage()
-    const { register, handleSubmit, formState: { errors }, resetField } = useForm<FormEmergencyMessageProps>()
+    const { register, handleSubmit, formState: { errors }, resetField } = useForm<FormNewMessage>()
 
     resetMutation(messageCreated, reset)
-
+  
     return (
         <div>
-            {(isSuccess && !contingency.contigency) &&
-                <form className="flex flex-col justify-center  mt-10" onSubmit={handleSubmit((data) => onSubmitFormEmergencyMessage(data, Number(userId), createMessage, resetField))}>
+            {
+                <form className="flex flex-col justify-center  mt-10" onSubmit={handleSubmit((data) => onSubmitNewMessage({data,resetField, createMessage}))}>
                     <Input
                         id="message"
                         name="message"

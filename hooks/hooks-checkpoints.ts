@@ -18,35 +18,13 @@ export function useFindManyCheckpoints({ date }: { date?: string }) {
   })
 }
 
-export function useGetCheckpoint(userId: number, createAllCheckpoints: UseMutateFunction<any, Error, void, unknown>) {
+export function useGetCheckpoint(userId: number) {
   return useQuery({
     queryKey: ['checkpoint', `${userId}`],
     queryFn: async () => {
       const data: AxiosResponse<TUserCheckpoints> = await axios.get(`${process.env.BACKEND_URL}/checkpoint/${userId}`)
 
-      if (!data?.data) {
-        createAllCheckpoints()
-      }
-
       return data.data
-    }
-  })
-}
-
-export function useCreateAllCheckpoints() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async () => {
-      const response = await axios.post(`${process.env.BACKEND_URL}/checkpoints`)
-      console.log(response)
-      return response.data
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["usercheckpoints", "checkpoints-today"] })
-    },
-    onError: () => {
-      console.log("FALHA AO CRIAR CHECKPOINTS")
     }
   })
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import FormSignin from "./components/FormSignin";
+import FormSignin from "@/components/FormSignin";
 import { redirectToInicio } from "./functions";
 import styles from "./styles.module.css"
 

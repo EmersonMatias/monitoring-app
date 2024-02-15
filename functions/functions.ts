@@ -32,3 +32,17 @@ export function convertTimeToBrasilia(time: Date) {
 export function convertDateToBrasilia(date: Date) {
     return date.toString().split('T')[0]
 }
+
+export function formatDateTimeToBR(date: Date){
+    const dateTime = new Date(date).toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+
+    return dateTime
+}

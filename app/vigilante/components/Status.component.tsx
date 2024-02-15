@@ -1,7 +1,5 @@
 'use client'
-
 import { dateTime } from "@/app/utils/constants"
-import { useGetByUserIDContingency } from "@/hooks/hooks-contingency"
 import { useCreateMessage } from "@/hooks/hooks-messages"
 import { useUpdateStatus } from "@/hooks/hooks-status"
 import { useQuery } from "@tanstack/react-query"
@@ -18,7 +16,7 @@ type TStatus = {
 }
 
 export default function StatusButton({ userId }: { readonly userId: number }) {
-    const { data: contingency, isSuccess: contingencySuccess } = useGetByUserIDContingency(Number(userId))
+    //const { data: contingency, isSuccess: contingencySuccess } = useGetByUserIDContingency(Number(userId))
     const { hour, minute } = dateTime()
     const [update, setUpdate] = useState(false)
 
@@ -97,7 +95,7 @@ export default function StatusButton({ userId }: { readonly userId: number }) {
 
     return (
         <div>
-            {(contingencySuccess && !contingency.contigency) &&
+            {/*(contingencySuccess && !contingency.contigency) && */
                 <div className="mt-5 flex flex-col items-center text-sm pb-10">
                     <p>Último status: {status?.status}</p>
                     <p>Horário do último status: {isSuccess ?

@@ -2,17 +2,16 @@
 import Button from "./Button.component"
 import Cookies from "js-cookie"
 import { useGetByUserIDContingency } from "@/hooks/hooks-contingency"
-import { useCreateAllCheckpoints, useGetCheckpoint } from "@/hooks/hooks-checkpoints"
+import { useGetCheckpoint } from "@/hooks/hooks-checkpoints"
 
 export default function Content({ name }: TContent) {
     const userId = Cookies.get("userId")
-    const { data: contingency, isSuccess: contingencySuccess } = useGetByUserIDContingency(Number(userId))
-    const { mutate: createAllCheckpoints } = useCreateAllCheckpoints()
-    const { data: checkpoint, isSuccess } = useGetCheckpoint(Number(userId), createAllCheckpoints)
+    //const { data: contingency, isSuccess: contingencySuccess } = useGetByUserIDContingency(Number(userId))
+    const { data: checkpoint, isSuccess } = useGetCheckpoint(Number(userId))
 
     return (
         <div>
-            {(contingencySuccess && !contingency.contigency) &&
+            {/*(contingencySuccess && !contingency.contigency) && */
                 <div key={checkpoint?.id} className="flex flex-col gap-2 mt-2 text-base">
                     <p className="text-base font-semibold mt-4">Vigilante: {name}</p>
                     <p><span className="font-bold">Dia: </span>

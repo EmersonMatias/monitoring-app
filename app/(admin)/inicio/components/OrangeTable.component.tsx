@@ -1,10 +1,9 @@
 'use client'
-import { useCreateAllCheckpoints, useFindManyCheckpoints } from "@/hooks/hooks-checkpoints"
+import {  useFindManyCheckpoints } from "@/hooks/hooks-checkpoints"
 import { checkpointsOrange } from "../functions"
 import { convertTimeToBrasilia } from "@/functions/functions"
-
+ 
 export default function OrangeTable({ search }: { readonly search: string }) {
-    const { mutate: createAllCheckpoints } = useCreateAllCheckpoints()
     const today = new Date().toISOString()
     const { data: checkpoints, isSuccess, isRefetching } = useFindManyCheckpoints({ date: today })
    

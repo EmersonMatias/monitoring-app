@@ -15,6 +15,8 @@ export default function FormSignin() {
     const { isPending, mutate } = useMutation({
         mutationFn: async () => {
             const response: AxiosResponse<TSigninResponse> = await axios.post(`${process.env.BACKEND_URL}/signin`, signinData)
+
+            console.log(response)
             return response
 
         },
@@ -25,7 +27,7 @@ export default function FormSignin() {
                 Cookies.set("entryTime", data.entryTime)
                 Cookies.set("userId", data.userId)
                 Cookies.set("accountType", data.accountType)
-                Cookies.set("agency", data.agency)
+                Cookies.set("agencyId", data.agency)
                 router.push("vigilante")
 
             } else {

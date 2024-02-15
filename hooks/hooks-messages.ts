@@ -1,21 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
 
-type MessagesQueries = {
-    agencyId: number,
-    dayGte: string,
-    dayLte: string,
-    monthGte: string,
-    monthLte: string,
-    yearGte: string,
-    yearLte: string,
-}
-
-export function useQueryMessages(queries?: MessagesQueries) {
+export function useFindManyMessages() {
     return useQuery({
         queryKey: ["messages"],
         queryFn: async () => {
-            const data: AxiosResponse<TMessage[]> = await axios.get(`${process.env.BACKEND_URL}/messages?agencyId=${queries?.agencyId}&dayGte=${queries?.dayGte}&dayLte=${queries?.dayLte}&monthGte=${queries?.monthGte}&monthLte=${queries?.monthLte}&yearGte=${queries?.yearGte}&yearLte=${queries?.yearLte}`)
+            const data: AxiosResponse<Message[]> = await axios.get(`${process.env.BACKEND_URL}/messages`)
             return data.data
         },
         refetchInterval: 3000,
@@ -23,14 +13,13 @@ export function useQueryMessages(queries?: MessagesQueries) {
     })
 }
 
-export function useUpdateMessage() {
+export function useCreateMessage() {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async (updateMessage: TUpdateMessage) => {
-
-            const sucess = await axios.put(`${process.env.BACKEND_URL}/messages/${updateMessage.messageId}`, { response: updateMessage.response })
-            return sucess
+        mutationFn: async (data: CreateMessage) => {
+            const response = await axios.post(`${process.env.BACKEND_URL}/messages`, data)
+            return response.data
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["messages"] })
@@ -38,13 +27,15 @@ export function useUpdateMessage() {
     })
 }
 
-export function useCreateMessage() {
+
+export function useUpdateMessage() {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async (data: TCreateMessageData) => {
-            const response = await axios.post(`${process.env.BACKEND_URL}/messages`, data)
-            return response.data
+        mutationFn: async ({ updateMessage, messageId }: { updateMessage: UpdateMessage, messageId: number }) => {
+
+            const sucess = await axios.put(`${process.env.BACKEND_URL}/messages/${messageId}`, updateMessage)
+            return sucess
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["messages"] })
