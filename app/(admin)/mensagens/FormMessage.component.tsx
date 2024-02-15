@@ -6,7 +6,7 @@ import { onSubmitFormMessage } from "./functions"
 
 export default function FormMessage({ messageId }: { readonly messageId: number }) {
     const { mutate: setMessageViewed, isPending } = useUpdateMessage()
-    const { register, handleSubmit, formState: { errors } } = useForm<FormMessageProps>()
+    const { register, handleSubmit, formState: { errors } } = useForm<FormCommentMessage>()
 
     return (
         <form className="flex flex-col" onSubmit={handleSubmit((data) => onSubmitFormMessage(data, messageId, setMessageViewed))}>

@@ -8,69 +8,6 @@ type TSigninResponse = {
     agency: string
 }
 
-type TCheckpoints = {
-    id: number
-    arrived: boolean,
-    arrivalTime: string,
-    day: number,
-    month: number,
-    year: number,
-    userId: number,
-    user?: {
-        name: string,
-        agency: TAgency
-        entryTime: string
-    }
-}
-
-type TUpdateUser = TCreateUser
-
-type TUpdateUser = {
-    name: string;
-    dateofbirth: string;
-    rg: string;
-    cpf: string;
-    agencyId: number;
-    entryTime: string;
-    departureTime: string;
-    login: string;
-    frequency: number;
-    saturday: string,
-    sunday: string
-}
-
-type TGetUserForUpdate = {
-    name: string;
-    dateofbirth: string;
-    rg: string;
-    cpf: string;
-    agency: string;
-    entryTime: string;
-    departureTime: string;
-    login: string;
-    saturday: string;
-    sunday: string;
-    status: {
-        frequency: number;
-    }[]
-}
-
-type TUserStatus = {
-    name: string,
-    entryTime: string,
-    departureTime: string,
-    agency: TAgency
-}
-
-type TStatusWithUser = {
-    id: number,
-    hour: number,
-    minute: number
-    status: string,
-    userId: number,
-    user: TUserStatus
-}
-
 type TAlerts = {
     id: number,
     viewed: boolean,
@@ -78,14 +15,6 @@ type TAlerts = {
     month: number,
     year: number,
     name: string
-}
-
-type FormMessageProps = {
-    comment: string
-}
-
-type FormNewMessage = {
-    message: string
 }
 
 // ! STATUS TYPE
@@ -96,7 +25,6 @@ type Status = {
     frequency: number
     userId: number
 }
-
 
 // ! CHECKPOINT TYPES
 
@@ -139,14 +67,6 @@ type TContigency = {
 
 // ! NOVOS TIPOS
 
-interface Status {
-    id: number
-    timestamp: Date
-    situation: "OK" | "PANIC"
-    frequency: number
-    userId: number
-}
-
 interface Contingency {
     id: number
     active: boolean
@@ -181,7 +101,13 @@ type CreateMessage = {
     dateTime: Date
 }
 
+type FormCommentMessage = {
+    comment: string
+}
 
+type FormNewMessage = {
+    message: string
+}
 
 // ! Vigilant Types
 interface VigilantBase {

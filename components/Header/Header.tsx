@@ -21,7 +21,7 @@ export default function Header() {
             </div>
 
             <div className="flex gap-10 items-center">
-                {/*<HeaderLink href={HeaderLinkStatistic.href} svg={HeaderLinkStatistic.svg} name="ESTATÍSTICAS"/> */}
+                {<HeaderLink href={HeaderLinkStatistic.href} svg={HeaderLinkStatistic.svg} name="ESTATÍSTICAS"/>}
 
                 <HeaderLink href={HeaderLinkCreateVigilant.href} svg={HeaderLinkCreateVigilant.svg} name="CRIAR VIGILANTE" />
 

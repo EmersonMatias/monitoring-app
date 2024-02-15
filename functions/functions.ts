@@ -18,31 +18,30 @@ export function convertTimeToUTC(time: string) {
 }
 
 
-export function convertTimeToBrasilia(time: Date | undefined ) {
-    if(time){
-        const timeBrasilia = new Date(time).toLocaleString('pt-BR', {
-            timeZone: 'America/Sao_Paulo',
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    
-        return timeBrasilia
-    }
+export function convertTimeToBrasilia(time: Date) {
+
+    const timeBrasilia = new Date(time).toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    return timeBrasilia
 }
 
 export function convertDateToBrasilia(date: Date) {
     return date.toString().split('T')[0]
 }
 
-export function formatDateToBR(date: Date){
+export function formatDateToBR(date: Date) {
     const [year, month, day] = date.toString().split('T')[0].split('-')
     const dateFormated = `${day}/${month}/${year}`
 
-   return dateFormated
+    return dateFormated
 }
 
-export function formatDateTimeToBR(date: Date){
+export function formatDateTimeToBR(date: Date) {
     const dateTime = new Date(date).toLocaleString('pt-BR', {
         timeZone: 'America/Sao_Paulo',
         hour12: false,
