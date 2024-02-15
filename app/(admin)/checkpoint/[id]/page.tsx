@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form"
 import { onSubmitCreateCheckpointForm } from "./functions"
 
 export default function Checkpoint({ params: { id } }: { readonly params: { id: string } }) {
-    const { register, handleSubmit, formState: { errors }, reset: resetForm } = useForm<TCreateCheckpointForm>()
+    const { register, handleSubmit, formState: { errors }, reset: resetForm } = useForm<CreateCheckpointForm>()
     const { data: vigilant } = useFindUniqueVigilant(Number(id))
     const { mutate: createCheckpoint, isPending, isSuccess, isError, reset } = useCreateCheckpoint(resetForm)
 

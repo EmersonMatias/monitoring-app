@@ -4,7 +4,6 @@ import {  useFindManyCheckpoints } from "@/hooks/hooks-checkpoints"
 import { useRef } from "react"
 import { checkpointsRed, delayAlert } from "../functions";
 import { convertTimeToBrasilia } from "@/functions/functions";
-import { dateTime } from "@/app/utils/constants";
 
 export default function RedTable({ search }: { readonly search: string }) {
     const today = new Date().toISOString()

@@ -1,6 +1,6 @@
 import { logged } from "../utils/functions"
 import EmergencyMessage from "./EmergencyMessage"
-import Content from "./components/Content.component"
+import Content from "./Content.component"
 import StatusButton from "./components/Status.component"
 import VigilantHeader from "./components/VigilantHeader.component"
 import styles from "./styles.module.css"
@@ -15,7 +15,7 @@ export default function Vigilante() {
 
             {/*<ContingencyVigilant userId={Number(userId)}/>*/}
 
-            <Content name={name} />
+            <Content />
             <EmergencyMessage />
             <StatusButton userId={Number(userId)} />
         </div>

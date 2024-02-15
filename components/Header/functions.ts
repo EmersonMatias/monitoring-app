@@ -72,7 +72,6 @@ export function emergencyContingencyAlert({ isSuccess, contingenciesRef, conting
     }
 }
 
-
 export function messageAlert({ isSuccess, messages, messagesRef }: MessageAlertProps) {
     if (!isSuccess) return null
 
@@ -80,6 +79,7 @@ export function messageAlert({ isSuccess, messages, messagesRef }: MessageAlertP
 
     if (currentMessagesRef === undefined) {
         messagesRef.current = messages
+        return null
     }
 
     const diffMessagesLength = Number(messages?.length) > Number(currentMessagesRef?.length)
@@ -95,8 +95,8 @@ export function messageAlert({ isSuccess, messages, messagesRef }: MessageAlertP
 
 type MessageAlertProps = {
     isSuccess: boolean
-    messagesRef: MutableRefObject<TMessage[] | undefined>
-    messages: TMessage[] | undefined
+    messagesRef: MutableRefObject<Message[] | undefined>
+    messages: Message[] | undefined
 }
 
 type PanicStatusAlertProps = {

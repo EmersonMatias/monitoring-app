@@ -1,7 +1,7 @@
 import { UseMutateFunction } from "@tanstack/react-query"
 
 export function onSubmitCreateCheckpointForm(
-    data: TCreateCheckpointForm,
+    data: CreateCheckpointForm,
     userId: number,
     createCheckpoint: UseMutateFunction<any, Error, CreateCheckpoint, unknown>
 ) {

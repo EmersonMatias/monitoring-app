@@ -23,16 +23,6 @@ type TCheckpoints = {
     }
 }
 
-type TUserCheckpoints = {
-    id: number,
-    day: number,
-    month: number,
-    year: number,
-    arrived: boolean,
-    arrivalTime: string,
-    userId: number
-}
-
 type TUpdateUser = TCreateUser
 
 type TUpdateUser = {
@@ -114,7 +104,7 @@ type TUpdateStatus = {
 
 // ! CHECKPOINT TYPES
 
-type TCreateCheckpointForm = {
+type CreateCheckpointForm = {
     date: string
 }
 
