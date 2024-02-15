@@ -5,8 +5,8 @@ export function useUpdateStatus() {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async (updateStatusData: TUpdateStatus) => {
-            const response = await axios.post(`${process.env.BACKEND_URL}/status/updatebyid=${updateStatusData.statusID}`, { newStatus: updateStatusData.newStatus })
+        mutationFn: async ({id, situation}: {situation: "OK" | "PANIC", id: number}) => {
+            const response = await axios.put(`${process.env.BACKEND_URL}/status/${id}`, { situation })
             console.log(response)
             return response
         },
@@ -16,14 +16,45 @@ export function useUpdateStatus() {
     })
 }
 
-export function useGetAllStatus() {
+export function useFindUniqueStatus(userId: number){
     return useQuery({
-        queryKey: ["status"],
+        queryKey: ["status", `${userId}`],
         queryFn: async () => {
-            const data: AxiosResponse<TStatusWithUser[]> = await axios.get(`${process.env.BACKEND_URL}/status/getall`)
+            const data: AxiosResponse<Status> = await axios.get(`${process.env.BACKEND_URL}/status/${userId}`)
             return data.data
         },
         refetchInterval: 3000,
         refetchIntervalInBackground: true
     })
+}
+
+
+export function useFindManyStatus() {
+    return useQuery({
+        queryKey: ["status"],
+        queryFn: async () => {
+            const data: AxiosResponse<FindAllStatusResponse[]> = await axios.get(`${process.env.BACKEND_URL}/status`)
+            return data.data
+        },
+        refetchInterval: 3000,
+        refetchIntervalInBackground: true
+    })
+}
+
+
+export type FindAllStatusResponse =  {
+    id: number,
+    frequency: number,
+    situation: "OK" | "PANIC",
+    timestamp: Date,
+    user: {
+      id: number,
+      name: string,
+      entryTime: Date,
+      departureTime: Date,
+      agency: {
+        id: number,
+        name: string
+      }
+    }
 }

@@ -1,13 +1,12 @@
-import { logged } from "../utils/functions"
 import EmergencyMessage from "./EmergencyMessage"
 import Content from "./Content.component"
-import StatusButton from "./components/Status.component"
 import VigilantHeader from "./components/VigilantHeader.component"
 import styles from "./styles.module.css"
 import ContingencyVigilant from "./contingency"
+import Status from "./Status"
 
 export default function Vigilante() {
-    const { userId, name } = logged()
+
 
     return (
         <div className={`${styles.container} px-5`}>
@@ -17,7 +16,7 @@ export default function Vigilante() {
 
             <Content />
             <EmergencyMessage />
-            <StatusButton userId={Number(userId)} />
+            <Status />
         </div>
     )
 }

@@ -1,4 +1,5 @@
 import { dateTime } from "@/app/utils/constants"
+import { FindAllStatusResponse } from "@/hooks/hooks-status"
 import { MutableRefObject } from "react"
 
 export function contingencyNotifications(isSuccess: boolean, contingencies: TContigency[] | undefined) {
@@ -27,15 +28,15 @@ export function panicStatusAlert({ isSuccess, statusRef, status }: PanicStatusAl
         statusRef.current = status
     }
 
-    const lengthStatus = Number(status?.filter((oneStatus) => oneStatus.status === "PANIC").length)
-    const lengthStatusRef = Number(statusRef?.current?.filter((oneStatus) => oneStatus.status === "PANIC").length)
+    const lengthStatus = Number(status?.filter((oneStatus) => oneStatus.situation === "PANIC").length)
+    const lengthStatusRef = Number(statusRef?.current?.filter((oneStatus) => oneStatus.situation === "PANIC").length)
     const diffStatus = JSON.stringify(status) !== JSON.stringify(currentStatusRef)
 
     if (currentStatusRef && diffStatus && lengthStatus > lengthStatusRef) {
         const PanicAudio = new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3")
 
         status?.forEach((oneStatus) => {
-            if (oneStatus.status === "PANIC") {
+            if (oneStatus.situation === "PANIC") {
                 PanicAudio.play()
                 statusRef.current = status
             }
@@ -101,8 +102,8 @@ type MessageAlertProps = {
 
 type PanicStatusAlertProps = {
     isSuccess: boolean
-    statusRef: MutableRefObject<TStatusWithUser[] | undefined>,
-    status: TStatusWithUser[] | undefined
+    statusRef: MutableRefObject<FindAllStatusResponse[] | undefined>,
+    status: FindAllStatusResponse[] | undefined
 }
 
 type EmergencyContingencyAlertProps = {

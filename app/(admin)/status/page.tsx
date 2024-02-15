@@ -1,16 +1,15 @@
 'use client'
-import { useGetAllStatus, useUpdateStatus } from "@/hooks/hooks-status"
+import { convertTimeToBrasilia, formatDateTimeToBR } from "@/functions/functions"
+import { useFindManyStatus, useUpdateStatus } from "@/hooks/hooks-status"
 
 export default function Page() {
-    const { data: status } = useGetAllStatus()
+    const { data: status } = useFindManyStatus()
     const { mutate: updateStatus } = useUpdateStatus()
 
-    function handleOkay(statusID: number) {
-        const updateStatusData: TUpdateStatus = {
-            newStatus: "OK",
-            statusID
-        }
-        updateStatus(updateStatusData)
+    function handleOkay(statusId: number) {
+        const id = statusId
+        const situation = "OK"
+        updateStatus({id,situation})
     }
 
     return (
@@ -34,13 +33,13 @@ export default function Page() {
                         status?.map((eachStatus) => (
                             <tr key={eachStatus.id} className=" text-center">
                                 <td className=" px-4 py-5 max-w-[200px] border-y-slate-300 border-y-2">{eachStatus.user.name}</td>
-                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.user.entryTime}</td>
-                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.user.departureTime}</td>
+                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{convertTimeToBrasilia(eachStatus.user.entryTime)}</td>
+                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{convertTimeToBrasilia(eachStatus.user.departureTime)}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.user.agency.name}</td>
-                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.status}</td>
-                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{`${eachStatus.hour.toString().padStart(2, "0")}:${eachStatus.minute.toString().padStart(2, "0")}`}</td>
+                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{eachStatus.situation}</td>
+                                <td className="px-4 py-5  border-y-slate-300 border-y-2">{formatDateTimeToBR(eachStatus.timestamp)}</td>
                                 <td className="px-4 py-5  border-y-slate-300 border-y-2">
-                                    {eachStatus.status === "PANIC" ?
+                                    {eachStatus.situation === "PANIC" ?
                                         <button onClick={() => handleOkay(eachStatus.id)}>
                                             <svg className="w-[40px] h-[40px] text-white dark:text-gray-800" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm108.25 138.29-134.4 160a16 16 0 0 1-12 5.71h-.27a16 16 0 0 1-11.89-5.3l-57.6-64a16 16 0 1 1 23.78-21.4l45.29 50.32 122.59-145.91a16 16 0 0 1 24.5 20.58z">

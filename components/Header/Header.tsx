@@ -35,7 +35,7 @@ export default function Header() {
 
                 {<HeaderLink href={HeaderLinkSettings.href} svg={HeaderLinkSettings.svg} name="CONFIGURAÇÕES" />}
 
-                {/*    <HeaderStatus /> */}
+                {<HeaderStatus /> }
             </div>
 
             <div className="flex gap-5 mr-10 items-center">

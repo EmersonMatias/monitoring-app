@@ -71,15 +71,6 @@ type TStatusWithUser = {
     user: TUserStatus
 }
 
-type Status = {
-    id: number,
-    hour: number,
-    minute: number,
-    status: string,
-    frequency: number,
-    userId: number
-}
-
 type TAlerts = {
     id: number,
     viewed: boolean,
@@ -97,10 +88,15 @@ type FormNewMessage = {
     message: string
 }
 
-type TUpdateStatus = {
-    newStatus: string,
-    statusID: number | undefined
+// ! STATUS TYPE
+type Status = {
+    id: number
+    timestamp: Date
+    situation: "OK" | "PANIC"
+    frequency: number
+    userId: number
 }
+
 
 // ! CHECKPOINT TYPES
 
