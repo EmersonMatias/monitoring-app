@@ -70,6 +70,43 @@ export function useUpdateVigilant(id: number) {
     })
 }
 
+export function useFindUniqueVigilantFilter(id: string, initialDate?: string, finalDate?: string) {
+    const initialDataString = initialDate !== undefined ? `initialDate=${initialDate}&` : ''
+    const finalDateString = finalDate !== undefined ? `finalDate=${finalDate}` : ''
+    console.log(`${process.env.BACKEND_URL}/vigilants/datefilter/${id}?${initialDataString}${finalDateString}`)
+
+    return useQuery({
+        queryKey: ['vigilant', 'filter', `${id}`],
+        queryFn: async () => {
+            const data: AxiosResponse<FindUniqueVigilantFilterResponse> = await axios.get(`${process.env.BACKEND_URL}/vigilants/datefilter/${id}?${initialDataString}${finalDateString}`)
+            return data.data
+        },
+        refetchOnMount: true,
+        enabled: initialDate?.length !== 0
+    })
+}
+
+interface FindUniqueVigilantFilterResponse {
+    name: string;
+    entryTime: Date;
+    departureTime: Date;
+    agency: Agency;
+    checkpoint: {
+        id: number;
+        date: Date;
+        agency: Agency;
+        arrived: boolean;
+        arrivalTime: Date | null;
+    }[]
+    messages: {
+        id: number;
+        message: string;
+        dateTime: Date;
+        viewed: boolean;
+        response: string;
+        agency: Agency;
+    }[]
+}
 
 
 

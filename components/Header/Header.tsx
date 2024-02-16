@@ -31,7 +31,7 @@ export default function Header() {
 
                 <HeaderLink href={HeaderLinkHome.href} svg={HeaderLinkHome.svg} name="INICIO" />
 
-                {/* <HeaderLink href={HeaderLinkReports.href} svg={HeaderLinkReports.svg} name="RELATÓRIOS"/> */}
+                {<HeaderLink href={HeaderLinkReports.href} svg={HeaderLinkReports.svg} name="RELATÓRIOS"/> }
 
                 {<HeaderLink href={HeaderLinkSettings.href} svg={HeaderLinkSettings.svg} name="CONFIGURAÇÕES" />}
 

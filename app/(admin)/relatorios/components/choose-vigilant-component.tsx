@@ -1,108 +1,97 @@
 
-import { ChangeEvent, useState } from "react"
-import VigilantReport from "./vigilant-report-component"
-import { useQueryVigilants } from "@/hooks/hooks-vigilants"
+import { useFindManyVigilants } from "@/hooks/hooks-vigilants"
+import { useForm } from "react-hook-form"
+import InputFormWhite from "@/components/InputFormWhite"
+import { useRouter } from "next/navigation"
 
 export default function ChooseVigilant() {
-    const { data: vigilants } = useQueryVigilants()
-    const [userId, setUserId] = useState<string | undefined>("0")
-    const [withFilter, setWithFilter] = useState<string>("0")
-    const [report, setReport] = useState(false)
-    const [firstDate, setFirstDate] = useState("")
-    const [endDate, setEndDate] = useState("")
+    const { data: vigilants } = useFindManyVigilants()
+    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<VigilantReportForm>()
+    const router = useRouter()
 
-    function handleClick() {
-        if (userId === "" || userId === "0") {
-            return alert("Selecione um vigilante")
-        } else if (withFilter === "0") {
-            return alert("Selecione se deseja filtrar por datas")
+    function onSubmitGenerateReport(data: VigilantReportForm) {
+        const initialDate = data.initialDate ? new Date(data.initialDate).toISOString() : ''
+        const finalDate = data.finalDate ? new Date(data.finalDate).toISOString() : ''
+
+        if (data.filterByDate === "true") {
+            router.push(`/relatorios/${data.vigilant}?initialDate=${initialDate}&finalDate=${finalDate}`)
+            reset()
+        } else {
+            router.push(`/relatorios/${data.vigilant}`)
+            reset()
         }
-
-        setReport(true)
+        console.log(initialDate, finalDate, data.filterByDate)
     }
-
-    function handleVigilant(e: ChangeEvent<HTMLSelectElement>) {
-        setUserId(e.target.value)
-
-        if (e.target.value === "0") {
-            setWithFilter("0")
-            setFirstDate("")
-            setEndDate("")
-        }
-    }
-
-    function handleFilter(e: ChangeEvent<HTMLSelectElement>){
-        setWithFilter(e.target.value)
-
-        if (e.target.value === "0" || e.target.value === "false") {
-            setFirstDate("")
-            setEndDate("")
-        }
-    }
-
     return (
         <div className={`flex flex-col mt-10`}>
 
-            <div className="flex flex-col items-center ">
-                <select id="vigilant" name="vigilant" className="p-2 w-[300px]" onChange={(e) => handleVigilant(e)} >
-                    <option value="0">Escolha um vigilante</option>
-                    {
-                        vigilants?.map((vigilant) => (
-                            <option className="" key={vigilant.id} value={vigilant.id}>{vigilant.name}</option>
-                        ))
-                    }
+            <form className="flex flex-col" onSubmit={handleSubmit((data) => onSubmitGenerateReport(data))}>
+
+                <select
+                    {...register("vigilant", {
+                        required: "Escolha uma opção"
+                    })}
+                    className="pl-4 py-2 bg-[#ffffff] rounded-xl mb-2 disabled:opacity-50 mt2 w-[500px]">
+
+                    <option value="">Escolha um vigilante</option>
+                    {vigilants?.map((vigilant) => {
+                        return <option key={vigilant.id} value={vigilant.id}>{vigilant.name}</option>
+
+                    })}
                 </select>
+                {errors.vigilant && <p className="pl-2 font-bold text-red-600">{errors.vigilant.message}</p>}
 
-                {userId !== "0" &&
-                    <select id="filter" name="filter" className="p-2 mt-10 w-[300px]" onChange={(e) => handleFilter(e)} >
-                        <option value="0">Você deseja filtrar por datas:</option>
-                        <option className="" value="true">Sim</option>
-                        <option className="" value="false">Não</option>
-                    </select>
+
+                <select
+                    {...register("filterByDate", {
+                        required: "Escolha uma opção"
+                    })}
+                    className="pl-4 py-2 bg-[#ffffff] rounded-xl mb-2 disabled:opacity-50 mt2 w-[500px]">
+
+                    <option value="">Escolha uma opção</option>
+
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
+
+                </select>
+                {errors.filterByDate && <p className="pl-2 font-bold text-red-600">{errors.filterByDate.message}</p>}
+
+                {(watch('filterByDate') === 'true') && <InputFormWhite
+                    id="initialDate"
+                    name="initialDate"
+                    type="date"
+                    label="Escolha a data inicial"
+                    required="Você deve selecionar uma data inicial"
+                    register={register}
+                    message={errors?.initialDate?.message}
+                //isPending={isPending}
+                />}
+
+                {(watch('filterByDate') === 'true') && <InputFormWhite
+                    id="finalDate"
+                    name="finalDate"
+                    type="date"
+                    label="Escolha a data final"
+                    required="Você deve selecionar uma data final"
+                    register={register}
+                    message={errors?.finalDate?.message}
+                //isPending={isPending}
+                />
                 }
 
-                {(withFilter === "true" && userId !== "0") &&
-                    <div className={`flex flex-col`}>
-                        <label htmlFor="firstDate" className="mt-10 font-bold ml-2">Selecione a data de inicio.</label>
-                        <input
-                            id="firstDate"
-                            className="mt-2 w-[300px] h-10 bg-white rounded-lg font-bold  p-4"
-                            type="date"
-                            onChange={(e) => setFirstDate(e.target.value)}
-                        />
 
-                        <label htmlFor="endDate" className="mt-10 font-bold ml-2">Selecione a data final.</label>
-                        <input
-                            id="endDate"
-                            className="mt-2  w-[300px] h-10 bg-white rounded-lg font-bold  p-4"
-                            type="date"
-                            onChange={(e) => setEndDate(e.target.value)}
-                        />
+                <button>Gerar relatório</button>
+            </form>
 
-                    </div>
-                }
-
-                {(withFilter === "true" && userId !== "0" && firstDate !== "" && endDate !== "") &&
-                    <button
-                        disabled={report}
-                        className="px-8 w-[300px] py-2 bg-[#f0a830] rounded-md text-white font-semibold mt-10 disabled:opacity-50"
-                        onClick={() => handleClick()}>
-                        Gerar relatório
-                    </button>
-                }
-
-                {(withFilter === "false" && userId !== "0") &&
-                    <button
-                        disabled={report}
-                        className="px-8 w-[300px] py-2 bg-[#f0a830] rounded-md text-white font-semibold mt-10 disabled:opacity-50"
-                        onClick={() => handleClick()}>
-                        Gerar relatório
-                    </button>
-                }
-            </div>
-
-
-            {report && <VigilantReport userId={userId} firstDate={firstDate} endDate={endDate} />}
         </div>
     )
+}
+
+
+
+type VigilantReportForm = {
+    vigilant: string
+    filterByDate: string
+    initialDate?: string
+    finalDate?: string
 }
