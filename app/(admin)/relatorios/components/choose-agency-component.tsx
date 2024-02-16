@@ -1,77 +1,97 @@
-import { useQueryVigilants } from "@/hooks/hooks-vigilants"
-import { useState } from "react"
-import AgencyReport from "./agency-report-component"
+import { useFindManyAgency } from "@/hooks/hooks-agency"
+import InputFormWhite from "@/components/InputFormWhite"
+import { useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
 
 export default function ChooseAgency() {
-    const { data: vigilants } = useQueryVigilants()
-    const [agency, setAgency] = useState<string>("0")
-    const agencies = vigilants?.map((vigilant) => {
-        return vigilant.agency
-    })
-    const agenciesList = agencies?.filter((value, index, self) => self.indexOf(value) === index)
-    const [report, setReport] = useState(false)
-    const [withFilter, setWithFilter] = useState<string>("0")
-    const [firstDate, setFirstDate] = useState("")
-    const [endDate, setEndDate] = useState("")
+    const { data: agencies } = useFindManyAgency()
+    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<AgencyReportForm>()
+    const router = useRouter()
 
+    function onSubmitGenerateReport(data: AgencyReportForm) {
+        console.log(data)
+        const initialDate = data.initialDate ? new Date(data.initialDate).toISOString() : ''
+        const finalDate = data.finalDate ? new Date(data.finalDate).toISOString() : ''
 
-    function handleClick() {
-        setReport(true)
-
+        if (data.filterByDate === "true") {
+            router.push(`/relatorios/agencia/${data.agency}?initialDate=${initialDate}&finalDate=${finalDate}`)
+            reset()
+        } else {
+            router.push(`/relatorios/agencia/${data.agency}`)
+            reset()
+        }
+        
+        console.log(initialDate, finalDate, data.filterByDate)
     }
 
     return (
-        <div>
-            <div className={`flex flex-col mt-10 px-[400px]`}>
+        <div className={`flex flex-col mt-10`}>
+            <form className="flex flex-col" onSubmit={handleSubmit((data) => onSubmitGenerateReport(data))}>
 
-                <select id="cars" name="cars" className="p-2" onChange={(e) => { setAgency(e.target.value) }} >
-                    <option value="0">Escolha uma agência</option>
+                <select
+                    {...register("agency", {
+                        required: "Escolha uma opção"
+                    })}
+                    className="pl-4 py-2 bg-[#ffffff] rounded-xl mb-2 disabled:opacity-50 mt2 w-[500px]">
 
-                    {
-                        agenciesList?.map((agency) => ( 
-                            <option className="" key={agency.id} value={agency.id}>{agency.name}</option>
-                        ))
-                    }
+                    <option value="">Escolha uma agência</option>
+                    {agencies?.map((agency) => {
+                        return <option key={agency.id} value={agency.id}>{agency.name}</option>
+
+                    })}
+                </select>
+                {errors.agency && <p className="pl-2 font-bold text-red-600">{errors.agency.message}</p>}
+
+
+                <select
+                    {...register("filterByDate", {
+                        required: "Escolha uma opção"
+                    })}
+                    className="pl-4 py-2 bg-[#ffffff] rounded-xl mb-2 disabled:opacity-50 mt2 w-[500px]">
+
+                    <option value="">Escolha uma opção</option>
+
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
 
                 </select>
+                {errors.filterByDate && <p className="pl-2 font-bold text-red-600">{errors.filterByDate.message}</p>}
 
-                <select hidden={agency === "0" ? true : false} id="filter" name="filter" className="p-2 mt-10 w-[300px]" onChange={(e) => { setWithFilter(e.target.value) }} >
-                    <option value="0">Você deseja filtrar por datas:</option>
-                    <option className="" value="true">Sim</option>
-                    <option className="" value="false">Não</option>
-                </select>
+                {(watch('filterByDate') === 'true') && <InputFormWhite
+                    id="initialDate"
+                    name="initialDate"
+                    type="date"
+                    label="Escolha a data inicial"
+                    required="Você deve selecionar uma data inicial"
+                    register={register}
+                    message={errors?.initialDate?.message}
+                //isPending={isPending}
+                />}
 
-                <div className={`flex flex-col ${withFilter !== "0" && withFilter === "true" ? null : "hidden"}`}>
-                    <label htmlFor="firstDate" className="mt-10 font-bold ml-2">Selecione a data de inicio.</label>
-                    <input
-                        id="firstDate"
-                        className="mt-2 w-[300px] h-10 bg-white rounded-lg font-bold  p-4"
-                        type="date"
-                        onChange={(e) => setFirstDate(e.target.value)}
-                    />
-
-                    <label htmlFor="endDate" className="mt-10 font-bold ml-2">Selecione a data final.</label>
-                    <input
-                        id="endDate"
-                        className="mt-2  w-[300px] h-10 bg-white rounded-lg font-bold  p-4"
-                        type="date"
-                        onChange={(e) => setEndDate(e.target.value)}
-                    />
-
-                </div>
+                {(watch('filterByDate') === 'true') && <InputFormWhite
+                    id="finalDate"
+                    name="finalDate"
+                    type="date"
+                    label="Escolha a data final"
+                    required="Você deve selecionar uma data final"
+                    register={register}
+                    message={errors?.finalDate?.message}
+                //isPending={isPending}
+                />
+                }
 
 
-                <button
-                    hidden={agency === "0" || withFilter === "0" || (withFilter === "true" && (firstDate === "" || endDate === "")) ? true : false}
-                    disabled={report}
-                    className="px-8 w-[300px] py-2 bg-[#f0a830] rounded-md text-white font-semibold mt-10 disabled:opacity-50"
-                    onClick={() => handleClick()}>
-                    Gerar relatório
-                </button>
+                <button>Gerar relatório</button>
+            </form>
 
-            </div>
-            {report && <AgencyReport agencyId={agency} firstDate={firstDate} endDate={endDate}/>}
 
         </div>
     )
+}
+
+type AgencyReportForm = {
+    agency: string
+    filterByDate: string
+    initialDate?: string
+    finalDate?: string
 }

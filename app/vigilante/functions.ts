@@ -7,6 +7,7 @@ export async function onSubmitNewMessage({ data, resetField, createMessage }: On
     const agencyId = Number(Cookies.get('agencyId'))
     const userId = Number(Cookies.get('userId'))
     const dateTime = new Date()
+    console.log(agencyId, userId)
 
     const createMessageData: CreateMessage = {
         userId,

@@ -73,7 +73,6 @@ export function useUpdateVigilant(id: number) {
 export function useFindUniqueVigilantFilter(id: string, initialDate?: string, finalDate?: string) {
     const initialDataString = initialDate !== undefined ? `initialDate=${initialDate}&` : ''
     const finalDateString = finalDate !== undefined ? `finalDate=${finalDate}` : ''
-    console.log(`${process.env.BACKEND_URL}/vigilants/datefilter/${id}?${initialDataString}${finalDateString}`)
 
     return useQuery({
         queryKey: ['vigilant', 'filter', `${id}`],

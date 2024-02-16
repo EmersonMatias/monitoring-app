@@ -14,14 +14,15 @@ export default function ChooseVigilant() {
         const finalDate = data.finalDate ? new Date(data.finalDate).toISOString() : ''
 
         if (data.filterByDate === "true") {
-            router.push(`/relatorios/${data.vigilant}?initialDate=${initialDate}&finalDate=${finalDate}`)
+            router.push(`/relatorios/vigilante/${data.vigilant}?initialDate=${initialDate}&finalDate=${finalDate}`)
             reset()
         } else {
-            router.push(`/relatorios/${data.vigilant}`)
+            router.push(`/relatorios/vigilante/${data.vigilant}`)
             reset()
         }
         console.log(initialDate, finalDate, data.filterByDate)
     }
+    
     return (
         <div className={`flex flex-col mt-10`}>
 
@@ -86,8 +87,6 @@ export default function ChooseVigilant() {
         </div>
     )
 }
-
-
 
 type VigilantReportForm = {
     vigilant: string

@@ -93,10 +93,3 @@ export default function VigilantReport({ params: { id } }: { readonly params: { 
         </div>
     )
 }
-
-
-
-interface QueryParams {
-    initialData: string,
-    finalData: string
-}
