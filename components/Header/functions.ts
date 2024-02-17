@@ -1,17 +1,18 @@
-import { dateTime } from "@/app/utils/constants"
+import { FindManyContingency } from "@/hooks/hooks-contingency"
 import { FindAllStatusResponse } from "@/hooks/hooks-status"
 import { MutableRefObject } from "react"
 
-export function contingencyNotifications(isSuccess: boolean, contingencies: TContigency[] | undefined) {
+export function contingencyNotifications(isSuccess: boolean, contingencies: FindManyContingency[] | undefined) {
     if (!isSuccess) return undefined
-    const { hour, minute } = dateTime()
 
     const notifications = contingencies?.filter((contingency) => {
-        const lastStatus = Number(contingency?.hour) * 60 + Number(contingency?.minute)
-        const currentTime = Number(hour) * 60 + Number(minute)
-        const diff = currentTime - lastStatus
-        if (contingency.contigency) {
-            if (diff > 5 || contingency.status === "EMERGENCY") return contingency
+        const lastCheckpoint = new Date(contingency.timestamp).getTime()
+        const currentTime = new Date().getTime()
+        const diff = currentTime - lastCheckpoint
+        const late = Math.floor(diff / 60000) > (contingency.frequency + 5)
+
+        if (contingency.active) {
+            if (late|| contingency.situation === "PANIC") return contingency
         }
 
     }).length
@@ -54,15 +55,15 @@ export function emergencyContingencyAlert({ isSuccess, contingenciesRef, conting
         contingenciesRef.current = contingencies
     }
    
-    const lengthContingencies = Number(contingencies?.filter((contingency) => contingency.status === "EMERGENCY" && contingency.contigency).length)
-    const lengthContingenciesRef = Number(contingenciesRef?.current?.filter((contingency) => contingency.status === "EMERGENCY" && contingency.contigency).length)
+    const lengthContingencies = Number(contingencies?.filter((contingency) => contingency.situation === "PANIC" && contingency.situation).length)
+    const lengthContingenciesRef = Number(contingenciesRef?.current?.filter((contingency) => contingency.situation === "PANIC" && contingency.situation).length)
     const diffContingencies = JSON.stringify(contingencies) !== JSON.stringify(currentContingency)
 
     if (currentContingency && diffContingencies && lengthContingencies > lengthContingenciesRef) {
         const PanicAudio = new Audio("https://teste-bucket.s3.sa-east-1.amazonaws.com/panicAudio.mp3")
 
         contingencies?.forEach((contingency) => {
-            if (contingency.status === "EMERGENCY") {
+            if (contingency.situation === "PANIC") {
                 PanicAudio.play()
                 contingenciesRef.current = contingencies
             }
@@ -108,7 +109,7 @@ type PanicStatusAlertProps = {
 
 type EmergencyContingencyAlertProps = {
     isSuccess: boolean
-    contingenciesRef: MutableRefObject<TContigency[] | undefined>,
-    contingencies: TContigency[] | undefined
+    contingenciesRef: MutableRefObject<FindManyContingency[] | undefined>,
+    contingencies: FindManyContingency[] | undefined
 }
 

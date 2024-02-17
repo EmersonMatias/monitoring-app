@@ -37,11 +37,23 @@ type CreateCheckpoint = {
     userId: number
 }
 
-// ! CONTINGENCY TYPES
-type TActivateContingencyData = {
-    userId: number,
-    frequency: number,
+type Checkpoints = {
+    id: number,
+    date: Date,
+    arrived: boolean,
+    arrivalTime: Date,
+    agency: Agency
+    user: {
+        id: number,
+        name: string,
+        entryTime: Date,
+        departureTime: Date,
+        workOnSaturday: boolean,
+        workOnSunday: boolean
+    }
 }
+
+// ! CONTINGENCY TYPES
 
 type TDeactivateContingencyData = {
     userId: number
@@ -162,22 +174,6 @@ interface Agency {
 }
 
 type CreateAgencyForm = Omit<Agency, 'id'>
-
-type Checkpoints = {
-    id: number,
-    date: Date,
-    arrived: boolean,
-    arrivalTime: Date,
-    agency: Agency
-    user: {
-        id: number,
-        name: string,
-        entryTime: Date,
-        departureTime: Date,
-        workOnSaturday: boolean,
-        workOnSunday: boolean
-    }
-}
 
 interface CustomError extends Error {
     response: {

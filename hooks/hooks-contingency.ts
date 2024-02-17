@@ -1,34 +1,45 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
 
-export function useActivateContingency() {
-    const queryClient = useQueryClient()
 
+export function useFindManyContingency() {
+    return useQuery({
+        queryKey: ["contingency"],
+        queryFn: async () => {
+            const sucess: AxiosResponse<FindManyContingency[]> = await axios.get(`${process.env.BACKEND_URL}/contingency`)
+            return sucess.data
+        },
+        refetchInterval: 3000,
+        refetchIntervalInBackground: true
+    })
+}
+
+export function useFindUniqueContingency(userId: number) {
+    return useQuery({
+        queryKey: ["contingency", `${userId}`],
+        queryFn: async () => {
+            const sucess: AxiosResponse<FindManyContingency> = await axios.get(`${process.env.BACKEND_URL}/contingency/${userId}`)
+            return sucess.data
+        },
+        refetchInterval: 3000,
+        refetchIntervalInBackground: true
+    })
+}
+
+export function useUpdateContingency() {
+    const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: async (activeContingencyData: TActivateContingencyData) => {
-            const response = axios.post(`${process.env.BACKEND_URL}/contingency/activate`, activeContingencyData)
+        mutationFn: async ({ userId, active, situation, frequency }: { userId: number, situation: "OK" | "PANIC", active: boolean, frequency?: number }) => {
+            const response = axios.post(`${process.env.BACKEND_URL}/contingency/${userId}`, { situation, active, frequency })
             return (await response).data
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["contingencyID"] })
+        onSuccess: (_, { userId }) => {
+            queryClient.invalidateQueries({ queryKey: ["contingency", `${userId}`] })
         }
     })
 }
 
-export function useDeactivateContingency() {
-    const queryClient = useQueryClient()
-
-    return useMutation({
-        mutationFn: async (deactivateContingencyData: TDeactivateContingencyData) => {
-            const response = axios.post(`${process.env.BACKEND_URL}/contingency/deactivate`, deactivateContingencyData)
-            return (await response).data
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["contingencyID"] })
-        }
-    })
-}
-
+//********************** */
 export function useCheckpointContingency() {
     const queryClient = useQueryClient()
 
@@ -40,27 +51,20 @@ export function useCheckpointContingency() {
     })
 }
 
-export function useGetAllContingency() {
-    return useQuery({
-        queryKey: ["contingency"],
-        queryFn: async () => {
-            const sucess: AxiosResponse<TContigency[]> = await axios.get(`${process.env.BACKEND_URL}/contingency/getall`)
-            return sucess.data
-        },
-        refetchInterval: 3000,
-        refetchIntervalInBackground: true
-    })
-}
 
-export function useGetByUserIDContingency(userId: number) {
-    return useQuery({
-        queryKey: ["contingencyID"],
-        queryFn: async () => {
-            const sucess: AxiosResponse<TContigency> = await axios.get(`${process.env.BACKEND_URL}/contingency/getbyuserid=${userId}`)
-            return sucess.data
-        },
-        enabled: userId !== undefined || userId !== null,
-        refetchInterval: 3000,
-        refetchIntervalInBackground: true
-    })
+
+
+export interface FindManyContingency {
+    id: number,
+    active: boolean,
+    frequency: number,
+    situation: "OK" | "PANIC",
+    timestamp: Date,
+    user: {
+        name: string,
+        agency: {
+            id: number,
+            name: string
+        }
+    }
 }
